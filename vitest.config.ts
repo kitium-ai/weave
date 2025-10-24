@@ -21,7 +21,7 @@ export default defineConfig({
       branches: 85,
       statements: 90,
     },
-    include: ['packages/**/*.test.ts', 'packages/**/*.spec.ts'],
+    include: ['**/tests/**/*.test.ts', '**/*.spec.ts'],
     exclude: ['node_modules', 'dist', '.idea', '.git'],
     testTimeout: 10000,
   },

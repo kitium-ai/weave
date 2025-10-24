@@ -4,14 +4,12 @@
   "description": "Weave core framework - framework-agnostic AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./operations": {
       "import": "./dist/esm/operations/index.js",
@@ -40,11 +38,11 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap",
-    "dev": "tsup src/index.ts --format esm --dts --watch",
+    "build": "tsup src/index.ts --format esm,cjs --sourcemap",
+    "dev": "tsup src/index.ts --format esm --watch",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit --project tsconfig.json",
     "clean": "rm -rf dist coverage .turbo"
   },
   "dependencies": {
