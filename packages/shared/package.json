@@ -1,0 +1,70 @@
+{
+  "name": "@weave/shared",
+  "version": "0.1.0",
+  "description": "Weave shared utilities - common functionality across all packages",
+  "license": "Apache-2.0",
+  "author": "KitiumAI",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/esm/errors/index.js",
+      "require": "./dist/cjs/errors/index.js",
+      "types": "./dist/types/errors/index.d.ts"
+    },
+    "./logger": {
+      "import": "./dist/esm/logger/index.js",
+      "require": "./dist/cjs/logger/index.js",
+      "types": "./dist/types/logger/index.d.ts"
+    },
+    "./validation": {
+      "import": "./dist/esm/validation/index.js",
+      "require": "./dist/cjs/validation/index.js",
+      "types": "./dist/types/validation/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap",
+    "dev": "tsup src/index.ts --format esm --dts --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist coverage .turbo"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "weave",
+    "shared",
+    "utilities",
+    "errors",
+    "logging",
+    "validation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitium-ai/weave.git",
+    "directory": "packages/shared"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

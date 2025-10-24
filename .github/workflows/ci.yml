@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  # push:
+  #   branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Yarn
+        run: corepack enable && corepack prepare yarn@4.9.4 --activate
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Type check
+        run: yarn type-check
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Generate coverage report
+        if: matrix.node-version == '20.x'
+        run: yarn test:coverage
+
+      - name: Upload coverage to Codecov
+        if: matrix.node-version == '20.x'
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage-final.json
+          fail_ci_if_error: true
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install Yarn
+        run: corepack enable && corepack prepare yarn@4.9.4 --activate
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Check bundle size
+        run: |
+          CORE_SIZE=$(du -sh packages/core/dist | cut -f1)
+          echo "Core bundle size: $CORE_SIZE"
+
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install Yarn
+        run: corepack enable && corepack prepare yarn@4.9.4 --activate
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run Snyk security check
+        uses: snyk/actions/node@master
+        with:
+          args: --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true

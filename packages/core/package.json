@@ -1,0 +1,82 @@
+{
+  "name": "@weave/core",
+  "version": "0.1.0",
+  "description": "Weave core framework - framework-agnostic AI operations",
+  "license": "Apache-2.0",
+  "author": "KitiumAI",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./operations": {
+      "import": "./dist/esm/operations/index.js",
+      "require": "./dist/cjs/operations/index.js",
+      "types": "./dist/types/operations/index.d.ts"
+    },
+    "./providers": {
+      "import": "./dist/esm/providers/index.js",
+      "require": "./dist/cjs/providers/index.js",
+      "types": "./dist/types/providers/index.d.ts"
+    },
+    "./tools": {
+      "import": "./dist/esm/tools/index.js",
+      "require": "./dist/cjs/tools/index.js",
+      "types": "./dist/types/tools/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/esm/types/index.js",
+      "require": "./dist/cjs/types/index.js",
+      "types": "./dist/types/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap",
+    "dev": "tsup src/index.ts --format esm --dts --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist coverage .turbo"
+  },
+  "dependencies": {
+    "@weave/shared": "workspace:*",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "weave",
+    "ai",
+    "llm",
+    "openai",
+    "anthropic",
+    "framework-agnostic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitium-ai/weave.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/kitium-ai/weave/issues"
+  },
+  "homepage": "https://github.com/kitium-ai/weave#readme",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

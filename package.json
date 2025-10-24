@@ -1,0 +1,85 @@
+{
+  "name": "weave",
+  "version": "0.1.0",
+  "description": "Universal AI integration framework - native to any web or mobile framework",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "KitiumAI",
+  "homepage": "https://weave.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitium-ai/weave.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kitium-ai/weave/issues"
+  },
+  "keywords": [
+    "ai",
+    "weave",
+    "react",
+    "vue",
+    "svelte",
+    "angular",
+    "flutter",
+    "swiftui",
+    "llm",
+    "openai",
+    "anthropic",
+    "framework-agnostic"
+  ],
+  "workspaces": [
+    "packages/core",
+    "packages/shared",
+    "packages/react",
+    "packages/vue",
+    "packages/svelte",
+    "packages/angular",
+    "packages/flutter",
+    "packages/swift",
+    "packages/web",
+    "packages/integrations/*",
+    "examples/*"
+  ],
+  "packageManager": "yarn@4.9.4",
+  "scripts": {
+    "prepare": "husky install",
+    "setup": "yarn install && yarn build",
+    "dev": "yarn workspaces foreach -pt run dev",
+    "build": "yarn workspaces foreach -pt run build",
+    "build:core": "yarn workspace @weave/core build",
+    "clean": "yarn workspaces foreach -pt run clean",
+    "test": "yarn workspaces foreach -pt run test",
+    "test:coverage": "yarn workspaces foreach -pt run test:coverage",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
+    "type-check": "yarn workspaces foreach -pt run type-check",
+    "publish:npm": "yarn workspaces foreach --no-private npm publish",
+    "publish:canary": "yarn workspaces foreach --no-private npm publish --tag canary",
+    "version:major": "yarn workspace @weave/core version major",
+    "version:minor": "yarn workspace @weave/core version minor",
+    "version:patch": "yarn workspace @weave/core version patch",
+    "docs": "yarn workspace docs build",
+    "docs:dev": "yarn workspace docs dev",
+    "validate": "yarn lint && yarn type-check && yarn test",
+    "ci": "yarn validate && yarn build"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0",
+    "tsup": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=4.0.0"
+  }
+}
