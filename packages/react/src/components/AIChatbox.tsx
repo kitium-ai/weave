@@ -25,7 +25,7 @@ export const AIChatbox: React.FC<AIChatboxProps> = ({
   className,
   placeholder = 'Type your message...',
   maxLength = 2000,
-  showCharCount = true
+  showCharCount = true,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState('');
@@ -49,13 +49,15 @@ export const AIChatbox: React.FC<AIChatboxProps> = ({
   }, [input]);
 
   const handleSendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim()) {
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: `msg-${Date.now()}`,
       role: 'user',
       content: input,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -71,7 +73,7 @@ export const AIChatbox: React.FC<AIChatboxProps> = ({
         id: `msg-${Date.now()}-ai`,
         role: 'assistant',
         content: 'Response received',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
@@ -128,9 +130,7 @@ export const AIChatbox: React.FC<AIChatboxProps> = ({
                   )}
                 </div>
                 {showTimestamps && msg.timestamp && (
-                  <span className="weave-chatbox__timestamp">
-                    {formatTime(msg.timestamp)}
-                  </span>
+                  <span className="weave-chatbox__timestamp">{formatTime(msg.timestamp)}</span>
                 )}
               </div>
             </div>

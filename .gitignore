@@ -56,3 +56,5 @@ yarn-error.log*
 .prettierignore
 /.npmrc
 /.yarnrc.yml
+/.claude/
+/.husky/

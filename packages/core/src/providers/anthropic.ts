@@ -75,16 +75,25 @@ export class AnthropicProvider extends BaseLanguageModel {
    */
   public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
     this.logger.debug('Anthropic generate', { prompt, options });
+    const messages: AnthropicMessage[] = [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ];
 
-    const response = await this.callAnthropic(
-      [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      options
-    );
+    if (options?.streaming && options.onChunk) {
+      const text = await this.callAnthropicStream(messages, options.onChunk, options);
+      const input = await this.countTokens(prompt);
+      const output = await this.countTokens(text);
+      return {
+        text,
+        tokenCount: { input, output },
+        finishReason: 'stop',
+      };
+    }
+
+    const response = await this.callAnthropic(messages, options);
 
     const text = response.content[0]?.text ?? '';
     return {
@@ -254,6 +263,10 @@ export class AnthropicProvider extends BaseLanguageModel {
         content: msg.content,
       }));
 
+    if (options?.streaming && options.onChunk) {
+      return await this.callAnthropicStream(anthropicMessages, options.onChunk, options);
+    }
+
     const response = await this.callAnthropic(anthropicMessages, options);
 
     return response.content[0]?.text ?? '';
@@ -266,6 +279,10 @@ export class AnthropicProvider extends BaseLanguageModel {
     // Rough estimation: ~4 characters per token
     // For accurate counting, use Anthropic's token counting API
     return Math.ceil(text.length / 4);
+  }
+
+  public getProviderInfo(): { provider: string; model: string } {
+    return { provider: 'anthropic', model: this.model };
   }
 
   /**
@@ -342,5 +359,76 @@ export class AnthropicProvider extends BaseLanguageModel {
     }
 
     throw lastError ?? new Error('Anthropic API call failed after retries');
+  }
+
+  /**
+   * Stream responses from Anthropic messages API via SSE
+   */
+  private async callAnthropicStream(
+    messages: AnthropicMessage[],
+    onChunk: (chunk: string) => void,
+    options?: GenerateOptions | ChatOptions
+  ): Promise<string> {
+    const body = {
+      model: this.model,
+      max_tokens: (options as GenerateOptions)?.maxTokens ?? 1000,
+      temperature: (options as GenerateOptions)?.temperature ?? 1,
+      messages,
+      stream: true,
+    };
+
+    const response = await fetch(`${this.baseUrl}/messages`, {
+      method: 'POST',
+      headers: {
+        'x-api-key': this.apiKey,
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(this.timeout),
+    });
+
+    if (!response.ok || !response.body) {
+      throw new Error(`Anthropic stream error: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let done = false;
+    let buffer = '';
+    let fullText = '';
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      if (value) {
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith('data:')) {
+            continue;
+          }
+          const data = trimmed.replace(/^data:\s*/, '');
+          if (data === '[DONE]') {
+            done = true;
+            break;
+          }
+          try {
+            const json = JSON.parse(data);
+            const delta = json.delta?.text ?? json.content?.[0]?.text ?? '';
+            if (delta) {
+              fullText += delta;
+              onChunk(delta);
+            }
+          } catch {
+            // ignore
+          }
+        }
+      }
+    }
+
+    return fullText;
   }
 }

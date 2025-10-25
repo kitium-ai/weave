@@ -115,6 +115,10 @@ export class MockLanguageModel implements ILanguageModel {
     return true;
   }
 
+  public getProviderInfo(): { provider: string; model: string } {
+    return { provider: 'mock', model: 'mock' };
+  }
+
   public setResponse(key: string, response: unknown): void {
     this.responses.set(key, response);
   }

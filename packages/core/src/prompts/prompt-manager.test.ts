@@ -21,10 +21,10 @@ describe('PromptManager', () => {
         template: 'Hello {{name}}',
         version: '1.0.0',
         variables: {
-          name: { type: 'string', required: true }
+          name: { type: 'string', required: true },
         },
         category: 'custom',
-        tags: ['test']
+        tags: ['test'],
       };
 
       expect(() => manager.register(template)).not.toThrow();
@@ -39,10 +39,12 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { name: { type: 'string' } },
         category: 'custom' as const,
-        tags: []
+        tags: [],
       };
 
-      expect(() => manager.register(template as any)).toThrow('Template must have name, template, and version');
+      expect(() => manager.register(template as any)).toThrow(
+        'Template must have name, template, and version'
+      );
     });
 
     it('should throw error for template without template content', () => {
@@ -51,10 +53,12 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { name: { type: 'string' } },
         category: 'custom' as const,
-        tags: []
+        tags: [],
       };
 
-      expect(() => manager.register(template as any)).toThrow('Template must have name, template, and version');
+      expect(() => manager.register(template as any)).toThrow(
+        'Template must have name, template, and version'
+      );
     });
 
     it('should throw error for template without version', () => {
@@ -63,10 +67,12 @@ describe('PromptManager', () => {
         template: 'Hello',
         variables: { name: { type: 'string' } },
         category: 'custom' as const,
-        tags: []
+        tags: [],
       };
 
-      expect(() => manager.register(template as any)).toThrow('Template must have name, template, and version');
+      expect(() => manager.register(template as any)).toThrow(
+        'Template must have name, template, and version'
+      );
     });
 
     it('should maintain version history for templates', () => {
@@ -76,7 +82,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { content: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const templateV2: PromptTemplate = {
@@ -85,7 +91,7 @@ describe('PromptManager', () => {
         version: '2.0.0',
         variables: { content: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(templateV1);
@@ -104,7 +110,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
@@ -125,7 +131,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: {},
         category: 'custom' as const,
-        tags: []
+        tags: [],
       };
 
       const result = manager.validate(template);
@@ -140,10 +146,10 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: {
           name: { type: 'string' },
-          unused: { type: 'string' }
+          unused: { type: 'string' },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       // Should not throw - unused variables are allowed, but missing ones are not
@@ -157,15 +163,15 @@ describe('PromptManager', () => {
         template: 'Hello {{name}} and {{surname}}',
         version: '1.0.0',
         variables: {
-          name: { type: 'string' }
+          name: { type: 'string' },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const result = manager.validate(template);
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('surname'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('surname'))).toBe(true);
     });
 
     it('should validate variable types', () => {
@@ -174,15 +180,15 @@ describe('PromptManager', () => {
         template: 'Test {{var}}',
         version: '1.0.0',
         variables: {
-          var: { type: 'invalid-type' as any }
+          var: { type: 'invalid-type' as any },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const result = manager.validate(template);
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('Invalid variable type'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('Invalid variable type'))).toBe(true);
     });
 
     it('should handle templates without variables object', () => {
@@ -191,12 +197,14 @@ describe('PromptManager', () => {
         template: 'No variables here',
         version: '1.0.0',
         category: 'custom' as const,
-        tags: []
+        tags: [],
       };
 
       const result = manager.validate(template as any);
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.message.includes('Variables object is required'))).toBe(true);
+      expect(result.errors.some((e) => e.message.includes('Variables object is required'))).toBe(
+        true
+      );
     });
   });
 
@@ -208,10 +216,10 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: {
           name: { type: 'string', required: true },
-          place: { type: 'string', required: true }
+          place: { type: 'string', required: true },
         },
         category: 'custom',
-        tags: ['greeting']
+        tags: ['greeting'],
       };
       manager.register(template);
     });
@@ -219,7 +227,7 @@ describe('PromptManager', () => {
     it('should render template with variables', () => {
       const result = manager.render('greeting', {
         name: 'Alice',
-        place: 'Wonderland'
+        place: 'Wonderland',
       });
 
       expect(result.success).toBe(true);
@@ -234,22 +242,22 @@ describe('PromptManager', () => {
 
     it('should validate required variables', () => {
       const result = manager.render('greeting', {
-        name: 'Alice'
+        name: 'Alice',
         // missing 'place'
       });
 
       expect(result.success).toBe(false);
-      expect(result.errors?.some(e => e.includes("'place' is missing"))).toBe(true);
+      expect(result.errors?.some((e) => e.includes("'place' is missing"))).toBe(true);
     });
 
     it('should handle type mismatch for string variables', () => {
       const result = manager.render('greeting', {
         name: 123 as any,
-        place: 'Wonderland'
+        place: 'Wonderland',
       });
 
       expect(result.success).toBe(false);
-      expect(result.errors?.some(e => e.includes('must be a string'))).toBe(true);
+      expect(result.errors?.some((e) => e.includes('must be a string'))).toBe(true);
     });
 
     it('should validate string length constraints', () => {
@@ -258,10 +266,10 @@ describe('PromptManager', () => {
         template: 'Username: {{username}}',
         version: '1.0.0',
         variables: {
-          username: { type: 'string', minLength: 3, maxLength: 10 }
+          username: { type: 'string', minLength: 3, maxLength: 10 },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -284,10 +292,10 @@ describe('PromptManager', () => {
         template: 'Color: {{color}}',
         version: '1.0.0',
         variables: {
-          color: { type: 'string', enum: ['red', 'green', 'blue'] }
+          color: { type: 'string', enum: ['red', 'green', 'blue'] },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -320,10 +328,10 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: {
           name: { type: 'string', required: true },
-          title: { type: 'string', required: false }
+          title: { type: 'string', required: false },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -337,10 +345,10 @@ describe('PromptManager', () => {
         template: '{{var}} and {{var}} and {{var}}',
         version: '1.0.0',
         variables: {
-          var: { type: 'string', required: true }
+          var: { type: 'string', required: true },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -356,7 +364,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { content: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const templateV2: PromptTemplate = {
@@ -365,7 +373,7 @@ describe('PromptManager', () => {
         version: '2.0.0',
         variables: { content: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(templateV1);
@@ -389,7 +397,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: ['test', 'retrieval']
+        tags: ['test', 'retrieval'],
       };
       manager.register(template);
     });
@@ -418,22 +426,22 @@ describe('PromptManager', () => {
     it('should list all templates', () => {
       const templates = manager.list();
       expect(templates.length).toBeGreaterThan(0);
-      expect(templates.some(t => t.name === 'test-retrieval')).toBe(true);
+      expect(templates.some((t) => t.name === 'test-retrieval')).toBe(true);
     });
 
     it('should filter by category', () => {
       const filtered = manager.list({ category: 'custom' });
-      expect(filtered.every(t => t.category === 'custom')).toBe(true);
+      expect(filtered.every((t) => t.category === 'custom')).toBe(true);
     });
 
     it('should filter by tags', () => {
       const filtered = manager.list({ tags: ['test'] });
-      expect(filtered.some(t => t.name === 'test-retrieval')).toBe(true);
+      expect(filtered.some((t) => t.name === 'test-retrieval')).toBe(true);
     });
 
     it('should filter by multiple tags (AND logic)', () => {
       const filtered = manager.list({ tags: ['test', 'retrieval'] });
-      expect(filtered.some(t => t.name === 'test-retrieval')).toBe(true);
+      expect(filtered.some((t) => t.name === 'test-retrieval')).toBe(true);
     });
   });
 
@@ -447,7 +455,7 @@ describe('PromptManager', () => {
           variables: { recipient: { type: 'string' } },
           category: 'email',
           tags: ['email', 'greeting'],
-          description: 'Professional email greeting'
+          description: 'Professional email greeting',
         },
         {
           name: 'chat-response',
@@ -456,26 +464,26 @@ describe('PromptManager', () => {
           variables: { message: { type: 'string' } },
           category: 'chat',
           tags: ['chat', 'response'],
-          description: 'Chat response template'
-        }
+          description: 'Chat response template',
+        },
       ];
 
-      templates.forEach(t => manager.register(t));
+      templates.forEach((t) => manager.register(t));
     });
 
     it('should search by name', () => {
       const results = manager.search('email');
-      expect(results.some(t => t.name === 'email-greeting')).toBe(true);
+      expect(results.some((t) => t.name === 'email-greeting')).toBe(true);
     });
 
     it('should search by description', () => {
       const results = manager.search('greeting');
-      expect(results.some(t => t.name === 'email-greeting')).toBe(true);
+      expect(results.some((t) => t.name === 'email-greeting')).toBe(true);
     });
 
     it('should search by tags', () => {
       const results = manager.search('chat');
-      expect(results.some(t => t.name === 'chat-response')).toBe(true);
+      expect(results.some((t) => t.name === 'chat-response')).toBe(true);
     });
 
     it('should be case insensitive', () => {
@@ -504,7 +512,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -526,7 +534,7 @@ describe('PromptManager', () => {
           version: '1.0.0',
           variables: { var: { type: 'string' } },
           category: 'custom',
-          tags: []
+          tags: [],
         },
         {
           name: 'imported-2',
@@ -534,8 +542,8 @@ describe('PromptManager', () => {
           version: '1.0.0',
           variables: { var: { type: 'string' } },
           category: 'custom',
-          tags: []
-        }
+          tags: [],
+        },
       ];
 
       manager.import(templates);
@@ -552,8 +560,8 @@ describe('PromptManager', () => {
           version: '1.0.0',
           variables: {},
           category: 'custom' as const,
-          tags: []
-        }
+          tags: [],
+        },
       ];
 
       expect(() => manager.import(templates as any)).toThrow();
@@ -568,7 +576,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -589,7 +597,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
 
@@ -604,7 +612,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       manager.register(template);
       manager.render('metrics-delete', { var: 'test' });
@@ -624,7 +632,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
       const v2: PromptTemplate = {
         name: 'multi-version',
@@ -632,7 +640,7 @@ describe('PromptManager', () => {
         version: '2.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(v1);
@@ -654,7 +662,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { content: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const variantB: PromptTemplate = {
@@ -663,7 +671,7 @@ describe('PromptManager', () => {
         version: '1.1.0',
         variables: { content: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const abTest = manager.startABTest('ab-test', variantA, variantB);
@@ -681,7 +689,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       const abTest = manager.startABTest('test', template, template);
@@ -701,11 +709,20 @@ describe('PromptManager', () => {
     });
 
     it('should have templates from all categories', () => {
-      const categories = ['email', 'content', 'classification', 'extraction', 'sentiment', 'translation', 'chat', 'custom'];
+      const categories = [
+        'email',
+        'content',
+        'classification',
+        'extraction',
+        'sentiment',
+        'translation',
+        'chat',
+        'custom',
+      ];
       const templates = manager.list();
 
       for (const category of categories) {
-        const hasCategory = templates.some(t => t.category === category);
+        const hasCategory = templates.some((t) => t.category === category);
         expect(hasCategory).toBe(true);
       }
     });
@@ -714,7 +731,7 @@ describe('PromptManager', () => {
       const result = manager.render('email-professional-greeting', {
         recipient: 'John',
         subject: 'Meeting Request',
-        tone: 'professional'
+        tone: 'professional',
       });
 
       expect(result.success).toBe(true);
@@ -727,7 +744,7 @@ describe('PromptManager', () => {
         audience: 'tech professionals',
         keyPoints: ['intro', 'main point', 'conclusion'],
         tone: 'informative',
-        length: 500
+        length: 500,
       });
 
       expect(result.success).toBe(true);
@@ -735,7 +752,7 @@ describe('PromptManager', () => {
 
     it('should be able to render built-in classification template', () => {
       const result = manager.render('classify-sentiment', {
-        text: 'I love this product! It is amazing!'
+        text: 'I love this product! It is amazing!',
       });
 
       expect(result.success).toBe(true);
@@ -751,7 +768,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: {},
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
@@ -768,16 +785,16 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: {
           price: { type: 'string' },
-          email: { type: 'string' }
+          email: { type: 'string' },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
       const result = manager.render('special-chars', {
         price: '99.99',
-        email: 'test@example.com'
+        email: 'test@example.com',
       });
 
       expect(result.success).toBe(true);
@@ -792,7 +809,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
@@ -808,10 +825,10 @@ describe('PromptManager', () => {
         template: 'Name: {{name}}',
         version: '1.0.0',
         variables: {
-          name: { type: 'string', required: false }
+          name: { type: 'string', required: false },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
@@ -827,10 +844,10 @@ describe('PromptManager', () => {
         template: 'Age: {{age}}',
         version: '1.0.0',
         variables: {
-          age: { type: 'string' }
+          age: { type: 'string' },
         },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
@@ -849,7 +866,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);
@@ -869,7 +886,7 @@ describe('PromptManager', () => {
         version: '1.0.0',
         variables: { var: { type: 'string' } },
         category: 'custom',
-        tags: []
+        tags: [],
       };
 
       manager.register(template);

@@ -12,9 +12,9 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { GenerateService, ClassifyService, ExtractService } from '@weave/nestjs';
-import { WEAVE_INSTANCE } from '@weave/nestjs';
-import { Weave } from '@weave/core';
+import { GenerateService, ClassifyService, ExtractService } from '@weaveai/nestjs';
+import { WEAVE_INSTANCE } from '@weaveai/nestjs';
+import { Weave } from '@weaveai/core';
 
 interface GenerateRequest {
   prompt: string;

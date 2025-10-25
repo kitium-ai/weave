@@ -2,8 +2,8 @@
  * Express.js middleware for Weave AI framework
  */
 
-import type { Request, Response, NextFunction } from 'express';
-import type { Weave } from '@weave/core';
+import type { Request, Response, NextFunction, Application } from 'express';
+import type { Weave } from '@weaveai/core';
 
 export interface WeaveMiddlewareOptions {
   path?: string;
@@ -12,15 +12,13 @@ export interface WeaveMiddlewareOptions {
 /**
  * Create Express middleware for Weave
  */
-export function createWeaveMiddleware(weave: Weave, options?: WeaveMiddlewareOptions) {
-  const path = options?.path || '/api/weave';
-
+export function createWeaveMiddleware(weave: Weave, _options?: WeaveMiddlewareOptions) {
   return {
     /**
      * Middleware to attach Weave instance to request
      */
-    middleware: (req: Request, res: Response, next: NextFunction) => {
-      (req as any).weave = weave;
+    middleware: (req: Request, _res: Response, next: NextFunction) => {
+      (req as unknown as { weave: Weave }).weave = weave;
       next();
     },
 
@@ -95,12 +93,15 @@ export function createWeaveMiddleware(weave: Weave, options?: WeaveMiddlewareOpt
  * Setup Express routes for Weave
  */
 export function setupWeaveRoutes(
-  app: any,
+  app: Application,
   weave: Weave,
   options?: WeaveMiddlewareOptions & { basePath?: string }
 ) {
   const basePath = options?.basePath || '/api/weave';
-  const { middleware, generateHandler, classifyHandler, extractHandler } = createWeaveMiddleware(weave, options);
+  const { middleware, generateHandler, classifyHandler, extractHandler } = createWeaveMiddleware(
+    weave,
+    options
+  );
 
   app.use(middleware);
 

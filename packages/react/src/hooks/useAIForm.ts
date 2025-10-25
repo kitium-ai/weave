@@ -54,47 +54,55 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
 
   const validateForm = useCallback(
     (vals: Record<string, unknown>) => {
-      if (!validate) return {};
+      if (!validate) {
+        return {};
+      }
       return validate(vals);
     },
     [validate]
   );
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, type, value } = e.target;
-    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, type, value } = e.target;
+      const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
 
-    setValues((prev) => ({
-      ...prev,
-      [name]: newValue
-    }));
-
-    // Clear error for this field when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
-  }, [errors]);
-
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name } = e.target;
-    setTouched((prev) => ({
-      ...prev,
-      [name]: true
-    }));
-
-    // Validate on blur
-    const fieldErrors = validateForm(values);
-    if (fieldErrors[name]) {
-      setErrors((prev) => ({
+      setValues((prev) => ({
         ...prev,
-        [name]: fieldErrors[name]
+        [name]: newValue,
       }));
-    }
-  }, [validateForm, values]);
+
+      // Clear error for this field when user starts typing
+      if (errors[name]) {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[name];
+          return newErrors;
+        });
+      }
+    },
+    [errors]
+  );
+
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name } = e.target;
+      setTouched((prev) => ({
+        ...prev,
+        [name]: true,
+      }));
+
+      // Validate on blur
+      const fieldErrors = validateForm(values);
+      if (fieldErrors[name]) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: fieldErrors[name],
+        }));
+      }
+    },
+    [validateForm, values]
+  );
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -122,7 +130,9 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
   );
 
   const handleAIFill = useCallback(async () => {
-    if (!onAIFill) return;
+    if (!onAIFill) {
+      return;
+    }
 
     setIsValidating(true);
     try {
@@ -148,7 +158,7 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
   const setFieldValue = useCallback((field: string, value: unknown) => {
     setValues((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   }, []);
 
@@ -163,7 +173,7 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
       name: field,
       value: values[field] ?? '',
       onChange: handleChange,
-      onBlur: handleBlur
+      onBlur: handleBlur,
     }),
     [values, handleChange, handleBlur]
   );
@@ -182,7 +192,7 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
       setValues,
       setFieldValue,
       resetForm,
-      getFieldProps
+      getFieldProps,
     }),
     [
       values,
@@ -196,7 +206,7 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
       handleAIFill,
       setFieldValue,
       resetForm,
-      getFieldProps
+      getFieldProps,
     ]
   );
 }

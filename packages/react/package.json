@@ -1,5 +1,5 @@
 {
-  "name": "@weave/react",
+  "name": "@weaveai/react",
   "version": "1.0.0",
   "description": "React bindings for Weave framework - hooks and components for AI operations",
   "license": "Apache-2.0",
@@ -45,7 +45,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@weave/core": "1.0.0"
+    "@weaveai/core": "1.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",

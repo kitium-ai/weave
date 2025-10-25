@@ -2,9 +2,10 @@
  * Base operation class
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type { ILanguageModel } from '../providers/interfaces.js';
 import type { OperationMetadata } from '../types/index.js';
+import { costTracker } from '../advanced/index.js';
 
 /**
  * Base class for all operations
@@ -49,6 +50,29 @@ export abstract class BaseOperation {
         ...tokenCount,
         total: tokenCount.input + tokenCount.output,
       };
+
+      // Attempt cost tracking when token counts are available
+      try {
+        const info = this.model.getProviderInfo();
+        const op = costTracker.trackOperation(
+          metadata.id,
+          info.provider,
+          info.model,
+          tokenCount.input,
+          tokenCount.output
+        );
+        metadata.cost = {
+          tokenCount: {
+            input: op.inputTokens,
+            output: op.outputTokens,
+            total: op.inputTokens + op.outputTokens,
+          },
+          estimatedCost: op.totalCost,
+          currency: 'USD',
+        };
+      } catch {
+        // Non-fatal if cost tracking fails
+      }
     }
   }
 

@@ -2,10 +2,8 @@
  * Vue 3 composable for AI operations
  */
 
-import { ref, computed } from 'vue';
-import { inject } from 'vue';
-import type { Weave } from '@weave/core';
-import type { GenerateOptions, GenerateResult } from '@weave/core';
+import { ref, computed, inject, type Ref, type ComputedRef } from 'vue';
+import type { Weave, GenerateOptions } from '@weaveai/core';
 
 export interface UseAIOptions {
   onSuccess?: (data: unknown) => void;
@@ -14,10 +12,10 @@ export interface UseAIOptions {
 }
 
 export interface UseAIReturn<T = unknown> {
-  data: import('vue').Ref<T | null>;
-  loading: import('vue').Ref<boolean>;
-  error: import('vue').Ref<Error | null>;
-  status: import('vue').ComputedRef<'idle' | 'loading' | 'success' | 'error'>;
+  data: Ref<T | null>;
+  loading: Ref<boolean>;
+  error: Ref<Error | null>;
+  status: ComputedRef<'idle' | 'loading' | 'success' | 'error'>;
   execute: (fn: () => Promise<T>) => Promise<T | null>;
 }
 
@@ -25,7 +23,6 @@ export interface UseAIReturn<T = unknown> {
  * Composable for AI operations with state management
  */
 export function useAI<T = unknown>(options?: UseAIOptions): UseAIReturn<T> {
-  const weave = inject<Weave>('weave');
   const data = ref<T | null>(null);
   const loading = ref(false);
   const error = ref<Error | null>(null);
@@ -34,7 +31,9 @@ export function useAI<T = unknown>(options?: UseAIOptions): UseAIReturn<T> {
   const status = computed(() => _status.value);
 
   const execute = async (fn: () => Promise<T>): Promise<T | null> => {
-    if (!fn) return null;
+    if (!fn) {
+      return null;
+    }
 
     try {
       loading.value = true;
@@ -60,7 +59,7 @@ export function useAI<T = unknown>(options?: UseAIOptions): UseAIReturn<T> {
   };
 
   return {
-    data,
+    data: data as Ref<T | null>,
     loading,
     error,
     status,
@@ -75,9 +74,14 @@ export function useGenerateAI(options?: UseAIOptions) {
   const weave = inject<Weave>('weave');
   const { data, loading, error, status, execute } = useAI<string>(options);
 
-  const generate = async (prompt: string, generateOptions?: GenerateOptions): Promise<string | null> => {
+  const generate = async (
+    prompt: string,
+    generateOptions?: GenerateOptions
+  ): Promise<string | null> => {
     return execute(async () => {
-      if (!weave) throw new Error('Weave not provided');
+      if (!weave) {
+        throw new Error('Weave not provided');
+      }
       const result = await weave.generate(prompt, generateOptions);
       return result.text;
     });
@@ -101,7 +105,9 @@ export function useClassifyAI(options?: UseAIOptions) {
 
   const classify = async (text: string, labels: string[]) => {
     return execute(async () => {
-      if (!weave) throw new Error('Weave not provided');
+      if (!weave) {
+        throw new Error('Weave not provided');
+      }
       return await weave.classify(text, labels);
     });
   };
@@ -124,7 +130,9 @@ export function useExtractAI(options?: UseAIOptions) {
 
   const extract = async (text: string, schema: unknown) => {
     return execute(async () => {
-      if (!weave) throw new Error('Weave not provided');
+      if (!weave) {
+        throw new Error('Weave not provided');
+      }
       return await weave.extract(text, schema);
     });
   };

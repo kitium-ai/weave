@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import type { GenerateOptions } from '@weave/core';
+import type { GenerateOptions } from '@weaveai/core';
 import { useWeaveContext } from '../context';
 
 /**
@@ -64,8 +64,8 @@ export function useAIStream(options?: UseAIStreamOptions): UseAIStreamReturn {
           ...generateOptions,
           streaming: true,
           onChunk: (chunk: string) => {
-            setChunks(prev => [...prev, chunk]);
-            setFullText(prev => prev + chunk);
+            setChunks((prev) => [...prev, chunk]);
+            setFullText((prev) => prev + chunk);
             options?.onChunk?.(chunk);
           },
         };

@@ -13,10 +13,10 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
-import { useAI } from '@weave/react-native';
-import type { ChatMessage } from '@weave/core';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
+import { useAI } from '@weaveai/react-native';
+import type { ChatMessage } from '@weaveai/core';
 
 const weave = createWeave({
   provider: new OpenAIProvider({

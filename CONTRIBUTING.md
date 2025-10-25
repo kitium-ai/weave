@@ -222,7 +222,7 @@ describe('module name', () => {
 yarn test
 
 # Run tests for specific package
-yarn workspace @weave/core test
+yarn workspace @weaveai/core test
 
 # Watch mode
 yarn test --watch
@@ -253,14 +253,14 @@ Each package should have a README with:
 ### Example Template
 
 ```markdown
-# @weave/example
+# @weaveai/example
 
 Brief description of what this package does.
 
 ## Installation
 
 \`\`\`bash
-yarn add @weave/example
+yarn add @weaveai/example
 \`\`\`
 
 ## Quick Start

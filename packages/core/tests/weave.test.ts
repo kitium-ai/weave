@@ -5,7 +5,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Weave, createWeave } from '../src/weave.js';
 import type { WeaveConfig } from '../src/types/index.js';
-import { ValidationError } from '@weave/shared';
+import { ValidationError } from '@weaveai/shared';
 
 describe('Weave', () => {
   let config: WeaveConfig;

@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 
 const mockWeave: Weave = {
   generate: vi.fn().mockResolvedValue({ text: 'Generated text' }),

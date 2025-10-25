@@ -2,7 +2,7 @@
  * In-memory vector store for RAG
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type { RAGDocument, IVectorStore } from './types.js';
 
 /**
@@ -46,7 +46,7 @@ export class InMemoryVectorStore implements IVectorStore {
     // Simple string matching for in-memory implementation
     if (typeof query === 'string') {
       const queryTerms = query.toLowerCase().split(/\s+/);
-      const scored = documents.map(doc => {
+      const scored = documents.map((doc) => {
         let score = 0;
         const contentLower = doc.content.toLowerCase();
         for (const term of queryTerms) {
@@ -57,24 +57,24 @@ export class InMemoryVectorStore implements IVectorStore {
       });
 
       return scored
-        .filter(item => item.score > 0)
+        .filter((item) => item.score > 0)
         .sort((a, b) => b.score - a.score)
         .slice(0, limit)
-        .map(item => item.doc);
+        .map((item) => item.doc);
     }
 
     // Embedding-based search (simplified cosine similarity)
     const scored = documents
-      .filter(doc => doc.embedding)
-      .map(doc => {
-        const similarity = this.cosineSimilarity(query, doc.embedding!);
+      .filter((doc): doc is RAGDocument & { embedding: number[] } => Array.isArray(doc.embedding))
+      .map((doc) => {
+        const similarity = this.cosineSimilarity(query, doc.embedding);
         return { doc, similarity };
       });
 
     return scored
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, limit)
-      .map(item => item.doc);
+      .map((item) => item.doc);
   }
 
   /**

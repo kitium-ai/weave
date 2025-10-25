@@ -7,9 +7,9 @@ Weave is a universal AI integration framework that works seamlessly across React
 ### Core Package
 
 ```bash
-npm install @weave/core
+npm install @weaveai/core
 # or
-yarn add @weave/core
+yarn add @weaveai/core
 ```
 
 ### Framework Integration
@@ -18,28 +18,28 @@ Choose the integration for your framework:
 
 ```bash
 # React
-npm install @weave/react
+npm install @weaveai/react
 
 # Vue 3
-npm install @weave/vue
+npm install @weaveai/vue
 
 # Svelte
-npm install @weave/svelte
+npm install @weaveai/svelte
 
 # Angular
-npm install @weave/angular
+npm install @weaveai/angular
 
 # Next.js
-npm install @weave/nextjs
+npm install @weaveai/nextjs
 
 # Node.js/Express
-npm install @weave/nodejs
+npm install @weaveai/nodejs
 
 # NestJS
-npm install @weave/nestjs
+npm install @weaveai/nestjs
 
 # React Native
-npm install @weave/react-native
+npm install @weaveai/react-native
 
 # Flutter
 flutter pub add weave_flutter
@@ -50,8 +50,8 @@ flutter pub add weave_flutter
 ### 1. Initialize Weave with a Provider
 
 ```typescript
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
 
 const weave = createWeave({
   provider: new OpenAIProvider({
@@ -65,7 +65,7 @@ const weave = createWeave({
 
 #### React
 ```jsx
-import { useGenerateAI } from '@weave/react';
+import { useGenerateAI } from '@weaveai/react';
 
 function MyComponent() {
   const { data, loading, error, generate } = useGenerateAI(weave);
@@ -99,7 +99,7 @@ function MyComponent() {
 </template>
 
 <script setup>
-import { useGenerateAI } from '@weave/vue';
+import { useGenerateAI } from '@weaveai/vue';
 
 const { data, loading, error, generate } = useGenerateAI(weave);
 </script>
@@ -108,7 +108,7 @@ const { data, loading, error, generate } = useGenerateAI(weave);
 #### Svelte
 ```svelte
 <script>
-  import { createGenerateStore } from '@weave/svelte';
+  import { createGenerateStore } from '@weaveai/svelte';
 
   const store = createGenerateStore(weave);
   const { state, generate } = store;
@@ -132,7 +132,7 @@ const { data, loading, error, generate } = useGenerateAI(weave);
 #### Angular
 ```typescript
 import { Component } from '@angular/core';
-import { GenerateService } from '@weave/angular';
+import { GenerateService } from '@weaveai/angular';
 
 @Component({
   selector: 'app-generate',
@@ -155,7 +155,7 @@ export class GenerateComponent {
 #### Node.js/Express
 ```typescript
 import express from 'express';
-import { setupWeaveRoutes } from '@weave/nodejs';
+import { setupWeaveRoutes } from '@weaveai/nodejs';
 
 const app = express();
 app.use(express.json());
@@ -170,18 +170,18 @@ app.listen(3000, () => {
 
 #### Next.js
 ```typescript
-import { createGenerateHandler } from '@weave/nextjs';
+import { createGenerateHandler } from '@weaveai/nextjs';
 
 export const POST = createGenerateHandler({ weave });
 
 // Use in client components
-import { useGenerateAI } from '@weave/nextjs';
+import { useGenerateAI } from '@weaveai/nextjs';
 ```
 
 #### NestJS
 ```typescript
 import { Module } from '@nestjs/common';
-import { WeaveModule } from '@weave/nestjs';
+import { WeaveModule } from '@weaveai/nestjs';
 
 @Module({
   imports: [WeaveModule.register({ weave })],
@@ -191,7 +191,7 @@ export class AppModule {}
 
 #### React Native
 ```jsx
-import { useGenerateAI } from '@weave/react-native';
+import { useGenerateAI } from '@weaveai/react-native';
 
 function MyComponent() {
   const { data, loading, error, generate } = useGenerateAI(weave);

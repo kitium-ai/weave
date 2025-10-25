@@ -2,7 +2,7 @@
  * Agent framework types
  */
 
-import type { GenerateOptions } from '../types/index.js';
+// import type { GenerateOptions } from '../types/index.js';
 
 /**
  * Agent tool definition

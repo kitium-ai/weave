@@ -22,7 +22,7 @@ A complete React chat application demonstrating:
 - Typing indicator animation
 - Responsive design
 
-**Dependencies**: React 18.x, @weave/react
+**Dependencies**: React 18.x, @weaveai/react
 
 ---
 
@@ -30,7 +30,7 @@ A complete React chat application demonstrating:
 **Location**: `examples/vue-chat-app/`
 
 A Vue 3 chat application using Composition API:
-- `useAI` composable from @weave/vue
+- `useAI` composable from @weaveai/vue
 - Reactive state management with ref and computed
 - Provide/inject for dependency injection
 - Smooth animations and transitions
@@ -45,7 +45,7 @@ A Vue 3 chat application using Composition API:
 - `main.ts` - Application entry point with Weave initialization
 - `App.vue` - Main chat component
 
-**Dependencies**: Vue 3.x, @weave/vue
+**Dependencies**: Vue 3.x, @weaveai/vue
 
 ---
 
@@ -54,7 +54,7 @@ A Vue 3 chat application using Composition API:
 
 A Svelte chat application demonstrating:
 - Svelte stores for state management
-- `createAIChat` store factory from @weave/svelte
+- `createAIChat` store factory from @weaveai/svelte
 - Reactive declarations and bindings
 - Scoped styling with animations
 
@@ -64,7 +64,7 @@ A Svelte chat application demonstrating:
 - Smooth component transitions
 - Efficient DOM updates
 
-**Dependencies**: Svelte 4.x, @weave/svelte
+**Dependencies**: Svelte 4.x, @weaveai/svelte
 
 ---
 
@@ -72,7 +72,7 @@ A Svelte chat application demonstrating:
 **Location**: `examples/angular-chat-app/chat.component.ts`
 
 An Angular chat component featuring:
-- AIService from @weave/angular
+- AIService from @weaveai/angular
 - RxJS Observables for async operations
 - Angular dependency injection
 - Component lifecycle management
@@ -88,7 +88,7 @@ An Angular chat component featuring:
 - `chat.component.html` - Template (to be created)
 - `chat.component.css` - Styles (to be created)
 
-**Dependencies**: Angular 17.x+, @weave/angular, RxJS
+**Dependencies**: Angular 17.x+, @weaveai/angular, RxJS
 
 ---
 
@@ -109,7 +109,7 @@ A React Native mobile chat application:
 - Gesture handling
 - Platform-specific styling
 
-**Dependencies**: React Native 0.71.x+, @weave/react-native
+**Dependencies**: React Native 0.71.x+, @weaveai/react-native
 
 ---
 
@@ -161,7 +161,7 @@ An Express.js REST API server:
 - Comprehensive error handling
 - Rate limit detection
 
-**Dependencies**: Express 4.x, @weave/nodejs
+**Dependencies**: Express 4.x, @weaveai/nodejs
 
 **Running**:
 ```bash
@@ -187,7 +187,7 @@ A Next.js serverless API:
 - Built-in caching
 - Edge function support
 
-**Dependencies**: Next.js 14.x+, @weave/nextjs
+**Dependencies**: Next.js 14.x+, @weaveai/nextjs
 
 ---
 
@@ -206,7 +206,7 @@ A Next.js full-stack chat application:
 - Built-in CSS support
 - Incremental Static Regeneration
 
-**Dependencies**: Next.js 14.x+, @weave/react
+**Dependencies**: Next.js 14.x+, @weaveai/react
 
 **Running**:
 ```bash
@@ -233,7 +233,7 @@ A NestJS microservices API:
 - Built-in validation pipes
 - Comprehensive logging
 
-**Dependencies**: NestJS 10.x+, @weave/nestjs
+**Dependencies**: NestJS 10.x+, @weaveai/nestjs
 
 ---
 
@@ -350,8 +350,8 @@ All examples follow these patterns:
 
 ### Initialize Weave
 ```typescript
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
 
 const weave = createWeave({
   provider: new OpenAIProvider({
@@ -383,7 +383,7 @@ const extracted = await weave.extract(text, schema);
 ### Module Not Found Errors
 - Run `npm install` or `yarn install`
 - Ensure you're in the correct directory
-- Check that all @weave/* packages are installed
+- Check that all @weaveai/* packages are installed
 
 ### TypeScript Errors
 - Run `npm run type-check` to identify issues

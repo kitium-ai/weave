@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useEffect, type ReactNode } from 'react';
 import { useAIChat } from '../hooks';
-import type { ChatMessage } from '@weave/core';
+import type { ChatMessage } from '@weaveai/core';
 
 /**
  * AIChat component props

@@ -2,11 +2,21 @@
  * Provider registry for managing language model providers
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type { ILanguageModel } from './interfaces.js';
-import type { ProviderConfig } from '../types/index.js';
-import { ProviderConfigError, ModelNotFoundError } from '../errors/index.js';
+import {
+  ProviderConfig,
+  OpenAIProviderConfig,
+  AnthropicProviderConfig,
+  GoogleProviderConfig,
+  validateProviderConfig,
+  getProviderConfigFromEnv,
+} from '../types';
+import { ProviderConfigError, ModelNotFoundError } from '../errors';
 import { MockLanguageModel } from './mock.js';
+import { OpenAIProvider } from './openai.js';
+import { AnthropicProvider } from './anthropic.js';
+import { GoogleProvider } from './google.js';
 
 /**
  * Provider registry singleton
@@ -70,21 +80,98 @@ export class ProviderRegistry {
 
   /**
    * Create provider from config
+   * Supports OpenAI, Anthropic, Google, and Mock providers
    */
   public async createProvider(config: ProviderConfig): Promise<ILanguageModel> {
     const { type } = config;
 
-    // Handle mock provider
-    if (type === 'mock') {
-      return new MockLanguageModel();
+    this.logger.debug(`Creating provider of type: ${type}`);
+
+    // Validate configuration before creating provider
+    const validationErrors = validateProviderConfig(config);
+    if (validationErrors.length > 0) {
+      throw new ProviderConfigError(
+        `Invalid provider configuration: ${validationErrors.join(', ')}`,
+        {
+          errors: validationErrors,
+          providedType: type,
+        }
+      );
     }
 
-    // For now, only mock is available
-    // Other providers will be added in next phase
-    throw new ProviderConfigError(`Provider type "${type}" is not supported yet`, {
-      supportedTypes: ['mock'],
-      requestedType: type,
-    });
+    switch (type) {
+      case 'openai': {
+        const openaiConfig = config as OpenAIProviderConfig;
+        const provider = new OpenAIProvider({
+          apiKey: openaiConfig.apiKey,
+          model: openaiConfig.model,
+          baseUrl: openaiConfig.baseUrl,
+          timeout: openaiConfig.timeout,
+        });
+
+        this.logger.debug('OpenAI provider created successfully');
+        return provider;
+      }
+
+      case 'anthropic': {
+        const anthropicConfig = config as AnthropicProviderConfig;
+        const provider = new AnthropicProvider({
+          apiKey: anthropicConfig.apiKey,
+          model: anthropicConfig.model,
+          baseUrl: anthropicConfig.baseUrl,
+          timeout: anthropicConfig.timeout,
+        });
+
+        this.logger.debug('Anthropic provider created successfully');
+        return provider;
+      }
+
+      case 'google': {
+        const googleConfig = config as GoogleProviderConfig;
+        const provider = new GoogleProvider({
+          apiKey: googleConfig.apiKey,
+          model: googleConfig.model,
+          baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models',
+          timeout: googleConfig.timeout,
+        });
+
+        this.logger.debug('Google provider created successfully');
+        return provider;
+      }
+
+      case 'local': {
+        // Local providers are handled differently - would need implementation
+        throw new ProviderConfigError('Local provider support coming in next phase', {
+          requestedType: type,
+        });
+      }
+
+      case 'mock': {
+        this.logger.debug('Mock provider created successfully');
+        return new MockLanguageModel();
+      }
+
+      default: {
+        const supportedTypes = ['openai', 'anthropic', 'google', 'mock'];
+        throw new ProviderConfigError(`Provider type "${type}" is not supported`, {
+          supportedTypes,
+          requestedType: type,
+        });
+      }
+    }
+  }
+
+  /**
+   * Create provider from environment variables
+   * Automatically reads from process.env
+   */
+  public async createProviderFromEnv(
+    providerType: 'openai' | 'anthropic' | 'google' | 'local' | 'mock'
+  ): Promise<ILanguageModel> {
+    this.logger.debug(`Creating provider from environment: ${providerType}`);
+
+    const config = getProviderConfigFromEnv(providerType);
+    return this.createProvider(config as ProviderConfig);
   }
 }
 

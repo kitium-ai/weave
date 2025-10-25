@@ -2,7 +2,7 @@
  * Evaluation framework for testing and A/B testing
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type {
   TestSuite,
   TestRunResult,
@@ -11,6 +11,7 @@ import type {
   ABTestConfig,
   ABTestResult,
   Metric,
+  TestCase,
 } from './types.js';
 
 /**
@@ -26,7 +27,10 @@ export class Evaluator {
     suite: TestSuite,
     runner: (input: unknown) => Promise<unknown>
   ): Promise<TestSuiteRunResult> {
-    this.logger.debug('Running test suite', { name: suite.name, testCount: suite.testCases.length });
+    this.logger.debug('Running test suite', {
+      name: suite.name,
+      testCount: suite.testCases.length,
+    });
 
     const startTime = Date.now();
     const results: TestRunResult[] = [];
@@ -37,12 +41,13 @@ export class Evaluator {
     }
 
     const duration = Date.now() - startTime;
-    const passed = results.filter(r => r.passed).length;
+    const passed = results.filter((r) => r.passed).length;
     const failed = results.length - passed;
-    const averageScore = results.reduce((sum, r) => {
-      const avgMetricScore = r.results.reduce((s, m) => s + m.score, 0) / (r.results.length || 1);
-      return sum + avgMetricScore;
-    }, 0) / results.length;
+    const averageScore =
+      results.reduce((sum, r) => {
+        const avgMetricScore = r.results.reduce((s, m) => s + m.score, 0) / (r.results.length || 1);
+        return sum + avgMetricScore;
+      }, 0) / results.length;
 
     const summary = {
       total: results.length,
@@ -66,7 +71,7 @@ export class Evaluator {
    * Run a single test case
    */
   private async runTestCase(
-    testCase: any,
+    testCase: TestCase,
     runner: (input: unknown) => Promise<unknown>,
     metrics: Metric[]
   ): Promise<TestRunResult> {
@@ -79,7 +84,7 @@ export class Evaluator {
       output = await runner(testCase.input);
 
       // Evaluate using all metrics
-      evaluationResults = metrics.map(metric => {
+      evaluationResults = metrics.map((metric) => {
         const score = metric.compute(output, testCase.expectedOutput);
         return {
           metricName: metric.name,
@@ -89,7 +94,7 @@ export class Evaluator {
       });
 
       // Test passes if all metrics are above 0.5
-      passed = evaluationResults.every(r => r.score >= 0.5);
+      passed = evaluationResults.every((r) => r.score >= 0.5);
     } catch (err) {
       this.logger.error('Test case failed with error', {
         testId: testCase.id,
@@ -128,9 +133,10 @@ export class Evaluator {
       // Run control
       try {
         const controlOutput = await config.controlFunction(testCase.input);
-        const controlScore = config.metrics.reduce((sum, metric) => {
-          return sum + metric.compute(controlOutput, testCase.expectedOutput);
-        }, 0) / config.metrics.length;
+        const controlScore =
+          config.metrics.reduce((sum, metric) => {
+            return sum + metric.compute(controlOutput, testCase.expectedOutput);
+          }, 0) / config.metrics.length;
         controlScores.push(controlScore);
       } catch {
         controlScores.push(0);
@@ -139,9 +145,10 @@ export class Evaluator {
       // Run treatment
       try {
         const treatmentOutput = await config.treatmentFunction(testCase.input);
-        const treatmentScore = config.metrics.reduce((sum, metric) => {
-          return sum + metric.compute(treatmentOutput, testCase.expectedOutput);
-        }, 0) / config.metrics.length;
+        const treatmentScore =
+          config.metrics.reduce((sum, metric) => {
+            return sum + metric.compute(treatmentOutput, testCase.expectedOutput);
+          }, 0) / config.metrics.length;
         treatmentScores.push(treatmentScore);
       } catch {
         treatmentScores.push(0);
@@ -184,7 +191,9 @@ export class Evaluator {
    * Calculate mean of an array
    */
   private calculateMean(values: number[]): number {
-    if (values.length === 0) return 0;
+    if (values.length === 0) {
+      return 0;
+    }
     return values.reduce((sum, val) => sum + val, 0) / values.length;
   }
 
@@ -192,8 +201,11 @@ export class Evaluator {
    * Calculate standard deviation
    */
   private calculateStdDev(values: number[], mean: number): number {
-    if (values.length <= 1) return 0;
-    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / (values.length - 1);
+    if (values.length <= 1) {
+      return 0;
+    }
+    const variance =
+      values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / (values.length - 1);
     return Math.sqrt(variance);
   }
 
@@ -201,7 +213,9 @@ export class Evaluator {
    * Calculate p-value using t-test approximation
    */
   private calculatePValue(control: number[], treatment: number[]): number {
-    if (control.length === 0 || treatment.length === 0) return 1;
+    if (control.length === 0 || treatment.length === 0) {
+      return 1;
+    }
 
     const controlMean = this.calculateMean(control);
     const treatmentMean = this.calculateMean(treatment);
@@ -215,7 +229,9 @@ export class Evaluator {
       (controlStdDev * controlStdDev) / n1 + (treatmentStdDev * treatmentStdDev) / n2
     );
 
-    if (pooledStdErr === 0) return 1;
+    if (pooledStdErr === 0) {
+      return 1;
+    }
 
     // T-statistic
     const tStat = (treatmentMean - controlMean) / pooledStdErr;
@@ -244,10 +260,16 @@ export class Evaluator {
     return {
       name: 'jaccard_similarity',
       compute: (predicted: unknown, reference: unknown) => {
-        const p = String(predicted).toLowerCase().split(/\s+/).filter(w => w);
-        const r = String(reference).toLowerCase().split(/\s+/).filter(w => w);
+        const p = String(predicted)
+          .toLowerCase()
+          .split(/\s+/)
+          .filter((w) => w);
+        const r = String(reference)
+          .toLowerCase()
+          .split(/\s+/)
+          .filter((w) => w);
 
-        const intersection = new Set(p.filter(w => r.includes(w))).size;
+        const intersection = new Set(p.filter((w) => r.includes(w))).size;
         const union = new Set([...p, ...r]).size;
 
         return union === 0 ? 1 : intersection / union;

@@ -2,12 +2,19 @@
  * Tests for Weave React hooks
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import type React from 'react';
-import { useAI, useGenerateAI, useClassifyAI, useExtractAI, useAIChat, useAIStream } from '../src/hooks/index.js';
+import {
+  useAI,
+  useGenerateAI,
+  useClassifyAI,
+  useExtractAI,
+  useAIChat,
+  useAIStream,
+} from '../src/hooks/index.js';
 import { WeaveProvider } from '../src/context/WeaveContext.js';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 
 // Mock Weave instance
 const createMockWeave = (): Weave => {
@@ -49,9 +56,7 @@ describe('Weave React Hooks', () => {
       const { result } = renderHook(() => useAI<string>(), { wrapper });
 
       await act(async () => {
-        const response = await result.current.execute(
-          async () => Promise.resolve('test data')
-        );
+        const response = await result.current.execute(async () => Promise.resolve('test data'));
         expect(response).toBe('test data');
       });
 
@@ -64,8 +69,8 @@ describe('Weave React Hooks', () => {
       const { result } = renderHook(() => useAI<string>(), { wrapper });
 
       await act(async () => {
-        const response = await result.current.execute(
-          async () => Promise.reject(new Error('Test error'))
+        const response = await result.current.execute(async () =>
+          Promise.reject(new Error('Test error'))
         );
         expect(response).toBeNull();
       });
@@ -91,9 +96,7 @@ describe('Weave React Hooks', () => {
       const { result } = renderHook(() => useAI<string>({ onError }), { wrapper });
 
       await act(async () => {
-        await result.current.execute(
-          async () => Promise.reject(new Error('Test error'))
-        );
+        await result.current.execute(async () => Promise.reject(new Error('Test error')));
       });
 
       expect(onError).toHaveBeenCalled();
@@ -158,7 +161,10 @@ describe('Weave React Hooks', () => {
       const { result } = renderHook(() => useExtractAI(), { wrapper });
 
       await act(async () => {
-        const response = await result.current.extract('John is 30', { name: 'string', age: 'number' });
+        const response = await result.current.extract('John is 30', {
+          name: 'string',
+          age: 'number',
+        });
         expect(response).toBeTruthy();
       });
 
@@ -203,12 +209,13 @@ describe('Weave React Hooks', () => {
 
     it('should remove message by index', () => {
       const { result } = renderHook(
-        () => useAIChat({
-          initialMessages: [
-            { role: 'user', content: 'Message 1' },
-            { role: 'assistant', content: 'Response 1' },
-          ],
-        }),
+        () =>
+          useAIChat({
+            initialMessages: [
+              { role: 'user', content: 'Message 1' },
+              { role: 'assistant', content: 'Response 1' },
+            ],
+          }),
         { wrapper }
       );
 
@@ -224,11 +231,10 @@ describe('Weave React Hooks', () => {
 
     it('should clear all messages', () => {
       const { result } = renderHook(
-        () => useAIChat({
-          initialMessages: [
-            { role: 'user', content: 'Message' },
-          ],
-        }),
+        () =>
+          useAIChat({
+            initialMessages: [{ role: 'user', content: 'Message' }],
+          }),
         { wrapper }
       );
 
@@ -282,10 +288,9 @@ describe('Weave React Hooks', () => {
       const onComplete = vi.fn();
       const onStart = vi.fn();
 
-      const { result } = renderHook(
-        () => useAIStream({ onChunk, onComplete, onStart }),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useAIStream({ onChunk, onComplete, onStart }), {
+        wrapper,
+      });
 
       await act(async () => {
         await result.current.streamGenerate('Test');

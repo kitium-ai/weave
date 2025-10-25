@@ -125,7 +125,7 @@ my-weave-app/
 
 - ✅ **Dependencies**
   - Framework packages
-  - Weave integration packages (@weave/react, @weave/vue, etc.)
+  - Weave integration packages (@weaveai/react, @weaveai/vue, etc.)
   - Build tools (Vite, Next.js, etc.)
   - Development dependencies
 
@@ -254,7 +254,7 @@ To contribute to create-weave-app:
 - **Documentation**: https://weave.ai/docs
 - **Discord Community**: https://discord.gg/weave
 - **GitHub Issues**: https://github.com/kitium-ai/weave/issues
-- **Email Support**: support@weave.ai
+- **Email Support**: support@weaveai.ai
 
 ## License
 

@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback, useRef } from 'react';
-import type { Weave, GenerateOptions } from '@weave/core';
+import type { Weave, GenerateOptions } from '@weaveai/core';
 
 export interface UseAIOptions {
   onSuccess?: (data: unknown) => void;
@@ -22,7 +22,7 @@ export interface UseAIReturn<T = unknown> {
 /**
  * React Native hook for AI operations
  */
-export function useAI<T = unknown>(weave: Weave, options?: UseAIOptions): UseAIReturn<T> {
+export function useAI<T = unknown>(_weave: Weave, options?: UseAIOptions): UseAIReturn<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -31,7 +31,9 @@ export function useAI<T = unknown>(weave: Weave, options?: UseAIOptions): UseAIR
 
   const execute = useCallback(
     async (fn: () => Promise<T>): Promise<T | null> => {
-      if (!isMountedRef.current) return null;
+      if (!isMountedRef.current) {
+        return null;
+      }
 
       try {
         setLoading(true);

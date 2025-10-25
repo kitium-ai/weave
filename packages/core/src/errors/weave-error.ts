@@ -53,7 +53,7 @@ export class WeaveError extends Error {
       'RATE_LIMIT_EXCEEDED',
       'NETWORK_ERROR',
       'OPERATION_TIMEOUT',
-      'SERVICE_UNAVAILABLE'
+      'SERVICE_UNAVAILABLE',
     ];
     return retryableCodes.includes(this.code);
   }
@@ -87,11 +87,13 @@ export class WeaveError extends Error {
       context: this.context,
       timestamp: this.timestamp.toISOString(),
       stack: this.stack,
-      causedBy: this.cause ? {
-        name: this.cause.name,
-        message: this.cause.message,
-        stack: this.cause.stack
-      } : undefined
+      causedBy: this.cause
+        ? {
+            name: this.cause.name,
+            message: this.cause.message,
+            stack: this.cause.stack,
+          }
+        : undefined,
     };
   }
 
@@ -101,7 +103,7 @@ export class WeaveError extends Error {
   static from(error: Error, code?: string): WeaveError {
     return new WeaveError(error.message, {
       code: code || 'UNKNOWN_ERROR',
-      cause: error
+      cause: error,
     });
   }
 
@@ -112,7 +114,7 @@ export class WeaveError extends Error {
     return new WeaveError(message, {
       code: 'INVALID_API_KEY',
       context,
-      statusCode: 401
+      statusCode: 401,
     });
   }
 
@@ -123,24 +125,21 @@ export class WeaveError extends Error {
     return new WeaveError(message, {
       code: 'MODEL_NOT_FOUND',
       context,
-      statusCode: 404
+      statusCode: 404,
     });
   }
 
   /**
    * Create rate limit error
    */
-  static rateLimitError(
-    retryAfter?: number,
-    context?: Record<string, unknown>
-  ): WeaveError {
+  static rateLimitError(retryAfter?: number, context?: Record<string, unknown>): WeaveError {
     return new WeaveError('Rate limit exceeded. Please try again later.', {
       code: 'RATE_LIMIT_EXCEEDED',
       context: {
         ...(context || {}),
-        retryAfter: retryAfter || 60
+        retryAfter: retryAfter || 60,
       },
-      statusCode: 429
+      statusCode: 429,
     });
   }
 
@@ -152,27 +151,23 @@ export class WeaveError extends Error {
       code: 'OPERATION_TIMEOUT',
       context: {
         ...(context || {}),
-        timeout
+        timeout,
       },
-      statusCode: 408
+      statusCode: 408,
     });
   }
 
   /**
    * Create validation error
    */
-  static validationError(
-    message: string,
-    field?: string,
-    value?: unknown
-  ): WeaveError {
+  static validationError(message: string, field?: string, value?: unknown): WeaveError {
     return new WeaveError(message, {
       code: 'INVALID_REQUEST',
       context: {
         field,
-        value
+        value,
       },
-      statusCode: 400
+      statusCode: 400,
     });
   }
 
@@ -183,7 +178,7 @@ export class WeaveError extends Error {
     return new WeaveError(message, {
       code: 'INVALID_CONFIGURATION',
       context,
-      statusCode: 400
+      statusCode: 400,
     });
   }
 
@@ -194,7 +189,7 @@ export class WeaveError extends Error {
     return new WeaveError(message, {
       code: 'NETWORK_ERROR',
       context,
-      statusCode: 503
+      statusCode: 503,
     });
   }
 
@@ -210,9 +205,9 @@ export class WeaveError extends Error {
       code: 'PARSING_ERROR',
       context: {
         ...(context || {}),
-        rawData: typeof rawData === 'string' ? rawData.substring(0, 500) : rawData
+        rawData: typeof rawData === 'string' ? rawData.substring(0, 500) : rawData,
       },
-      statusCode: 500
+      statusCode: 500,
     });
   }
 }

@@ -4,8 +4,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { AIService } from '@weave/angular';
-import type { ChatMessage } from '@weave/core';
+import { AIService } from '@weaveai/angular';
+import type { ChatMessage } from '@weaveai/core';
 
 @Component({
   selector: 'app-chat',

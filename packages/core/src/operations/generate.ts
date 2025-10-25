@@ -2,7 +2,7 @@
  * Generate operation
  */
 
-import { validateNonEmptyString } from '@weave/shared';
+import { validateNonEmptyString } from '@weaveai/shared';
 import { BaseOperation } from './base.js';
 import type { GenerateOptions, GenerateResult } from '../types/index.js';
 

@@ -15,7 +15,7 @@ export const AIInput: React.FC<AIInputProps> = ({
   placeholder,
   showDropdown = true,
   className,
-  maxSuggestions = 5
+  maxSuggestions = 5,
 }) => {
   const [localValue, setLocalValue] = useState(value);
   const [showSuggestions, setShowSuggestions] = useState(false);

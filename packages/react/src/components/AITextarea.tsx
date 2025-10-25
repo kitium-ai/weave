@@ -16,7 +16,7 @@ export const AITextarea: React.FC<AITextareaProps> = ({
   maxRows = 10,
   showSuggestions = true,
   className,
-  autoExpand = true
+  autoExpand = true,
 }) => {
   const [localValue, setLocalValue] = useState(value);
   const [rows, setRows] = useState(minRows);
@@ -42,7 +42,9 @@ export const AITextarea: React.FC<AITextareaProps> = ({
   };
 
   const handleAISuggest = async () => {
-    if (!localValue.trim() || !onAISuggest) return;
+    if (!localValue.trim() || !onAISuggest) {
+      return;
+    }
 
     setLoading(true);
     try {

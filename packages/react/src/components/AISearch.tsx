@@ -14,7 +14,7 @@ export const AISearch: React.FC<AISearchProps> = ({
   showScore = true,
   onSelectResult,
   className,
-  loading = false
+  loading = false,
 }) => {
   const [query, setQuery] = useState('');
 

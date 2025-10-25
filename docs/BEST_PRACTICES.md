@@ -7,8 +7,8 @@ Best practices and patterns for using Weave effectively in production.
 ### Use Environment Variables
 
 ```typescript
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
 
 // ✅ Good
 const weave = createWeave({
@@ -51,7 +51,7 @@ import {
   AuthenticationError,
   ValidationError,
   WeaveError,
-} from '@weave/core';
+} from '@weaveai/core';
 
 try {
   const result = await weave.generate(prompt);
@@ -220,7 +220,7 @@ function sanitizePrompt(prompt: string): string {
 
 ```typescript
 import { createContext, useContext } from 'react';
-import { Weave } from '@weave/core';
+import { Weave } from '@weaveai/core';
 
 const WeaveContext = createContext<Weave | null>(null);
 
@@ -246,7 +246,7 @@ export function useWeave() {
 ```typescript
 // main.ts
 import { createApp } from 'vue';
-import { createWeave } from '@weave/core';
+import { createWeave } from '@weaveai/core';
 
 const weave = createWeave(/* ... */);
 
@@ -257,7 +257,7 @@ app.provide('weave', weave);
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { createWeave } from '@weave/core';
+import { createWeave } from '@weaveai/core';
 
 @Injectable({ providedIn: 'root' })
 export class WeaveService {

@@ -3,7 +3,7 @@
  */
 
 import { Module, Global, DynamicModule, Provider } from '@nestjs/common';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 import { WeaveService } from './weave.service.js';
 import { GenerateService } from './generate.service.js';
 import { ClassifyService } from './classify.service.js';

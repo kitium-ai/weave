@@ -4,16 +4,6 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { writable } from 'svelte/store';
-import type { Weave } from '@weave/core';
-
-const createMockWeave = (): Weave => ({
-  generate: vi.fn().mockResolvedValue({ text: 'Generated text' }),
-  classify: vi.fn().mockResolvedValue({ label: 'positive', confidence: 0.95 }),
-  extract: vi.fn().mockResolvedValue({ key: 'value' }),
-  getModel: vi.fn().mockReturnValue({
-    chat: vi.fn().mockResolvedValue('Chat response')
-  }),
-} as unknown as Weave);
 
 describe('Svelte Stores', () => {
   beforeEach(() => {
@@ -24,7 +14,7 @@ describe('Svelte Stores', () => {
     const store = writable({ data: null, loading: false, error: null, status: 'idle' });
 
     let value: any;
-    const unsubscribe = store.subscribe(v => {
+    const unsubscribe = store.subscribe((v) => {
       value = v;
     });
 
@@ -42,7 +32,7 @@ describe('Svelte Stores', () => {
     store.set({ data: 'result', loading: false, error: null, status: 'success' });
 
     let value: any;
-    store.subscribe(v => {
+    store.subscribe((v) => {
       value = v;
     })();
 
@@ -54,8 +44,8 @@ describe('Svelte Stores', () => {
     const store = writable({ data: null, loading: false, error: null, status: 'idle' });
     const values: any[] = [];
 
-    const unsub1 = store.subscribe(v => values.push(v));
-    const unsub2 = store.subscribe(v => values.push(v));
+    const unsub1 = store.subscribe((v) => values.push(v));
+    const unsub2 = store.subscribe((v) => values.push(v));
 
     store.set({ data: 'new', loading: false, error: null, status: 'success' });
 
@@ -71,17 +61,17 @@ describe('Svelte Stores', () => {
     const store = writable({ data: null, loading: false, error: null, status: 'idle' });
 
     const updates: any[] = [];
-    const unsubscribe = store.subscribe(v => {
+    const unsubscribe = store.subscribe((v) => {
       updates.push(v);
     });
 
     // Update to loading state
-    store.update(s => ({ ...s, loading: true, status: 'loading' }));
+    store.update((s) => ({ ...s, loading: true, status: 'loading' }));
     expect(updates[updates.length - 1].loading).toBe(true);
     expect(updates[updates.length - 1].status).toBe('loading');
 
     // Update to success state
-    store.update(s => ({ ...s, data: 'result', loading: false, status: 'success' }));
+    store.update((s) => ({ ...s, data: 'result', loading: false, status: 'success' }));
     expect(updates[updates.length - 1].data).toBe('result');
     expect(updates[updates.length - 1].loading).toBe(false);
     expect(updates[updates.length - 1].status).toBe('success');
@@ -93,10 +83,10 @@ describe('Svelte Stores', () => {
     const store = writable({ data: null, loading: false, error: null, status: 'idle' });
 
     const testError = new Error('Test error');
-    store.update(s => ({ ...s, error: testError, status: 'error' }));
+    store.update((s) => ({ ...s, error: testError, status: 'error' }));
 
     let value: any;
-    store.subscribe(v => {
+    store.subscribe((v) => {
       value = v;
     })();
 
@@ -109,13 +99,18 @@ describe('Svelte Stores', () => {
     const store = writable({ ...initialState });
 
     // Set to some other state
-    store.set({ data: 'value', loading: true, error: new Error('err'), status: 'loading' as const });
+    store.set({
+      data: 'value',
+      loading: true,
+      error: new Error('err'),
+      status: 'loading' as const,
+    });
 
     // Reset to initial
     store.set(initialState);
 
     let value: any;
-    store.subscribe(v => {
+    store.subscribe((v) => {
       value = v;
     })();
 
@@ -145,15 +140,15 @@ describe('Svelte Stores', () => {
     const store = writable({ data: null, loading: false, error: null, status: 'idle' });
 
     // Simulate async operation
-    store.update(s => ({ ...s, loading: true, status: 'loading' }));
+    store.update((s) => ({ ...s, loading: true, status: 'loading' }));
 
     // Wait a bit
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
-    store.update(s => ({ ...s, data: 'async result', loading: false, status: 'success' }));
+    store.update((s) => ({ ...s, data: 'async result', loading: false, status: 'success' }));
 
     let value: any;
-    store.subscribe(v => {
+    store.subscribe((v) => {
       value = v;
     })();
 
@@ -165,18 +160,18 @@ describe('Svelte Stores', () => {
     const store = writable({ data: null, loading: false, error: null, status: 'idle' });
     const results: any[] = [];
 
-    const unsub1 = store.subscribe(v => {
+    const unsub1 = store.subscribe((v) => {
       results.push({ subscriber: 1, value: v.data });
     });
 
-    const unsub2 = store.subscribe(v => {
+    const unsub2 = store.subscribe((v) => {
       results.push({ subscriber: 2, value: v.data });
     });
 
     store.set({ data: 'test', loading: false, error: null, status: 'idle' });
 
     expect(results.length).toBeGreaterThan(0);
-    expect(results.some(r => r.value === 'test')).toBe(true);
+    expect(results.some((r) => r.value === 'test')).toBe(true);
 
     unsub1();
     unsub2();

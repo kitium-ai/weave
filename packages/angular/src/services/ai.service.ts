@@ -4,7 +4,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import type { Weave, GenerateOptions } from '@weave/core';
+import type { Weave, GenerateOptions } from '@weaveai/core';
 
 export interface AIState<T = unknown> {
   data: T | null;

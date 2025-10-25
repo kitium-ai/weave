@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import type { AIFormProps, FormField } from '../types/components.js';
+import type { AIFormProps } from '../types/components.js';
 import './AIForm.css';
 
 export const AIForm: React.FC<AIFormProps> = ({
@@ -13,7 +13,7 @@ export const AIForm: React.FC<AIFormProps> = ({
   onAIFill,
   showAIFill = true,
   className,
-  submitText = 'Submit'
+  submitText = 'Submit',
 }) => {
   const [values, setValues] = useState<Record<string, unknown>>(
     schema.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})

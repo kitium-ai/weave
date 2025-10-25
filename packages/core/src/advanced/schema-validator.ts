@@ -4,28 +4,28 @@
  */
 
 export type ValidationErrorDetail = {
-  field: string
-  message: string
-  code: string
-  value?: unknown
-}
+  field: string;
+  message: string;
+  code: string;
+  value?: unknown;
+};
 
 export type ValidationResult<T> = {
-  success: boolean
-  data?: T
-  errors: ValidationErrorDetail[]
-}
+  success: boolean;
+  data?: T;
+  errors: ValidationErrorDetail[];
+};
 
 export interface SchemaType {
-  type: 'string' | 'number' | 'boolean' | 'array' | 'object' | 'enum' | 'union'
-  required?: boolean
-  description?: string
-  validate?: (value: unknown) => boolean | string
-  transform?: (value: unknown) => unknown
+  type: 'string' | 'number' | 'boolean' | 'array' | 'object' | 'enum' | 'union';
+  required?: boolean;
+  description?: string;
+  validate?: (value: unknown) => boolean | string;
+  transform?: (value: unknown) => unknown;
 }
 
 export interface ObjectSchema {
-  [key: string]: SchemaType | ObjectSchema
+  [key: string]: SchemaType | ObjectSchema;
 }
 
 /**
@@ -39,7 +39,7 @@ export class SchemaValidator {
     data: unknown,
     schema: ObjectSchema
   ): ValidationResult<T> {
-    const errors: ValidationErrorDetail[] = []
+    const errors: ValidationErrorDetail[] = [];
 
     if (!data || typeof data !== 'object') {
       return {
@@ -48,24 +48,24 @@ export class SchemaValidator {
           {
             field: 'root',
             message: 'Data must be an object',
-            code: 'INVALID_TYPE'
-          }
-        ]
-      }
+            code: 'INVALID_TYPE',
+          },
+        ],
+      };
     }
 
-    const validatedData: Record<string, unknown> = {}
-    const dataObj = data as Record<string, unknown>
+    const validatedData: Record<string, unknown> = {};
+    const dataObj = data as Record<string, unknown>;
 
     // Validate each field in schema
     for (const [key, fieldSchema] of Object.entries(schema)) {
-      const value = dataObj[key]
-      const result = this.validateField(key, value, fieldSchema)
+      const value = dataObj[key];
+      const result = this.validateField(key, value, fieldSchema);
 
       if (!result.valid) {
-        errors.push(...result.errors)
+        errors.push(...result.errors);
       } else {
-        validatedData[key] = result.value
+        validatedData[key] = result.value;
       }
     }
 
@@ -75,16 +75,16 @@ export class SchemaValidator {
         errors.push({
           field: key,
           message: 'Unknown field',
-          code: 'UNKNOWN_FIELD'
-        })
+          code: 'UNKNOWN_FIELD',
+        });
       }
     }
 
     return {
       success: errors.length === 0,
       data: validatedData as T,
-      errors
-    }
+      errors,
+    };
   }
 
   /**
@@ -95,11 +95,9 @@ export class SchemaValidator {
     value: unknown,
     schema: SchemaType | ObjectSchema
   ): { valid: boolean; value?: unknown; errors: ValidationErrorDetail[] } {
-    const errors: ValidationErrorDetail[] = []
-
     // Handle nested objects
     if ('type' in schema === false) {
-      const nested = schema as ObjectSchema
+      const nested = schema as ObjectSchema;
       if (typeof value !== 'object' || value === null) {
         return {
           valid: false,
@@ -107,25 +105,25 @@ export class SchemaValidator {
             {
               field: fieldName,
               message: 'Expected object',
-              code: 'INVALID_TYPE'
-            }
-          ]
-        }
+              code: 'INVALID_TYPE',
+            },
+          ],
+        };
       }
 
       // Recursively validate nested object
-      const result = this.validate(value, nested)
+      const result = this.validate(value, nested);
       return {
         valid: result.success,
         value: result.data,
-        errors: result.errors.map(e => ({
+        errors: result.errors.map((e) => ({
           ...e,
-          field: `${fieldName}.${e.field}`
-        }))
-      }
+          field: `${fieldName}.${e.field}`,
+        })),
+      };
     }
 
-    const fieldSchema = schema as SchemaType
+    const fieldSchema = schema as SchemaType;
 
     // Check required
     if (fieldSchema.required && (value === undefined || value === null)) {
@@ -135,18 +133,18 @@ export class SchemaValidator {
           {
             field: fieldName,
             message: `${fieldName} is required`,
-            code: 'REQUIRED'
-          }
-        ]
-      }
+            code: 'REQUIRED',
+          },
+        ],
+      };
     }
 
     if (value === undefined || value === null) {
-      return { valid: true, value: null }
+      return { valid: true, value: null };
     }
 
     // Type validation
-    const typeValid = this.validateType(value, fieldSchema.type)
+    const typeValid = this.validateType(value, fieldSchema.type);
     if (!typeValid) {
       return {
         valid: false,
@@ -155,15 +153,15 @@ export class SchemaValidator {
             field: fieldName,
             message: `Expected ${fieldSchema.type}`,
             code: 'INVALID_TYPE',
-            value
-          }
-        ]
-      }
+            value,
+          },
+        ],
+      };
     }
 
     // Custom validation
     if (fieldSchema.validate) {
-      const customValid = fieldSchema.validate(value)
+      const customValid = fieldSchema.validate(value);
       if (typeof customValid === 'string') {
         return {
           valid: false,
@@ -172,10 +170,10 @@ export class SchemaValidator {
               field: fieldName,
               message: customValid,
               code: 'VALIDATION_ERROR',
-              value
-            }
-          ]
-        }
+              value,
+            },
+          ],
+        };
       }
       if (!customValid) {
         return {
@@ -185,18 +183,18 @@ export class SchemaValidator {
               field: fieldName,
               message: 'Custom validation failed',
               code: 'VALIDATION_ERROR',
-              value
-            }
-          ]
-        }
+              value,
+            },
+          ],
+        };
       }
     }
 
     // Transform if specified
-    let transformedValue = value
+    let transformedValue = value;
     if (fieldSchema.transform) {
       try {
-        transformedValue = fieldSchema.transform(value)
+        transformedValue = fieldSchema.transform(value);
       } catch (error) {
         return {
           valid: false,
@@ -205,14 +203,14 @@ export class SchemaValidator {
               field: fieldName,
               message: `Transform failed: ${error}`,
               code: 'TRANSFORM_ERROR',
-              value
-            }
-          ]
-        }
+              value,
+            },
+          ],
+        };
       }
     }
 
-    return { valid: true, value: transformedValue }
+    return { valid: true, value: transformedValue };
   }
 
   /**
@@ -221,17 +219,17 @@ export class SchemaValidator {
   private static validateType(value: unknown, type: string): boolean {
     switch (type) {
       case 'string':
-        return typeof value === 'string'
+        return typeof value === 'string';
       case 'number':
-        return typeof value === 'number'
+        return typeof value === 'number';
       case 'boolean':
-        return typeof value === 'boolean'
+        return typeof value === 'boolean';
       case 'array':
-        return Array.isArray(value)
+        return Array.isArray(value);
       case 'object':
-        return typeof value === 'object' && value !== null
+        return typeof value === 'object' && value !== null;
       default:
-        return true
+        return true;
     }
   }
 }

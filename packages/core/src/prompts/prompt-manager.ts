@@ -5,12 +5,12 @@
 
 import type {
   PromptTemplate,
-  VariableSchema,
+  // VariableSchema,
   ValidationResult,
   ValidationError,
   RenderResult,
   TemplateMetrics,
-  ABTestData
+  ABTestData,
 } from './types.js';
 import { BUILT_IN_TEMPLATES } from './templates.js';
 
@@ -36,14 +36,16 @@ export class PromptManager {
 
     const validation = this.validate(template);
     if (!validation.valid) {
-      throw new Error(`Template validation failed: ${validation.errors.map((e) => e.message).join(', ')}`);
+      throw new Error(
+        `Template validation failed: ${validation.errors.map((e) => e.message).join(', ')}`
+      );
     }
 
     if (!this.templates.has(template.name)) {
       this.templates.set(template.name, []);
     }
 
-    const versions = this.templates.get(template.name)!;
+    const versions = this.templates.get(template.name)!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
     versions.push({ ...template, createdAt: new Date(), updatedAt: new Date() });
     versions.sort((a, b) => b.version.localeCompare(a.version));
 
@@ -55,7 +57,7 @@ export class PromptManager {
         averageTokens: 0,
         successRate: 1,
         averageLatency: 0,
-        lastUsed: new Date()
+        lastUsed: new Date(),
       });
     }
   }
@@ -89,7 +91,7 @@ export class PromptManager {
       if (!definedVars.includes(usedVar)) {
         errors.push({
           field: 'template',
-          message: `Variable '${usedVar}' used in template but not defined`
+          message: `Variable '${usedVar}' used in template but not defined`,
         });
       }
     }
@@ -99,14 +101,14 @@ export class PromptManager {
       if (!['string', 'number', 'boolean', 'array', 'object'].includes(schema.type)) {
         errors.push({
           field: `variables.${name}`,
-          message: `Invalid variable type: ${schema.type}`
+          message: `Invalid variable type: ${schema.type}`,
         });
       }
     }
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -120,7 +122,7 @@ export class PromptManager {
         success: false,
         content: '',
         variablesUsed: {},
-        errors: [`Template '${name}' not found`]
+        errors: [`Template '${name}' not found`],
       };
     }
 
@@ -138,9 +140,7 @@ export class PromptManager {
       }
 
       if (value !== undefined && schema.minLength && (value as string).length < schema.minLength) {
-        varErrors.push(
-          `Variable '${varName}' must be at least ${schema.minLength} characters`
-        );
+        varErrors.push(`Variable '${varName}' must be at least ${schema.minLength} characters`);
       }
 
       if (value !== undefined && schema.maxLength && (value as string).length > schema.maxLength) {
@@ -157,7 +157,7 @@ export class PromptManager {
         success: false,
         content: '',
         variablesUsed: variables,
-        errors: varErrors
+        errors: varErrors,
       };
     }
 
@@ -179,7 +179,7 @@ export class PromptManager {
     return {
       success: true,
       content,
-      variablesUsed: variables
+      variablesUsed: variables,
     };
   }
 
@@ -267,16 +267,16 @@ export class PromptManager {
           template: variantA,
           usageCount: 0,
           successRate: 1,
-          averageLatency: 0
+          averageLatency: 0,
         },
         B: {
           template: variantB,
           usageCount: 0,
           successRate: 1,
-          averageLatency: 0
-        }
+          averageLatency: 0,
+        },
       },
-      startDate: new Date()
+      startDate: new Date(),
     };
 
     this.abTests.set(testKey, abTest);

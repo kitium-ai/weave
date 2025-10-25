@@ -62,7 +62,7 @@ describe('useAI', () => {
     });
 
     const fn = vi.fn().mockResolvedValue('result');
-    const result = await execute(fn);
+    await execute(fn);
 
     expect(onSuccess).toHaveBeenCalledWith('result');
   });
@@ -111,7 +111,7 @@ describe('useAI', () => {
     const states: boolean[] = [];
     const fn = vi.fn().mockImplementation(async () => {
       states.push(loading.value);
-      await new Promise(r => setTimeout(r, 10));
+      await new Promise((r) => setTimeout(r, 10));
       return 'result';
     });
 

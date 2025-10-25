@@ -56,6 +56,7 @@
     "test": "yarn workspaces foreach --all -pt run test",
     "test:coverage": "yarn workspaces foreach --all -pt run test:coverage",
     "test:watch": "yarn workspaces foreach --all -pt run test",
+    "test:core": "yarn workspace @weaveai/core test",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",

@@ -47,8 +47,8 @@
 
 <script setup lang="ts">
 import { ref, computed, inject } from 'vue';
-import { useAIChat } from '@weave/vue';
-import type { Weave } from '@weave/core';
+import { useAIChat } from '@weaveai/vue';
+import type { Weave } from '@weaveai/core';
 
 const weave = inject<Weave>('weave');
 if (!weave) {

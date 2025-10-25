@@ -3,7 +3,7 @@
  */
 
 import { Injectable, Inject } from '@nestjs/common';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 import { WEAVE_INSTANCE } from './weave.module.js';
 
 /**
@@ -29,7 +29,7 @@ export class GenerateServiceNest extends WeaveService {
   /**
    * Generate text from prompt
    */
-  async generate(prompt: string, options?: any): Promise<string> {
+  async generate(prompt: string, options?: { [key: string]: unknown }): Promise<string> {
     const result = await this.weave.generate(prompt, options);
     return result.text;
   }
@@ -62,4 +62,8 @@ export class ExtractServiceNest extends WeaveService {
 }
 
 // Re-export with shorter names for convenience
-export { GenerateServiceNest as GenerateService, ClassifyServiceNest as ClassifyService, ExtractServiceNest as ExtractService };
+export {
+  GenerateServiceNest as GenerateService,
+  ClassifyServiceNest as ClassifyService,
+  ExtractServiceNest as ExtractService,
+};

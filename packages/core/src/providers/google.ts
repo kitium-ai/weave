@@ -73,16 +73,25 @@ export class GoogleProvider extends BaseLanguageModel {
    */
   public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
     this.logger.debug('Google generate', { prompt, options });
+    const messages: GoogleContent[] = [
+      {
+        role: 'user',
+        parts: [{ text: prompt }],
+      },
+    ];
 
-    const response = await this.callGoogle(
-      [
-        {
-          role: 'user',
-          parts: [{ text: prompt }],
-        },
-      ],
-      options
-    );
+    if (options?.streaming && options.onChunk) {
+      const text = await this.callGoogleStream(messages, options.onChunk, options);
+      const input = await this.countTokens(prompt);
+      const output = await this.countTokens(text);
+      return {
+        text,
+        tokenCount: { input, output },
+        finishReason: 'stop',
+      };
+    }
+
+    const response = await this.callGoogle(messages, options);
 
     const text = response.candidates[0]?.content.parts[0]?.text ?? '';
     return {
@@ -251,6 +260,9 @@ export class GoogleProvider extends BaseLanguageModel {
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }],
       }));
+    if (options?.streaming && options.onChunk) {
+      return await this.callGoogleStream(googleMessages, options.onChunk, options);
+    }
 
     const response = await this.callGoogle(googleMessages, options);
 
@@ -261,9 +273,39 @@ export class GoogleProvider extends BaseLanguageModel {
    * Count tokens for text
    */
   public async countTokens(text: string): Promise<number> {
-    // Rough estimation: ~4 characters per token
-    // For accurate counting, use Google's countTokens endpoint
-    return Math.ceil(text.length / 4);
+    try {
+      const url = new URL(`${this.baseUrl}/${this.model}:countTokens`);
+      url.searchParams.set('key', this.apiKey);
+
+      const body = {
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text }],
+          },
+        ],
+      };
+
+      const response = await fetch(url.toString(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(this.timeout),
+      });
+
+      if (!response.ok) {
+        throw new Error(`countTokens failed: ${response.status}`);
+      }
+      const json = (await response.json()) as { totalTokens?: number; totalTokenCount?: number };
+      return (json.totalTokens ?? json.totalTokenCount ?? 0) as number;
+    } catch {
+      // Fallback heuristic
+      return Math.ceil(text.length / 4);
+    }
+  }
+
+  public getProviderInfo(): { provider: string; model: string } {
+    return { provider: 'google', model: this.model };
   }
 
   /**
@@ -344,5 +386,72 @@ export class GoogleProvider extends BaseLanguageModel {
     }
 
     throw lastError ?? new Error('Google API call failed after retries');
+  }
+
+  /**
+   * Stream from Google Generative Language API
+   */
+  private async callGoogleStream(
+    messages: GoogleContent[],
+    onChunk: (chunk: string) => void,
+    options?: GenerateOptions | ChatOptions
+  ): Promise<string> {
+    const body = {
+      contents: messages,
+      generationConfig: {
+        temperature: (options as GenerateOptions)?.temperature ?? 0.9,
+        maxOutputTokens: (options as GenerateOptions)?.maxTokens ?? 1000,
+        topP: (options as GenerateOptions)?.topP ?? 0.95,
+        topK: 40,
+      },
+    };
+
+    const url = new URL(`${this.baseUrl}/${this.model}:streamGenerateContent`);
+    url.searchParams.set('key', this.apiKey);
+
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(this.timeout),
+    });
+
+    if (!response.ok || !response.body) {
+      throw new Error(`Google stream error: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let done = false;
+    let buffer = '';
+    let fullText = '';
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      if (value) {
+        buffer += decoder.decode(value, { stream: true });
+        const chunks = buffer.split('\n');
+        buffer = chunks.pop() ?? '';
+        for (const chunk of chunks) {
+          const trimmed = chunk.trim();
+          if (!trimmed) {
+            continue;
+          }
+          try {
+            const json = JSON.parse(trimmed);
+            const delta = json.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+            if (delta) {
+              fullText += delta;
+              onChunk(delta);
+            }
+          } catch {
+            // ignore
+          }
+        }
+      }
+    }
+
+    return fullText;
   }
 }

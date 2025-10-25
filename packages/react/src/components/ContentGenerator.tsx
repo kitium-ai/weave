@@ -13,7 +13,7 @@ export const ContentGenerator: React.FC<ContentGeneratorProps> = ({
   template,
   parameters = {},
   showPreview = true,
-  className
+  className,
 }) => {
   const [generatedContent, setGeneratedContent] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,9 +40,7 @@ export const ContentGenerator: React.FC<ContentGeneratorProps> = ({
             <input
               type="text"
               value={value}
-              onChange={(e) =>
-                setParams({...params, [key]: e.target.value})
-              }
+              onChange={(e) => setParams({ ...params, [key]: e.target.value })}
               placeholder={key}
             />
           </div>

@@ -1,5 +1,5 @@
 /**
- * @weave/shared - Shared utilities for Weave framework
+ * @weaveai/shared - Shared utilities for Weave framework
  * Contains error classes, logging, validation, and common utilities
  */
 

@@ -77,16 +77,20 @@ export class OpenAIProvider extends BaseLanguageModel {
    */
   public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
     this.logger.debug('OpenAI generate', { prompt, options });
+    const messages: OpenAIMessage[] = [{ role: 'user', content: prompt }];
 
-    const response = await this.callOpenAI(
-      [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      options
-    );
+    if (options?.streaming && options.onChunk) {
+      const text = await this.callOpenAIStream(messages, options.onChunk, options);
+      const input = await this.countTokens(prompt);
+      const output = await this.countTokens(text);
+      return {
+        text,
+        tokenCount: { input, output },
+        finishReason: 'stop',
+      };
+    }
+
+    const response = await this.callOpenAI(messages, options);
 
     const text = response.choices[0]?.message?.content ?? response.choices[0]?.text ?? '';
     return {
@@ -248,11 +252,14 @@ export class OpenAIProvider extends BaseLanguageModel {
    */
   public async chat(messages: ChatMessage[], options?: ChatOptions): Promise<string> {
     this.logger.debug('OpenAI chat', { messagesCount: messages.length });
-
     const openaiMessages: OpenAIMessage[] = messages.map((msg) => ({
       role: msg.role as 'user' | 'assistant' | 'system',
       content: msg.content,
     }));
+
+    if (options?.streaming && options.onChunk) {
+      return await this.callOpenAIStream(openaiMessages, options.onChunk, options);
+    }
 
     const response = await this.callOpenAI(openaiMessages, options);
 
@@ -266,6 +273,10 @@ export class OpenAIProvider extends BaseLanguageModel {
     // Rough estimation: ~4 characters per token
     // For accurate counting, you'd need to use OpenAI's tokenizer
     return Math.ceil(text.length / 4);
+  }
+
+  public getProviderInfo(): { provider: string; model: string } {
+    return { provider: 'openai', model: this.model };
   }
 
   /**
@@ -345,5 +356,78 @@ export class OpenAIProvider extends BaseLanguageModel {
     }
 
     throw lastError ?? new Error('OpenAI API call failed after retries');
+  }
+
+  /**
+   * Stream from OpenAI API via SSE
+   */
+  private async callOpenAIStream(
+    messages: OpenAIMessage[],
+    onChunk: (chunk: string) => void,
+    options?: GenerateOptions | ChatOptions
+  ): Promise<string> {
+    const body = {
+      model: this.model,
+      messages,
+      stream: true,
+      temperature: (options as GenerateOptions)?.temperature ?? 0.7,
+      max_tokens: (options as GenerateOptions)?.maxTokens ?? 1000,
+      top_p: (options as GenerateOptions)?.topP ?? 1,
+      frequency_penalty: (options as GenerateOptions)?.frequencyPenalty ?? 0,
+      presence_penalty: (options as GenerateOptions)?.presencePenalty ?? 0,
+    };
+
+    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(this.timeout),
+    });
+
+    if (!response.ok || !response.body) {
+      throw new Error(`OpenAI stream error: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let done = false;
+    let buffer = '';
+    let fullText = '';
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      if (value) {
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() ?? '';
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith('data:')) {
+            continue;
+          }
+          const data = trimmed.replace(/^data:\s*/, '');
+          if (data === '[DONE]') {
+            done = true;
+            break;
+          }
+          try {
+            const json = JSON.parse(data);
+            const delta = json.choices?.[0]?.delta?.content ?? json.choices?.[0]?.text ?? '';
+            if (delta) {
+              fullText += delta;
+              onChunk(delta);
+            }
+          } catch {
+            // ignore parse errors for keep-alives
+          }
+        }
+      }
+    }
+
+    return fullText;
   }
 }

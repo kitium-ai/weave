@@ -64,6 +64,11 @@ export interface ILanguageModel {
    * Validate provider configuration
    */
   validate(): Promise<boolean>;
+
+  /**
+   * Get provider identity info for observability/cost tracking
+   */
+  getProviderInfo(): { provider: string; model: string };
 }
 
 /**

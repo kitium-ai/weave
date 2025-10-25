@@ -2,7 +2,7 @@
  * Classify operation
  */
 
-import { validateNonEmptyString, validateNonEmptyArray } from '@weave/shared';
+import { validateNonEmptyString, validateNonEmptyArray } from '@weaveai/shared';
 import { BaseOperation } from './base.js';
 import type { ClassifyOptions, ClassificationResult } from '../types/index.js';
 

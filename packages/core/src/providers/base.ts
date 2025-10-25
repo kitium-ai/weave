@@ -2,7 +2,7 @@
  * Base provider class
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type { ILanguageModel } from './interfaces.js';
 import type {
   GenerateOptions,
@@ -24,6 +24,8 @@ export abstract class BaseLanguageModel implements ILanguageModel {
   public abstract validate(): Promise<boolean>;
 
   public abstract countTokens(text: string): Promise<number>;
+
+  public abstract getProviderInfo(): { provider: string; model: string };
 
   public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
     throw new OperationNotSupportedError('generate', this.constructor.name, {

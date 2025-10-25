@@ -1,5 +1,5 @@
 {
-  "name": "@weave/angular",
+  "name": "@weaveai/angular",
   "version": "1.0.0",
   "description": "Angular services and directives for Weave AI framework",
   "type": "module",
@@ -25,7 +25,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@weave/core": "1.0.0"
+    "@weaveai/core": "1.0.0"
   },
   "peerDependencies": {
     "@angular/common": "^17.0.0 || ^18.0.0",
@@ -36,9 +36,11 @@
     "@angular/core": "^18.0.0",
     "@types/node": "^20.0.0",
     "@vitest/coverage-v8": "^1.0.0",
+    "rxjs": "^7.8.0",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0",
-    "vitest": "^1.0.0"
+    "vitest": "^1.0.0",
+    "zone.js": "^0.14.0"
   },
   "publishConfig": {
     "access": "public",

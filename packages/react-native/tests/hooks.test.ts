@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 
 const mockWeave: Weave = {
   generate: vi.fn().mockResolvedValue({ text: 'Generated text' }),
@@ -38,7 +38,9 @@ function createUseAI(weave: Weave, options: any = {}) {
       try {
         state.loading = true;
         state.status = 'loading';
-        if (options.onStart) options.onStart();
+        if (options.onStart) {
+          options.onStart();
+        }
 
         const result = await fn();
 
@@ -46,14 +48,18 @@ function createUseAI(weave: Weave, options: any = {}) {
         state.loading = false;
         state.status = 'success';
         state.error = null;
-        if (options.onSuccess) options.onSuccess(result);
+        if (options.onSuccess) {
+          options.onSuccess(result);
+        }
 
         return result;
       } catch (error) {
         state.error = error;
         state.loading = false;
         state.status = 'error';
-        if (options.onError) options.onError(error);
+        if (options.onError) {
+          options.onError(error);
+        }
         return null;
       }
     },

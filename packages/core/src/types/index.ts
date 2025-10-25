@@ -111,21 +111,28 @@ export interface ChatOptions extends BaseOperationOptions {
   systemPrompt?: string;
 }
 
-/**
- * Provider type
- */
-export type ProviderType = 'openai' | 'anthropic' | 'google' | 'local' | 'mock' | string;
+// Import and export provider config types early (use discriminated union)
+export type {
+  OpenAIProviderConfig,
+  AnthropicProviderConfig,
+  GoogleProviderConfig,
+  LocalProviderConfig,
+  MockProviderConfig,
+  BaseProviderConfig,
+  ProviderFallback,
+  ProviderConfig,
+  ProviderType,
+} from './provider-config.js';
 
-/**
- * Provider configuration
- */
-export interface ProviderConfig {
-  type: ProviderType;
-  apiKey?: string;
-  baseURL?: string;
-  timeout?: number;
-  [key: string]: unknown;
-}
+export {
+  isProviderConfig,
+  isProviderType,
+  validateProviderConfig,
+  getProviderConfigFromEnv,
+} from './provider-config.js';
+
+// Import for use in type definitions
+import type { ProviderConfig } from './provider-config.js';
 
 /**
  * Weave configuration

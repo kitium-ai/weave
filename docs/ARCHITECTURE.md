@@ -71,7 +71,7 @@ Simple Weave + Framework = Native AI Integration
 - Plugin system for extensibility
 
 ### 3. DRY (Don't Repeat Yourself)
-- Shared logic in `@weave/core`
+- Shared logic in `@weaveai/core`
 - Framework integrations only differ by idiom
 - Common patterns extracted to utilities
 
@@ -166,10 +166,10 @@ weave/
 │   ├── swift/              # SwiftUI SDK
 │   │
 │   ├── integrations/       # Optional integrations
-│   │   ├── openai/         # @weave/openai
-│   │   ├── anthropic/      # @weave/anthropic
-│   │   ├── google/         # @weave/google
-│   │   ├── pinecone/       # @weave/pinecone (vector DB)
+│   │   ├── openai/         # @weaveai/openai
+│   │   ├── anthropic/      # @weaveai/anthropic
+│   │   ├── google/         # @weaveai/google
+│   │   ├── pinecone/       # @weaveai/pinecone (vector DB)
 │   │   └── ... more
 │   │
 │   ├── shared/             # Shared utilities
@@ -230,7 +230,7 @@ weave/
 │  ─────────────────────────────────────────────────────── │
 │  Hooks, Components, State Management, Idioms             │
 ├──────────────────────────────────────────────────────────┤
-│  @weave/core - Framework-Agnostic Logic                  │
+│  @weaveai/core - Framework-Agnostic Logic                  │
 │  ─────────────────────────────────────────────────────── │
 │  AI Operations, Orchestration, State, Memory             │
 ├──────────────────────────────────────────────────────────┤
@@ -248,7 +248,7 @@ weave/
 └──────────────────────────────────────────────────────────┘
 ```
 
-### Core Layer: @weave/core
+### Core Layer: @weaveai/core
 
 **Responsibilities**:
 1. AI operation execution (generate, classify, extract, etc.)
@@ -335,17 +335,17 @@ export function useAI<T>(
 ### Dependency Graph
 
 ```
-@weave/shared
+@weaveai/shared
     ↑
     │
-@weave/core (depends on @weave/shared)
+@weaveai/core (depends on @weaveai/shared)
     ↑
     │
-@weave/react   @weave/vue   @weave/flutter
-(depend on @weave/core, some @weave/shared)
+@weaveai/react   @weaveai/vue   @weaveai/flutter
+(depend on @weaveai/core, some @weaveai/shared)
     ↑
     │
-@weave/integrations/* (depend on @weave/core, @weave/shared)
+@weaveai/integrations/* (depend on @weaveai/core, @weaveai/shared)
     ↑
     │
 User Applications
@@ -353,7 +353,7 @@ User Applications
 
 ### Package Exports Strategy
 
-**@weave/core** exports:
+**@weaveai/core** exports:
 ```typescript
 // Main API
 export { WeaveAI } from './core';
@@ -373,7 +373,7 @@ export type { IOperation, IProvider, ITool } from './types';
 export { createWeaveConfig, validateConfig } from './utils';
 ```
 
-**@weave/react** exports:
+**@weaveai/react** exports:
 ```typescript
 // Hooks
 export { useAI } from './hooks/useAI';
@@ -768,7 +768,7 @@ describe('React useAI hook integration', () => {
 
 // tests/types.test-d.ts
 import { expectType } from 'tsd';
-import { generate } from '@weave/core';
+import { generate } from '@weaveai/core';
 
 // Should compile - explicit return type
 const result: Promise<string> = generate('test');
@@ -782,7 +782,7 @@ expectType<Promise<string>>(result);
 ### README Structure
 
 ```markdown
-# @weave/react
+# @weaveai/react
 
 Brief description
 
@@ -928,7 +928,7 @@ Examples:
 yarn build
 
 # Build single package
-yarn workspace @weave/core build
+yarn workspace @weaveai/core build
 
 # Watch mode
 yarn dev

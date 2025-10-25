@@ -3,7 +3,7 @@
  */
 
 import React, { createContext, useContext, type ReactNode } from 'react';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 
 /**
  * Weave context type
@@ -29,11 +29,7 @@ interface WeaveProviderProps {
  * Weave Provider component - provides Weave instance to child components
  */
 export function WeaveProvider({ weave, children }: WeaveProviderProps): React.ReactElement {
-  return (
-    <WeaveContext.Provider value={{ weave }}>
-      {children}
-    </WeaveContext.Provider>
-  );
+  return <WeaveContext.Provider value={{ weave }}>{children}</WeaveContext.Provider>;
 }
 
 /**

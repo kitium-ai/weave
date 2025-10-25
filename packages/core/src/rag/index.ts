@@ -1,7 +1,6 @@
 /**
- * RAG system exports
+ * RAG module exports
  */
 
-export { RAGSystem } from './rag.js';
-export { InMemoryVectorStore } from './vector-store.js';
-export type { RAGDocument, IVectorStore, RAGRetrievalResult, RAGGenerationResult, RAGQueryOptions, RAGConfig, DocumentChunk, IndexedDocument } from './types.js';
+export * from './document-store.js';
+export * from './rag-retriever.js';

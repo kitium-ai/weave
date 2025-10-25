@@ -26,9 +26,7 @@ async function main() {
     const [major] = nodeVersion.split('.');
 
     if (parseInt(major) < 18) {
-      console.error(
-        chalk.red(`\n✗ Node.js 18+ required (you have ${nodeVersion})\n`)
-      );
+      console.error(chalk.red(`\n✗ Node.js 18+ required (you have ${nodeVersion})\n`));
       process.exit(1);
     }
 
@@ -46,17 +44,12 @@ async function main() {
     // Run create command
     await createCommand();
 
-    console.log(
-      chalk.green(
-        `\n✓ Project created successfully! 🎉\n`
-      )
-    );
+    console.log(chalk.green(`\n✓ Project created successfully! 🎉\n`));
     console.log(chalk.cyan('Next steps:'));
     console.log(chalk.gray('1. cd <project-directory>'));
     console.log(chalk.gray('2. npm install'));
     console.log(chalk.gray('3. npm run dev'));
     console.log(chalk.gray('\nFor more info, visit: https://weave.ai/docs\n'));
-
   } catch (error) {
     if (error instanceof Error) {
       console.error(chalk.red(`\n✗ Error: ${error.message}\n`));

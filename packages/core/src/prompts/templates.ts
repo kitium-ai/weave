@@ -23,12 +23,12 @@ Keep it concise and friendly.`,
         type: 'string',
         required: false,
         default: 'professional',
-        enum: ['formal', 'professional', 'friendly', 'casual']
-      }
+        enum: ['formal', 'professional', 'friendly', 'casual'],
+      },
     },
     description: 'Generate professional email greetings',
     tags: ['email', 'greeting', 'professional'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-follow-up',
@@ -41,13 +41,17 @@ Goal: {{goal}}
 Maintain a professional tone while being personable.`,
     variables: {
       context: { type: 'string', required: true, description: 'Context of follow-up' },
-      previousMessage: { type: 'string', required: true, description: 'Summary of previous message' },
+      previousMessage: {
+        type: 'string',
+        required: true,
+        description: 'Summary of previous message',
+      },
       daysPassed: { type: 'number', required: true, description: 'Days since last contact' },
-      goal: { type: 'string', required: true, description: 'Goal of this follow-up' }
+      goal: { type: 'string', required: true, description: 'Goal of this follow-up' },
     },
     description: 'Generate follow-up emails with context awareness',
     tags: ['email', 'follow-up', 'sales'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-rejection-notice',
@@ -62,11 +66,11 @@ Tone should be professional and appreciative.`,
       recipient: { type: 'string', required: true },
       position: { type: 'string', required: true },
       reason: { type: 'string', required: true },
-      nextSteps: { type: 'string', required: false, default: 'No further steps' }
+      nextSteps: { type: 'string', required: false, default: 'No further steps' },
     },
     description: 'Generate respectful rejection emails',
     tags: ['email', 'rejection', 'hr'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-apology',
@@ -82,13 +86,13 @@ Ensure sincerity and accountability.`,
       severity: {
         type: 'string',
         required: true,
-        enum: ['minor', 'moderate', 'major']
+        enum: ['minor', 'moderate', 'major'],
       },
-      resolution: { type: 'string', required: true }
+      resolution: { type: 'string', required: true },
     },
     description: 'Generate sincere apology emails',
     tags: ['email', 'apology', 'customer-service'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-promotion',
@@ -103,11 +107,11 @@ Keep it engaging and concise.`,
       product: { type: 'string', required: true },
       audience: { type: 'string', required: true },
       benefits: { type: 'array', required: true, description: 'List of key benefits' },
-      cta: { type: 'string', required: true, description: 'Call to action text' }
+      cta: { type: 'string', required: true, description: 'Call to action text' },
     },
     description: 'Generate promotional email campaigns',
     tags: ['email', 'marketing', 'promotion'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-meeting-request',
@@ -122,11 +126,11 @@ Include flexibility and clear next steps.`,
       recipient: { type: 'string', required: true },
       purpose: { type: 'string', required: true },
       times: { type: 'array', required: true },
-      duration: { type: 'number', required: true, default: 30 }
+      duration: { type: 'number', required: true, default: 30 },
     },
     description: 'Generate professional meeting requests',
     tags: ['email', 'meeting', 'scheduling'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-newsletter',
@@ -141,11 +145,11 @@ Keep tone engaging and informative.`,
       topic: { type: 'string', required: true },
       highlights: { type: 'array', required: true },
       featured: { type: 'string', required: true },
-      cta: { type: 'string', required: false, default: 'Learn more' }
+      cta: { type: 'string', required: false, default: 'Learn more' },
     },
     description: 'Generate newsletter content',
     tags: ['email', 'newsletter', 'content'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'email-job-offer',
@@ -160,12 +164,12 @@ Maintain professional and enthusiastic tone.`,
       candidate: { type: 'string', required: true },
       position: { type: 'string', required: true },
       startDate: { type: 'string', required: true },
-      details: { type: 'array', required: true }
+      details: { type: 'array', required: true },
     },
     description: 'Generate job offer emails',
     tags: ['email', 'hiring', 'hr'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -190,13 +194,13 @@ Include engaging introduction and actionable conclusion.`,
         type: 'string',
         required: false,
         default: 'informative',
-        enum: ['informative', 'educational', 'entertaining', 'technical']
+        enum: ['informative', 'educational', 'entertaining', 'technical'],
       },
-      length: { type: 'number', required: false, default: 1000 }
+      length: { type: 'number', required: false, default: 1000 },
     },
     description: 'Generate blog post content',
     tags: ['content', 'blog', 'writing'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-social-media-post',
@@ -211,15 +215,15 @@ Keep it concise and engaging.`,
       platform: {
         type: 'string',
         required: true,
-        enum: ['twitter', 'instagram', 'facebook', 'linkedin', 'tiktok']
+        enum: ['twitter', 'instagram', 'facebook', 'linkedin', 'tiktok'],
       },
       topic: { type: 'string', required: true },
       hashtags: { type: 'array', required: false },
-      cta: { type: 'string', required: false }
+      cta: { type: 'string', required: false },
     },
     description: 'Generate social media posts optimized per platform',
     tags: ['content', 'social-media', 'marketing'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-product-description',
@@ -236,11 +240,11 @@ Emphasize benefits over features.`,
       category: { type: 'string', required: true },
       features: { type: 'array', required: true },
       priceRange: { type: 'string', required: false },
-      targetCustomer: { type: 'string', required: true }
+      targetCustomer: { type: 'string', required: true },
     },
     description: 'Generate product descriptions for e-commerce',
     tags: ['content', 'ecommerce', 'product'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-press-release',
@@ -255,11 +259,11 @@ Follow standard press release format.`,
       company: { type: 'string', required: true },
       announcement: { type: 'string', required: true },
       keyDetails: { type: 'array', required: true },
-      executiveQuote: { type: 'string', required: true }
+      executiveQuote: { type: 'string', required: true },
     },
     description: 'Generate press releases',
     tags: ['content', 'pr', 'marketing'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-video-script',
@@ -276,11 +280,11 @@ Include visual cues and pacing notes.`,
       duration: { type: 'number', required: true },
       topic: { type: 'string', required: true },
       tone: { type: 'string', required: false, default: 'engaging' },
-      audience: { type: 'string', required: true }
+      audience: { type: 'string', required: true },
     },
     description: 'Generate video scripts with visual cues',
     tags: ['content', 'video', 'multimedia'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-faq',
@@ -293,11 +297,11 @@ Format as Q&A pairs with clear, concise answers.`,
     variables: {
       topic: { type: 'string', required: true },
       questions: { type: 'array', required: true },
-      audience: { type: 'string', required: true }
+      audience: { type: 'string', required: true },
     },
     description: 'Generate FAQ content for websites',
     tags: ['content', 'faq', 'documentation'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-landing-page-copy',
@@ -312,11 +316,11 @@ Create compelling headline and sections.`,
       productName: { type: 'string', required: true },
       problem: { type: 'string', required: true },
       solution: { type: 'string', required: true },
-      valueProposition: { type: 'array', required: true }
+      valueProposition: { type: 'array', required: true },
     },
     description: 'Generate landing page copy',
     tags: ['content', 'landing-page', 'copywriting'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'content-documentation',
@@ -331,14 +335,14 @@ Include prerequisites and troubleshooting.`,
       level: {
         type: 'string',
         required: true,
-        enum: ['beginner', 'intermediate', 'advanced']
+        enum: ['beginner', 'intermediate', 'advanced'],
       },
-      steps: { type: 'array', required: true }
+      steps: { type: 'array', required: true },
     },
     description: 'Generate technical documentation',
     tags: ['content', 'documentation', 'technical'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -353,11 +357,11 @@ const classificationTemplates: PromptTemplate[] = [
 Return one of: positive, negative, neutral
 Consider context and intensity.`,
     variables: {
-      text: { type: 'string', required: true, minLength: 1, maxLength: 5000 }
+      text: { type: 'string', required: true, minLength: 1, maxLength: 5000 },
     },
     description: 'Classify text sentiment',
     tags: ['classification', 'sentiment', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'classify-intent',
@@ -368,11 +372,11 @@ Possible intents: {{intents}}
 Return the most likely intent with confidence score.`,
     variables: {
       userMessage: { type: 'string', required: true },
-      intents: { type: 'array', required: true }
+      intents: { type: 'array', required: true },
     },
     description: 'Classify user intent from messages',
     tags: ['classification', 'intent', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'classify-category',
@@ -383,11 +387,11 @@ Content: {{content}}
 Explain your classification briefly.`,
     variables: {
       categories: { type: 'array', required: true },
-      content: { type: 'string', required: true }
+      content: { type: 'string', required: true },
     },
     description: 'Categorize content into predefined categories',
     tags: ['classification', 'categorization', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'classify-spam',
@@ -397,11 +401,11 @@ Explain your classification briefly.`,
 Return: spam, not_spam, or uncertain
 Provide confidence score and reasoning.`,
     variables: {
-      content: { type: 'string', required: true }
+      content: { type: 'string', required: true },
     },
     description: 'Detect spam in text content',
     tags: ['classification', 'spam', 'security'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'classify-language',
@@ -410,11 +414,11 @@ Provide confidence score and reasoning.`,
     template: `Detect the language of: {{text}}
 Return ISO 639-1 language code and confidence score.`,
     variables: {
-      text: { type: 'string', required: true, minLength: 5 }
+      text: { type: 'string', required: true, minLength: 5 },
     },
     description: 'Detect language of text',
     tags: ['classification', 'language-detection', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'classify-toxicity',
@@ -428,13 +432,13 @@ Return severity level and specific issues found.`,
       categories: {
         type: 'array',
         required: false,
-        default: ['hate', 'abuse', 'profanity', 'harassment']
-      }
+        default: ['hate', 'abuse', 'profanity', 'harassment'],
+      },
     },
     description: 'Detect toxic or harmful content',
     tags: ['classification', 'toxicity', 'moderation'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -453,12 +457,12 @@ Return as JSON array with type and value fields.`,
       entityTypes: {
         type: 'array',
         required: false,
-        default: ['PERSON', 'ORGANIZATION', 'LOCATION', 'DATE']
-      }
+        default: ['PERSON', 'ORGANIZATION', 'LOCATION', 'DATE'],
+      },
     },
     description: 'Extract named entities from text',
     tags: ['extraction', 'ner', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'extract-key-points',
@@ -468,11 +472,11 @@ Return as JSON array with type and value fields.`,
 Return as numbered list with brief explanations.`,
     variables: {
       text: { type: 'string', required: true },
-      numPoints: { type: 'number', required: false, default: 5 }
+      numPoints: { type: 'number', required: false, default: 5 },
     },
     description: 'Extract key points from text',
     tags: ['extraction', 'summarization', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'extract-contact-info',
@@ -482,11 +486,11 @@ Return as numbered list with brief explanations.`,
 Look for: email, phone, address, website
 Return as structured JSON object.`,
     variables: {
-      text: { type: 'string', required: true }
+      text: { type: 'string', required: true },
     },
     description: 'Extract contact information',
     tags: ['extraction', 'contact', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'extract-dates',
@@ -497,11 +501,15 @@ Format: ISO 8601 (YYYY-MM-DD)
 Return as array with original text and normalized date.`,
     variables: {
       text: { type: 'string', required: true },
-      referenceDate: { type: 'string', required: false, description: 'ISO date for relative calculations' }
+      referenceDate: {
+        type: 'string',
+        required: false,
+        description: 'ISO date for relative calculations',
+      },
     },
     description: 'Extract and normalize dates',
     tags: ['extraction', 'date-parsing', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'extract-keywords',
@@ -511,11 +519,11 @@ Return as array with original text and normalized date.`,
 Return with relevance scores (0-1).`,
     variables: {
       text: { type: 'string', required: true },
-      numKeywords: { type: 'number', required: false, default: 10 }
+      numKeywords: { type: 'number', required: false, default: 10 },
     },
     description: 'Extract keywords with relevance scores',
     tags: ['extraction', 'keywords', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'extract-structured-data',
@@ -526,11 +534,11 @@ Return with relevance scores (0-1).`,
 Return as valid JSON matching the schema exactly.`,
     variables: {
       text: { type: 'string', required: true },
-      schema: { type: 'object', required: true, description: 'Target JSON schema' }
+      schema: { type: 'object', required: true, description: 'Target JSON schema' },
     },
     description: 'Extract structured data into JSON schema',
     tags: ['extraction', 'structured-data', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'extract-table',
@@ -541,12 +549,12 @@ Return as CSV or JSON array format.
 Headers: {{headers}}`,
     variables: {
       text: { type: 'string', required: true },
-      headers: { type: 'array', required: false }
+      headers: { type: 'array', required: false },
     },
     description: 'Extract tabular data from text',
     tags: ['extraction', 'table', 'data'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -561,11 +569,11 @@ const sentimentTemplates: PromptTemplate[] = [
 Provide: overall sentiment, emotions detected, intensity (0-100), reasoning.
 Return as JSON object.`,
     variables: {
-      text: { type: 'string', required: true, minLength: 1, maxLength: 5000 }
+      text: { type: 'string', required: true, minLength: 1, maxLength: 5000 },
     },
     description: 'Detailed sentiment analysis with emotions',
     tags: ['sentiment', 'emotion', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'sentiment-aspect-based',
@@ -576,11 +584,11 @@ Aspects to analyze: {{aspects}}
 Return sentiment for each aspect separately.`,
     variables: {
       text: { type: 'string', required: true },
-      aspects: { type: 'array', required: true }
+      aspects: { type: 'array', required: true },
     },
     description: 'Sentiment analysis per aspect/feature',
     tags: ['sentiment', 'aspect', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'sentiment-comparative',
@@ -590,11 +598,11 @@ Return sentiment for each aspect separately.`,
 Provide relative sentiment differences and explanations.`,
     variables: {
       text1: { type: 'string', required: true },
-      text2: { type: 'string', required: true }
+      text2: { type: 'string', required: true },
     },
     description: 'Compare sentiment between two texts',
     tags: ['sentiment', 'comparison', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'sentiment-timeline',
@@ -604,11 +612,11 @@ Provide relative sentiment differences and explanations.`,
 Identify sentiment shifts and turning points.
 Return as timeline with sentiment changes.`,
     variables: {
-      text: { type: 'string', required: true }
+      text: { type: 'string', required: true },
     },
     description: 'Track sentiment changes over text progression',
     tags: ['sentiment', 'timeline', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'sentiment-customer-feedback',
@@ -619,12 +627,12 @@ Extract: satisfaction level (1-5), issues, suggestions.
 Return structured summary.`,
     variables: {
       feedback: { type: 'string', required: true },
-      includeRecommendations: { type: 'boolean', required: false, default: true }
+      includeRecommendations: { type: 'boolean', required: false, default: true },
     },
     description: 'Analyze customer feedback sentiment and issues',
     tags: ['sentiment', 'customer-feedback', 'nlp'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -641,11 +649,15 @@ Maintain tone and context. Return only the translation.`,
     variables: {
       text: { type: 'string', required: true },
       targetLanguage: { type: 'string', required: true, description: 'Language name or code' },
-      sourceLanguage: { type: 'string', required: false, description: 'ISO 639-1 code (auto-detect if omitted)' }
+      sourceLanguage: {
+        type: 'string',
+        required: false,
+        description: 'ISO 639-1 code (auto-detect if omitted)',
+      },
     },
     description: 'Translate text to target language',
     tags: ['translation', 'localization', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'translate-content-localization',
@@ -659,13 +671,13 @@ Adapt cultural references, idioms, and formatting.`,
       contentType: {
         type: 'string',
         required: true,
-        enum: ['email', 'website', 'app', 'marketing', 'documentation']
+        enum: ['email', 'website', 'app', 'marketing', 'documentation'],
       },
-      targetMarket: { type: 'string', required: true, description: 'Country or region' }
+      targetMarket: { type: 'string', required: true, description: 'Country or region' },
     },
     description: 'Translate with cultural localization',
     tags: ['translation', 'localization', 'cultural'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'translate-multilingual',
@@ -676,11 +688,11 @@ Adapt cultural references, idioms, and formatting.`,
 Return as JSON object with language codes as keys.`,
     variables: {
       text: { type: 'string', required: true },
-      languages: { type: 'array', required: true, description: 'Target language codes' }
+      languages: { type: 'array', required: true, description: 'Target language codes' },
     },
     description: 'Translate to multiple languages at once',
     tags: ['translation', 'multilingual', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'translate-back-translation-check',
@@ -694,12 +706,12 @@ Translate back to {{originalLanguage}} and compare.`,
       original: { type: 'string', required: true },
       translated: { type: 'string', required: true },
       language: { type: 'string', required: true },
-      originalLanguage: { type: 'string', required: false, default: 'English' }
+      originalLanguage: { type: 'string', required: false, default: 'English' },
     },
     description: 'Quality check translations via back-translation',
     tags: ['translation', 'quality-assurance', 'nlp'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -719,11 +731,15 @@ Be helpful, professional, and empathetic.`,
       company: { type: 'string', required: true },
       query: { type: 'string', required: true },
       product: { type: 'string', required: true },
-      knowledgeBase: { type: 'string', required: false, description: 'Relevant knowledge base content' }
+      knowledgeBase: {
+        type: 'string',
+        required: false,
+        description: 'Relevant knowledge base content',
+      },
     },
     description: 'Customer service chatbot responses',
     tags: ['chat', 'customer-service', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'chat-sales-assistant',
@@ -736,11 +752,11 @@ Suggest relevant products and address concerns.`,
     variables: {
       productName: { type: 'string', required: true },
       message: { type: 'string', required: true },
-      history: { type: 'array', required: false, description: 'Previous messages' }
+      history: { type: 'array', required: false, description: 'Previous messages' },
     },
     description: 'Sales assistant chatbot responses',
     tags: ['chat', 'sales', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'chat-technical-support',
@@ -754,11 +770,11 @@ Provide step-by-step troubleshooting.`,
     variables: {
       issue: { type: 'string', required: true },
       systemInfo: { type: 'string', required: true },
-      errorMessage: { type: 'string', required: false }
+      errorMessage: { type: 'string', required: false },
     },
     description: 'Technical support chatbot responses',
     tags: ['chat', 'technical-support', 'nlp'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'chat-general-assistant',
@@ -776,13 +792,13 @@ Provide clear, accurate, and helpful responses.`,
         type: 'string',
         required: false,
         default: 'professional',
-        enum: ['professional', 'casual', 'friendly', 'technical']
-      }
+        enum: ['professional', 'casual', 'friendly', 'technical'],
+      },
     },
     description: 'General purpose chatbot responses',
     tags: ['chat', 'general', 'nlp'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -801,11 +817,11 @@ Include comments and error handling.`,
       language: { type: 'string', required: true },
       task: { type: 'string', required: true },
       requirements: { type: 'array', required: true },
-      context: { type: 'string', required: false }
+      context: { type: 'string', required: false },
     },
     description: 'Code generation for various languages',
     tags: ['code', 'generation', 'development'],
-    author: 'Weave'
+    author: 'Weave',
   },
   {
     name: 'custom-creative-writing',
@@ -822,12 +838,12 @@ Audience: {{audience}}`,
       style: { type: 'string', required: false, default: 'narrative' },
       tone: { type: 'string', required: false, default: 'creative' },
       length: { type: 'number', required: false, default: 500 },
-      audience: { type: 'string', required: true }
+      audience: { type: 'string', required: true },
     },
     description: 'Creative writing prompt templates',
     tags: ['writing', 'creative', 'custom'],
-    author: 'Weave'
-  }
+    author: 'Weave',
+  },
 ];
 
 /**
@@ -841,7 +857,7 @@ export const BUILT_IN_TEMPLATES: PromptTemplate[] = [
   ...sentimentTemplates,
   ...translationTemplates,
   ...chatTemplates,
-  ...customTemplates
+  ...customTemplates,
 ];
 
 // Summary: 50 built-in templates across 8 categories

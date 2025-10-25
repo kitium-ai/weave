@@ -129,7 +129,10 @@ describe('RAG System', () => {
 
   describe('RAG query', () => {
     beforeEach(async () => {
-      await rag.indexDocument('geography', 'Paris is the capital of France and is located in Western Europe.');
+      await rag.indexDocument(
+        'geography',
+        'Paris is the capital of France and is located in Western Europe.'
+      );
     });
 
     it('should generate an answer to a query', async () => {

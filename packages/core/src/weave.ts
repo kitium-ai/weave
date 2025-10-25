@@ -2,12 +2,10 @@
  * Weave - Main entry point for AI operations
  */
 
-import { getLogger, validateDefined } from '@weave/shared';
-import type { ILanguageModel } from './providers/interfaces.js';
-import { getProviderRegistry } from './providers/registry.js';
-import { GenerateOperation } from './operations/generate.js';
-import { ClassifyOperation } from './operations/classify.js';
-import { ExtractOperation } from './operations/extract.js';
+import { getLogger, validateDefined } from '@weaveai/shared';
+import type { ILanguageModel } from './providers';
+import { getProviderRegistry, MockLanguageModel } from './providers';
+import { GenerateOperation, ClassifyOperation, ExtractOperation } from './operations';
 import type {
   WeaveConfig,
   GenerateOptions,
@@ -15,9 +13,8 @@ import type {
   ClassifyOptions,
   ClassificationResult,
   ExtractOptions,
-} from './types/index.js';
-import { ProviderConfigError } from './errors/index.js';
-import { MockLanguageModel } from './providers/mock.js';
+} from './types';
+import { ProviderConfigError } from './errors';
 
 /**
  * Main Weave AI class
@@ -39,8 +36,8 @@ export class Weave {
       logging: config.logging,
     });
 
-    // Create provider from config
-    this.model = this.createProvider(config.provider);
+    // Create provider from config (synchronously for constructor compatibility)
+    this.model = this.createProviderSync(config.provider);
 
     // Initialize operations
     this.generateOp = new GenerateOperation(this.model);
@@ -81,9 +78,10 @@ export class Weave {
   }
 
   /**
-   * Create provider instance from config
+   * Create provider instance from config (synchronous wrapper for constructor)
+   * Note: This will throw synchronously for async operations
    */
-  private createProvider(config: unknown): ILanguageModel {
+  private createProviderSync(config: unknown): ILanguageModel {
     const registry = getProviderRegistry();
 
     // Try to get from registry first (for registered instances)
@@ -95,16 +93,62 @@ export class Weave {
       }
     }
 
-    // For mock provider - always available
+    // For config objects, use the registry factory synchronously
+    // Note: Provider initialization is currently synchronous for OpenAI/Anthropic/Google
     if (typeof config === 'object' && config !== null && 'type' in config) {
       const type = (config as Record<string, unknown>).type;
+
+      // For now, we support mock synchronously
+      // Other providers would need async initialization to validate credentials
       if (type === 'mock') {
         this.logger.debug('Using mock provider');
         return new MockLanguageModel();
       }
+
+      // For other providers, throw an informative error
+      // In a real application, you'd want to use async initialization
+      if (type === 'openai' || type === 'anthropic' || type === 'google') {
+        throw new ProviderConfigError(
+          `Provider type "${type}" requires async initialization. Use Weave.createAsync() instead.`,
+          {
+            type,
+            hint: 'Use: const weave = await Weave.createAsync(config)',
+          }
+        );
+      }
     }
 
     throw new ProviderConfigError('Invalid provider configuration', { config });
+  }
+
+  /**
+   * Create Weave instance asynchronously with full provider support
+   * Use this for OpenAI, Anthropic, or Google providers
+   */
+  public static async createAsync(config: WeaveConfig): Promise<Weave> {
+    validateDefined(config, 'config');
+    validateDefined(config.provider, 'config.provider');
+
+    const logger = getLogger();
+    logger.info('Initializing Weave (async)', {
+      provider: config.provider.type,
+      logging: config.logging,
+    });
+
+    const registry = getProviderRegistry();
+
+    // Create provider using the registry factory
+    const model = await registry.createProvider(config.provider);
+
+    // Create the Weave instance and manually set the model
+    const weaveInstance = Object.create(Weave.prototype);
+    weaveInstance.logger = logger;
+    weaveInstance.model = model;
+    weaveInstance.generateOp = new GenerateOperation(model);
+    weaveInstance.classifyOp = new ClassifyOperation(model);
+    weaveInstance.extractOp = new ExtractOperation(model);
+
+    return weaveInstance as Weave;
   }
 }
 

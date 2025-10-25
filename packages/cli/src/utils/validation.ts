@@ -21,7 +21,7 @@ export async function validateEnvironment(): Promise<ValidationResult> {
   try {
     execSync('git --version', { stdio: 'pipe' });
   } catch {
-    warnings.push('Git not found - project won\'t be initialized as a git repo');
+    warnings.push("Git not found - project won't be initialized as a git repo");
   }
 
   // Check for npm or yarn
@@ -42,7 +42,7 @@ export async function validateEnvironment(): Promise<ValidationResult> {
     return {
       valid: false,
       message: 'Neither npm nor yarn found',
-      warnings
+      warnings,
     };
   }
 
@@ -53,14 +53,14 @@ export async function validateEnvironment(): Promise<ValidationResult> {
     return {
       valid: false,
       message: `Node.js 18+ required (current: ${nodeVersion})`,
-      warnings
+      warnings,
     };
   }
 
   return {
     valid: true,
     message: 'Environment validation passed',
-    warnings
+    warnings,
   };
 }
 
@@ -80,7 +80,7 @@ export function validateProjectName(name: string): {
   if (!/^[a-zA-Z0-9-_]+$/.test(name)) {
     return {
       valid: false,
-      message: 'Project name can only contain letters, numbers, hyphens, and underscores'
+      message: 'Project name can only contain letters, numbers, hyphens, and underscores',
     };
   }
 
@@ -185,7 +185,7 @@ export function validateModel(provider: string, model: string): boolean {
   const modelsByProvider: Record<string, string[]> = {
     openai: ['gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
     anthropic: ['claude-3-opus', 'claude-3-sonnet', 'claude-3-haiku'],
-    google: ['gemini-pro', 'palm-2']
+    google: ['gemini-pro', 'palm-2'],
   };
 
   const models = modelsByProvider[provider.toLowerCase()];

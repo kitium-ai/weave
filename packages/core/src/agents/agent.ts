@@ -2,7 +2,7 @@
  * Base Agent class for multi-step reasoning
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type { ILanguageModel } from '../providers/interfaces.js';
 import type {
   AgentConfig,

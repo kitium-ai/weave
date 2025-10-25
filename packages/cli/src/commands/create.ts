@@ -6,17 +6,10 @@
 import prompts from 'prompts';
 import chalk from 'chalk';
 import ora from 'ora';
-import { mkdir, writeFile, copyFile } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { cwd } from 'process';
-import {
-  validateProjectName,
-  validateApiKey,
-  validateFramework,
-  validateProvider,
-  validateModel,
-  checkDirectoryEmpty
-} from '../utils/validation.js';
+import { validateProjectName, validateApiKey, checkDirectoryEmpty } from '../utils/validation.js';
 import {
   generateEnvFile,
   generateEnvExampleFile,
@@ -26,7 +19,7 @@ import {
   getFrameworkInfo,
   getProviderInfo,
   getModelsByProvider,
-  type WeaveConfig
+  type WeaveConfig,
 } from '../utils/config.js';
 
 export async function createCommand() {
@@ -38,10 +31,10 @@ export async function createCommand() {
     name: 'projectName',
     message: 'Project name',
     initial: 'my-weave-app',
-    validate: (value) => {
+    validate: (value: string) => {
       const validation = validateProjectName(value);
       return validation.valid || validation.message || 'Invalid project name';
-    }
+    },
   });
 
   if (!nameResult.projectName) {
@@ -66,8 +59,8 @@ export async function createCommand() {
       { title: 'React + Next.js', value: 'react-nextjs' },
       { title: 'Vue 3', value: 'vue' },
       { title: 'Svelte', value: 'svelte' },
-      { title: 'Angular', value: 'angular' }
-    ]
+      { title: 'Angular', value: 'angular' },
+    ],
   });
 
   if (!frameworkResult.framework) {
@@ -83,19 +76,19 @@ export async function createCommand() {
       {
         title: 'OpenAI (GPT-4, GPT-3.5)',
         value: 'openai',
-        description: 'Most popular LLM provider'
+        description: 'Most popular LLM provider',
       },
       {
         title: 'Anthropic (Claude 3)',
         value: 'anthropic',
-        description: 'Advanced reasoning models'
+        description: 'Advanced reasoning models',
       },
       {
         title: 'Google (Gemini)',
         value: 'google',
-        description: 'Multimodal capabilities'
-      }
-    ]
+        description: 'Multimodal capabilities',
+      },
+    ],
   });
 
   if (!providerResult.provider) {
@@ -110,8 +103,8 @@ export async function createCommand() {
     message: `Choose a model (${providerResult.provider})`,
     choices: availableModels.map((model) => ({
       title: model,
-      value: model
-    }))
+      value: model,
+    })),
   });
 
   if (!modelResult.model) {
@@ -124,7 +117,7 @@ export async function createCommand() {
     type: 'confirm',
     name: 'hasApiKey',
     message: 'Do you have an API key ready?',
-    initial: false
+    initial: false,
   });
 
   if (apiKeyResult.hasApiKey) {
@@ -135,7 +128,7 @@ export async function createCommand() {
       validate: (value) => {
         const validation = validateApiKey(providerResult.provider, value);
         return validation.valid || validation.message || 'Invalid API key format';
-      }
+      },
     });
 
     if (!keyInput.apiKey) {
@@ -153,7 +146,7 @@ export async function createCommand() {
     framework: frameworkResult.framework,
     provider: providerResult.provider,
     model: modelResult.model,
-    apiKey: apiKey || 'PLACEHOLDER_API_KEY'
+    apiKey: apiKey || 'PLACEHOLDER_API_KEY',
   };
 
   console.log('\n' + chalk.cyan('Summary of your choices:'));
@@ -167,7 +160,7 @@ export async function createCommand() {
     type: 'confirm',
     name: 'confirmed',
     message: 'Create project with these settings?',
-    initial: true
+    initial: true,
   });
 
   if (!confirmResult.confirmed) {
@@ -219,10 +212,7 @@ async function scaffoldProject(config: WeaveConfig, projectPath: string) {
     // Generate other config files
     await writeFile(join(projectPath, 'tsconfig.json'), generateTsConfig());
     await writeFile(join(projectPath, '.gitignore'), generateGitignore());
-    await writeFile(
-      join(projectPath, 'README.md'),
-      generateReadme(config)
-    );
+    await writeFile(join(projectPath, 'README.md'), generateReadme(config));
 
     // Create framework-specific files
     await createFrameworkFiles(config, projectPath, srcDir);
@@ -244,7 +234,6 @@ async function scaffoldProject(config: WeaveConfig, projectPath: string) {
     console.log(chalk.white(`   npm run dev`));
 
     console.log(chalk.cyan(`\nFor more information, visit: https://weave.ai/docs\n`));
-
   } catch (error) {
     spinner.fail('Failed to create project');
     throw error;
@@ -254,20 +243,13 @@ async function scaffoldProject(config: WeaveConfig, projectPath: string) {
 /**
  * Create framework-specific boilerplate files
  */
-async function createFrameworkFiles(
-  config: WeaveConfig,
-  projectPath: string,
-  srcDir: string
-) {
+async function createFrameworkFiles(config: WeaveConfig, projectPath: string, srcDir: string) {
   const frameworkContent = getFrameworkBoilerplate(config);
 
   // Write main app/index file based on framework
   if (config.framework === 'react-nextjs') {
     // Create pages/index.tsx for Next.js
-    await writeFile(
-      join(projectPath, 'src', 'pages', 'index.tsx'),
-      frameworkContent.mainFile
-    );
+    await writeFile(join(projectPath, 'src', 'pages', 'index.tsx'), frameworkContent.mainFile);
 
     // Create API route example
     await writeFile(
@@ -275,30 +257,15 @@ async function createFrameworkFiles(
       frameworkContent.apiFile || ''
     );
   } else if (config.framework === 'vue') {
-    await writeFile(
-      join(srcDir, 'App.vue'),
-      frameworkContent.mainFile
-    );
+    await writeFile(join(srcDir, 'App.vue'), frameworkContent.mainFile);
   } else if (config.framework === 'svelte') {
-    await writeFile(
-      join(srcDir, 'App.svelte'),
-      frameworkContent.mainFile
-    );
+    await writeFile(join(srcDir, 'App.svelte'), frameworkContent.mainFile);
   } else if (config.framework === 'angular') {
-    await writeFile(
-      join(srcDir, 'app.component.ts'),
-      frameworkContent.mainFile
-    );
-    await writeFile(
-      join(srcDir, 'app.component.html'),
-      frameworkContent.template || ''
-    );
+    await writeFile(join(srcDir, 'app.component.ts'), frameworkContent.mainFile);
+    await writeFile(join(srcDir, 'app.component.html'), frameworkContent.template || '');
   } else {
     // React Vite
-    await writeFile(
-      join(srcDir, 'App.tsx'),
-      frameworkContent.mainFile
-    );
+    await writeFile(join(srcDir, 'App.tsx'), frameworkContent.mainFile);
   }
 
   // Write index/main file
@@ -321,7 +288,7 @@ function getFrameworkBoilerplate(config: WeaveConfig): Record<string, string> {
   const baseContent = {
     'react-vite': {
       mainFile: `import { useState } from 'react';
-import { useWeave } from '@weave/react';
+import { useWeave } from '@weaveai/react';
 import './App.css';
 
 function App() {
@@ -354,7 +321,7 @@ function App() {
 export default App;`,
       indexFile: `import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { WeaveProvider } from '@weave/react';
+import { WeaveProvider } from '@weaveai/react';
 import App from './App.tsx';
 
 const weaveConfig = {
@@ -370,13 +337,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <App />
     </WeaveProvider>
   </React.StrictMode>,
-);`
+);`,
     },
     'react-nextjs': {
       mainFile: `'use client';
 
 import { useState } from 'react';
-import { useWeave } from '@weave/react';
+import { useWeave } from '@weaveai/react';
 
 export default function Home() {
   const { generate, loading, error } = useWeave();
@@ -410,7 +377,7 @@ export default function Home() {
   );
 }`,
       apiFile: `import type { NextApiRequest, NextApiResponse } from 'next';
-import { initializeWeave } from '@weave/nextjs';
+import { initializeWeave } from '@weaveai/nextjs';
 
 const weave = initializeWeave({
   provider: {
@@ -434,9 +401,9 @@ export default async function handler(
   } catch (error) {
     res.status(500).json({ error: 'Generation failed' });
   }
-}`
+}`,
     },
-    'vue': {
+    vue: {
       mainFile: `<template>
   <div class="container">
     <h1>🧵 Weave AI App</h1>
@@ -457,7 +424,7 @@ export default async function handler(
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useWeave } from '@weave/vue';
+import { useWeave } from '@weaveai/vue';
 
 const prompt = ref('');
 const result = ref('');
@@ -511,7 +478,7 @@ button:disabled {
 }
 </style>`,
       indexFile: `import { createApp } from 'vue';
-import { createWeavePlugin } from '@weave/vue';
+import { createWeavePlugin } from '@weaveai/vue';
 import App from './App.vue';
 
 const app = createApp(App);
@@ -524,11 +491,11 @@ const weaveConfig = {
 };
 
 app.use(createWeavePlugin(weaveConfig));
-app.mount('#app');`
+app.mount('#app');`,
     },
-    'svelte': {
+    svelte: {
       mainFile: `<script lang="ts">
-  import { useWeave } from '@weave/svelte';
+  import { useWeave } from '@weaveai/svelte';
 
   const { generate, loading, error, data } = useWeave();
 
@@ -610,13 +577,13 @@ const app = new App({
   target: document.getElementById('app')!,
 });
 
-export default app;`
+export default app;`,
     },
-    'angular': {
+    angular: {
       mainFile: `import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WeaveService } from '@weave/angular';
+import { WeaveService } from '@weaveai/angular';
 
 @Component({
   selector: 'app-root',
@@ -660,8 +627,8 @@ export class AppComponent {
   </button>
   <p *ngIf="error" class="error">{{ error }}</p>
   <p *ngIf="result" class="result">{{ result }}</p>
-</main>`
-    }
+</main>`,
+    },
   };
 
   return baseContent[config.framework as keyof typeof baseContent] || baseContent['react-vite'];
@@ -678,15 +645,15 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
     scripts: {
       dev: '',
       build: '',
-      preview: ''
+      preview: '',
     },
     dependencies: {
-      '@weave/core': '^1.0.0'
+      '@weaveai/core': '^1.0.0',
     },
     devDependencies: {
       typescript: '^5.3.0',
-      '@types/node': '^20.0.0'
-    }
+      '@types/node': '^20.0.0',
+    },
   };
 
   // Add framework-specific configuration
@@ -695,18 +662,18 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
       basePackage.scripts = {
         dev: 'vite',
         build: 'tsc && vite build',
-        preview: 'vite preview'
+        preview: 'vite preview',
       };
       basePackage.dependencies = {
-        'react': '^18.2.0',
+        react: '^18.2.0',
         'react-dom': '^18.2.0',
-        '@weave/react': '^1.0.0',
-        ...basePackage.dependencies
+        '@weaveai/react': '^1.0.0',
+        ...basePackage.dependencies,
       };
       basePackage.devDependencies = {
-        'vite': '^5.0.0',
+        vite: '^5.0.0',
         '@vitejs/plugin-react': '^4.0.0',
-        ...basePackage.devDependencies
+        ...basePackage.devDependencies,
       };
       break;
 
@@ -714,15 +681,15 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
       basePackage.scripts = {
         dev: 'next dev',
         build: 'next build',
-        preview: 'next start'
+        preview: 'next start',
       };
       basePackage.dependencies = {
-        'next': '^14.0.0',
-        'react': '^18.2.0',
+        next: '^14.0.0',
+        react: '^18.2.0',
         'react-dom': '^18.2.0',
-        '@weave/react': '^1.0.0',
-        '@weave/nextjs': '^1.0.0',
-        ...basePackage.dependencies
+        '@weaveai/react': '^1.0.0',
+        '@weaveai/nextjs': '^1.0.0',
+        ...basePackage.dependencies,
       };
       break;
 
@@ -730,17 +697,17 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
       basePackage.scripts = {
         dev: 'vite',
         build: 'vite build',
-        preview: 'vite preview'
+        preview: 'vite preview',
       };
       basePackage.dependencies = {
-        'vue': '^3.3.0',
-        '@weave/vue': '^1.0.0',
-        ...basePackage.dependencies
+        vue: '^3.3.0',
+        '@weaveai/vue': '^1.0.0',
+        ...basePackage.dependencies,
       };
       basePackage.devDependencies = {
-        'vite': '^5.0.0',
+        vite: '^5.0.0',
         '@vitejs/plugin-vue': '^4.0.0',
-        ...basePackage.devDependencies
+        ...basePackage.devDependencies,
       };
       break;
 
@@ -748,18 +715,18 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
       basePackage.scripts = {
         dev: 'vite',
         build: 'vite build',
-        preview: 'vite preview'
+        preview: 'vite preview',
       };
       basePackage.dependencies = {
-        'svelte': '^4.0.0',
-        '@weave/svelte': '^1.0.0',
-        ...basePackage.dependencies
+        svelte: '^4.0.0',
+        '@weaveai/svelte': '^1.0.0',
+        ...basePackage.dependencies,
       };
       basePackage.devDependencies = {
-        'vite': '^5.0.0',
+        vite: '^5.0.0',
         '@sveltejs/vite-plugin-svelte': '^2.0.0',
         'svelte-check': '^3.0.0',
-        ...basePackage.devDependencies
+        ...basePackage.devDependencies,
       };
       break;
 
@@ -767,7 +734,7 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
       basePackage.scripts = {
         dev: 'ng serve',
         build: 'ng build',
-        preview: 'ng serve'
+        preview: 'ng serve',
       };
       basePackage.dependencies = {
         '@angular/animations': '^17.0.0',
@@ -777,17 +744,17 @@ function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
         '@angular/forms': '^17.0.0',
         '@angular/platform-browser': '^17.0.0',
         '@angular/platform-browser-dynamic': '^17.0.0',
-        '@weave/angular': '^1.0.0',
-        'rxjs': '^7.8.0',
-        'tslib': '^2.6.0',
+        '@weaveai/angular': '^1.0.0',
+        rxjs: '^7.8.0',
+        tslib: '^2.6.0',
         'zone.js': '^0.14.0',
-        ...basePackage.dependencies
+        ...basePackage.dependencies,
       };
       basePackage.devDependencies = {
         '@angular-devkit/build-angular': '^17.0.0',
         '@angular/cli': '^17.0.0',
         '@angular/compiler-cli': '^17.0.0',
-        ...basePackage.devDependencies
+        ...basePackage.devDependencies,
       };
       break;
   }

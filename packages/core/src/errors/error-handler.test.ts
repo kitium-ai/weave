@@ -8,14 +8,14 @@ import {
   getErrorSolution,
   formatErrorMessage,
   validateConfiguration,
-  WeaveError
+  WeaveError,
 } from './index.js';
 
 describe('Error Handler', () => {
   describe('extractErrorCode', () => {
     it('should extract error code from WeaveError', () => {
       const error = new WeaveError('Test error', {
-        code: 'INVALID_API_KEY'
+        code: 'INVALID_API_KEY',
       });
       expect(extractErrorCode(error)).toBe('INVALID_API_KEY');
     });
@@ -88,7 +88,7 @@ describe('Error Handler', () => {
   describe('formatErrorMessage', () => {
     it('should format error message with solution', () => {
       const error = new WeaveError('Invalid API key', {
-        code: 'INVALID_API_KEY'
+        code: 'INVALID_API_KEY',
       });
       const formatted = formatErrorMessage(error);
 
@@ -103,8 +103,8 @@ describe('Error Handler', () => {
         provider: 'openai',
         details: {
           timestamp: new Date().toISOString(),
-          userId: 'user123'
-        }
+          userId: 'user123',
+        },
       });
 
       expect(formatted).toContain('Context');
@@ -132,8 +132,8 @@ describe('Error Handler', () => {
       const config = {
         provider: {
           type: 'openai',
-          apiKey: 'sk-' + 'a'.repeat(48)
-        }
+          apiKey: 'sk-' + 'a'.repeat(48),
+        },
       };
       const result = validateConfiguration(config);
 
@@ -152,8 +152,8 @@ describe('Error Handler', () => {
     it('should detect missing provider type', () => {
       const config = {
         provider: {
-          apiKey: 'sk-test'
-        }
+          apiKey: 'sk-test',
+        },
       };
       const result = validateConfiguration(config);
 
@@ -165,8 +165,8 @@ describe('Error Handler', () => {
       const config = {
         provider: {
           type: 'invalid-provider',
-          apiKey: 'sk-test'
-        }
+          apiKey: 'sk-test',
+        },
       };
       const result = validateConfiguration(config);
 
@@ -177,8 +177,8 @@ describe('Error Handler', () => {
     it('should detect missing API key', () => {
       const config = {
         provider: {
-          type: 'openai'
-        }
+          type: 'openai',
+        },
       };
       const result = validateConfiguration(config);
 
@@ -190,8 +190,8 @@ describe('Error Handler', () => {
       const config = {
         provider: {
           type: 'openai',
-          apiKey: 'PLACEHOLDER_API_KEY'
-        }
+          apiKey: 'PLACEHOLDER_API_KEY',
+        },
       };
       const result = validateConfiguration(config);
 
@@ -204,8 +204,8 @@ describe('Error Handler', () => {
       const config = {
         provider: {
           type: 'openai',
-          apiKey: 'sk-short'
-        }
+          apiKey: 'sk-short',
+        },
       };
       const result = validateConfiguration(config);
 
@@ -221,8 +221,8 @@ describe('Error Handler', () => {
         const config = {
           provider: {
             type: provider,
-            apiKey: 'sk-' + 'a'.repeat(48)
-          }
+            apiKey: 'sk-' + 'a'.repeat(48),
+          },
         };
         const result = validateConfiguration(config);
         expect(result.valid).toBe(true);
@@ -287,33 +287,21 @@ describe('Error Handler', () => {
 
   describe('WeaveError methods', () => {
     it('should identify retryable errors', () => {
-      expect(
-        new WeaveError('Test', { code: 'RATE_LIMIT_EXCEEDED' }).isRetryable()
-      ).toBe(true);
-      expect(
-        new WeaveError('Test', { code: 'NETWORK_ERROR' }).isRetryable()
-      ).toBe(true);
-      expect(
-        new WeaveError('Test', { code: 'INVALID_API_KEY' }).isRetryable()
-      ).toBe(false);
+      expect(new WeaveError('Test', { code: 'RATE_LIMIT_EXCEEDED' }).isRetryable()).toBe(true);
+      expect(new WeaveError('Test', { code: 'NETWORK_ERROR' }).isRetryable()).toBe(true);
+      expect(new WeaveError('Test', { code: 'INVALID_API_KEY' }).isRetryable()).toBe(false);
     });
 
     it('should determine severity', () => {
-      expect(
-        new WeaveError('Test', { code: 'INVALID_API_KEY' }).getSeverity()
-      ).toBe('critical');
-      expect(
-        new WeaveError('Test', { code: 'RATE_LIMIT_EXCEEDED' }).getSeverity()
-      ).toBe('medium');
-      expect(
-        new WeaveError('Test', { code: 'UNKNOWN_ERROR' }).getSeverity()
-      ).toBe('low');
+      expect(new WeaveError('Test', { code: 'INVALID_API_KEY' }).getSeverity()).toBe('critical');
+      expect(new WeaveError('Test', { code: 'RATE_LIMIT_EXCEEDED' }).getSeverity()).toBe('medium');
+      expect(new WeaveError('Test', { code: 'UNKNOWN_ERROR' }).getSeverity()).toBe('low');
     });
 
     it('should serialize to JSON', () => {
       const error = new WeaveError('Test error', {
         code: 'TEST_ERROR',
-        context: { detail: 'test' }
+        context: { detail: 'test' },
       });
       const json = error.toJSON();
 

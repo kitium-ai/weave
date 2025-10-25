@@ -4,8 +4,8 @@
  */
 
 import { createApp } from 'vue';
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
 import App from './App.vue';
 
 // Initialize Weave with OpenAI provider

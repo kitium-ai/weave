@@ -5,10 +5,10 @@
    */
 
   import { onMount } from 'svelte';
-  import { createWeave } from '@weave/core';
-  import { OpenAIProvider } from '@weave/core/providers';
-  import { createAIChat } from '@weave/svelte';
-  import type { ChatMessage } from '@weave/core';
+  import { createWeave } from '@weaveai/core';
+  import { OpenAIProvider } from '@weaveai/core/providers';
+  import { createAIChat } from '@weaveai/svelte';
+  import type { ChatMessage } from '@weaveai/core';
 
   let input = '';
   let weave: any;

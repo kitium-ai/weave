@@ -4,13 +4,13 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
-import { Message } from '@weave/core';
+import { Weave } from '@weaveai/core';
+import type { ChatMessage } from '@weaveai/core';
 
 interface ChatRequest {
-  messages: Message[];
+  messages: ChatMessage[];
   temperature?: number;
+  stream?: boolean;
 }
 
 interface ChatResponse {
@@ -22,18 +22,19 @@ interface ErrorResponse {
 }
 
 // Initialize Weave (cached for performance)
-let weave: ReturnType<typeof createWeave> | null = null;
+let weavePromise: Promise<Weave> | null = null;
 
-function getWeave() {
-  if (!weave) {
-    weave = createWeave({
-      provider: new OpenAIProvider({
+function getWeave(): Promise<Weave> {
+  if (!weavePromise) {
+    weavePromise = Weave.createAsync({
+      provider: {
+        type: 'openai',
         apiKey: process.env.OPENAI_API_KEY!,
-        model: process.env.OPENAI_MODEL || 'gpt-4',
-      }),
+        model: process.env.OPENAI_MODEL || 'gpt-4-turbo',
+      },
     });
   }
-  return weave;
+  return weavePromise;
 }
 
 export default async function handler(
@@ -45,7 +46,7 @@ export default async function handler(
   }
 
   try {
-    const { messages, temperature } = req.body as ChatRequest;
+    const { messages, temperature, stream } = req.body as ChatRequest;
 
     // Validation
     if (!Array.isArray(messages) || messages.length === 0) {
@@ -57,13 +58,28 @@ export default async function handler(
       return res.status(400).json({ error: 'Invalid message format' });
     }
 
-    const weaveInstance = getWeave();
+    const weaveInstance = await getWeave();
 
-    // Get chat response
-    const response = await weaveInstance.getModel().chat(messages, {
-      temperature,
-    });
+    if (stream) {
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
 
+      let accumulated = '';
+      await weaveInstance.getModel().chat(messages, {
+        temperature,
+        streaming: true,
+        onChunk: (chunk) => {
+          accumulated += chunk;
+          res.write(`data: ${JSON.stringify({ chunk })}\n\n`);
+        },
+      });
+
+      res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+      return res.end();
+    }
+
+    const response = await weaveInstance.getModel().chat(messages, { temperature });
     return res.status(200).json({ response });
   } catch (error) {
     console.error('Chat API error:', error);

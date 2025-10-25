@@ -3,7 +3,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 
 export interface WeaveRouteOptions {
   weave: Weave;

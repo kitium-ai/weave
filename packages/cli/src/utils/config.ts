@@ -107,7 +107,7 @@ export function generateTsConfig(): string {
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@weave/*": ["node_modules/@weave/*"]
+      "@weaveai/*": ["node_modules/@weaveai/*"]
     }
   },
   "include": ["src"],
@@ -165,9 +165,10 @@ coverage
  * Generate README.md for the project
  */
 export function generateReadme(config: WeaveConfig): string {
+  const frameworkName = getFrameworkInfo(config.framework).name.split(' ')[0];
   return `# ${config.projectName}
 
-A Weave AI application built with ${config.framework.split('-')[0].toUpperCase()}.
+A Weave AI application built with ${frameworkName}.
 
 ## Getting Started
 
@@ -227,9 +228,7 @@ For help and support, visit:
 /**
  * Get framework-specific recommendations
  */
-export function getFrameworkInfo(
-  framework: string
-): {
+export function getFrameworkInfo(framework: string): {
   name: string;
   description: string;
   buildTool: string;
@@ -248,32 +247,32 @@ export function getFrameworkInfo(
       name: 'React (Vite)',
       description: 'Fast, modern React app with Vite bundler',
       buildTool: 'vite',
-      dependencies: ['react', 'react-dom', '@weave/react']
+      dependencies: ['react', 'react-dom', '@weaveai/react'],
     },
     'react-nextjs': {
       name: 'React (Next.js)',
       description: 'Full-stack React with Next.js',
       buildTool: 'next',
-      dependencies: ['next', 'react', 'react-dom', '@weave/react', '@weave/nextjs']
+      dependencies: ['next', 'react', 'react-dom', '@weaveai/react', '@weaveai/nextjs'],
     },
     vue: {
       name: 'Vue 3',
       description: 'Progressive Vue 3 app with Composition API',
       buildTool: 'vite',
-      dependencies: ['vue', '@weave/vue']
+      dependencies: ['vue', '@weaveai/vue'],
     },
     svelte: {
       name: 'Svelte',
       description: 'Lightweight Svelte app',
       buildTool: 'vite',
-      dependencies: ['svelte', '@weave/svelte']
+      dependencies: ['svelte', '@weaveai/svelte'],
     },
     angular: {
       name: 'Angular',
       description: 'Enterprise Angular application',
       buildTool: 'angular',
-      dependencies: ['@angular/core', '@angular/common', '@weave/angular']
-    }
+      dependencies: ['@angular/core', '@angular/common', '@weaveai/angular'],
+    },
   };
 
   return (
@@ -281,7 +280,7 @@ export function getFrameworkInfo(
       name: 'Unknown',
       description: 'Unknown framework',
       buildTool: 'unknown',
-      dependencies: []
+      dependencies: [],
     }
   );
 }
@@ -289,9 +288,7 @@ export function getFrameworkInfo(
 /**
  * Get provider-specific information
  */
-export function getProviderInfo(
-  provider: string
-): {
+export function getProviderInfo(provider: string): {
   name: string;
   description: string;
   docsUrl: string;
@@ -310,20 +307,20 @@ export function getProviderInfo(
       name: 'OpenAI',
       description: 'GPT-4, GPT-3.5 models',
       docsUrl: 'https://platform.openai.com/docs',
-      defaultModel: 'gpt-3.5-turbo'
+      defaultModel: 'gpt-3.5-turbo',
     },
     anthropic: {
       name: 'Anthropic',
       description: 'Claude 3 models (Opus, Sonnet, Haiku)',
       docsUrl: 'https://docs.anthropic.com',
-      defaultModel: 'claude-3-sonnet'
+      defaultModel: 'claude-3-sonnet',
     },
     google: {
       name: 'Google',
       description: 'Gemini and PaLM 2 models',
       docsUrl: 'https://ai.google.dev',
-      defaultModel: 'gemini-pro'
-    }
+      defaultModel: 'gemini-pro',
+    },
   };
 
   return (
@@ -331,7 +328,7 @@ export function getProviderInfo(
       name: 'Unknown',
       description: 'Unknown provider',
       docsUrl: '',
-      defaultModel: ''
+      defaultModel: '',
     }
   );
 }
@@ -343,7 +340,7 @@ export function getModelsByProvider(provider: string): string[] {
   const models: Record<string, string[]> = {
     openai: ['gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
     anthropic: ['claude-3-opus', 'claude-3-sonnet', 'claude-3-haiku'],
-    google: ['gemini-pro', 'palm-2']
+    google: ['gemini-pro', 'palm-2'],
   };
 
   return models[provider.toLowerCase()] || [];

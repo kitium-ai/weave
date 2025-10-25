@@ -3,9 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { OpenAIProvider } from '../src/providers/openai.js';
-import { AnthropicProvider } from '../src/providers/anthropic.js';
-import { GoogleProvider } from '../src/providers/google.js';
+import { OpenAIProvider, AnthropicProvider, GoogleProvider } from '../src';
 
 describe('Provider Integrations', () => {
   describe('OpenAI Provider', () => {
@@ -303,9 +301,9 @@ describe('Provider Integrations', () => {
       ];
 
       for (const method of methods) {
-        expect(typeof (openai as Record<string, unknown>)[method]).toBe('function');
-        expect(typeof (anthropic as Record<string, unknown>)[method]).toBe('function');
-        expect(typeof (google as Record<string, unknown>)[method]).toBe('function');
+        expect(typeof (openai as unknown as Record<string, unknown>)[method]).toBe('function');
+        expect(typeof (anthropic as unknown as Record<string, unknown>)[method]).toBe('function');
+        expect(typeof (google as unknown as Record<string, unknown>)[method]).toBe('function');
       }
     });
 

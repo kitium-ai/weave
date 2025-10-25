@@ -4,7 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createWeaveMiddleware, setupWeaveRoutes } from '../src/server/express-integration.js';
-import type { Weave } from '@weave/core';
+import type { Weave } from '@weaveai/core';
 import type { Request, Response } from 'express';
 
 const mockWeave: Weave = {

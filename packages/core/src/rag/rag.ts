@@ -2,7 +2,7 @@
  * RAG (Retrieval-Augmented Generation) system
  */
 
-import { getLogger } from '@weave/shared';
+import { getLogger } from '@weaveai/shared';
 import type { ILanguageModel } from '../providers/interfaces.js';
 import type {
   RAGDocument,
@@ -48,7 +48,11 @@ export class RAGSystem {
   /**
    * Index a document
    */
-  public async indexDocument(id: string, content: string, metadata?: Record<string, unknown>): Promise<void> {
+  public async indexDocument(
+    id: string,
+    content: string,
+    metadata?: Record<string, unknown>
+  ): Promise<void> {
     // Chunk the document
     const chunks = this.chunkDocument(content);
 
@@ -195,16 +199,14 @@ Answer:`;
 
     // Normalize
     const norm = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
-    return norm > 0 ? embedding.map(val => val / norm) : embedding;
+    return norm > 0 ? embedding.map((val) => val / norm) : embedding;
   }
 
   /**
    * Build context from retrieved documents
    */
   private buildContext(documents: RAGDocument[]): string {
-    return documents
-      .map(doc => `[${doc.id}] ${doc.content}`)
-      .join('\n\n');
+    return documents.map((doc) => `[${doc.id}] ${doc.content}`).join('\n\n');
   }
 
   /**
@@ -235,7 +237,7 @@ Answer:`;
    */
   public async deleteDocument(id: string): Promise<void> {
     const docsToDelete = Array.from(this.documents.values()).filter(
-      doc => doc.metadata?.sourceId === id || doc.id === id
+      (doc) => doc.metadata?.sourceId === id || doc.id === id
     );
 
     for (const doc of docsToDelete) {

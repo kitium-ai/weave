@@ -4,7 +4,7 @@
 
 import { writable } from 'svelte/store';
 import type { Readable } from 'svelte/store';
-import type { GenerateOptions } from '@weave/core';
+import type { Weave, GenerateOptions } from '@weaveai/core';
 
 export interface AIState<T = unknown> {
   data: T | null;
@@ -22,7 +22,7 @@ export interface UseAIStoreReturn<T = unknown> {
 /**
  * Create an AI operation store
  */
-export function createAIStore<T = unknown>(weave: Weave): UseAIStoreReturn<T> {
+export function createAIStore<T = unknown>(_weave: Weave): UseAIStoreReturn<T> {
   const initialState: AIState<T> = {
     data: null,
     loading: false,

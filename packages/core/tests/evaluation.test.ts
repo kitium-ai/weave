@@ -69,13 +69,8 @@ describe('Evaluation Framework', () => {
       const testSuite: TestSuite = {
         name: 'Test Suite',
         description: 'Test suite',
-        testCases: [
-          { id: 'test1', input: 'hello', expectedOutput: 'hello' },
-        ],
-        metrics: [
-          Evaluator.createExactMatchMetric(),
-          Evaluator.createJaccardMetric(),
-        ],
+        testCases: [{ id: 'test1', input: 'hello', expectedOutput: 'hello' }],
+        metrics: [Evaluator.createExactMatchMetric(), Evaluator.createJaccardMetric()],
       };
 
       const runner = async (input: any) => input;
@@ -110,9 +105,7 @@ describe('Evaluation Framework', () => {
       const testSuite: TestSuite = {
         name: 'Test Suite',
         description: 'Test suite',
-        testCases: [
-          { id: 'test1', input: 5, expectedOutput: 10 },
-        ],
+        testCases: [{ id: 'test1', input: 5, expectedOutput: 10 }],
         metrics: [Evaluator.createExactMatchMetric()],
       };
 
@@ -127,9 +120,7 @@ describe('Evaluation Framework', () => {
       const testSuite: TestSuite = {
         name: 'Test Suite',
         description: 'Test suite',
-        testCases: [
-          { id: 'test1', input: 5, expectedOutput: 5 },
-        ],
+        testCases: [{ id: 'test1', input: 5, expectedOutput: 5 }],
         metrics: [Evaluator.createExactMatchMetric()],
       };
 
@@ -174,9 +165,7 @@ describe('Evaluation Framework', () => {
         description: 'Test',
         controlFunction: async () => 80,
         treatmentFunction: async () => 100,
-        testCases: [
-          { id: 'test1', input: 0, expectedOutput: 100 },
-        ],
+        testCases: [{ id: 'test1', input: 0, expectedOutput: 100 }],
         metrics: [Evaluator.createExactMatchMetric()],
       };
 
@@ -191,9 +180,7 @@ describe('Evaluation Framework', () => {
         description: 'Test',
         controlFunction: async () => 0.5,
         treatmentFunction: async () => 0.6,
-        testCases: [
-          { id: 'test1', input: 0, expectedOutput: 1 },
-        ],
+        testCases: [{ id: 'test1', input: 0, expectedOutput: 1 }],
         metrics: [Evaluator.createExactMatchMetric()],
       };
 
@@ -232,9 +219,7 @@ describe('Evaluation Framework', () => {
           throw new Error('Control failed');
         },
         treatmentFunction: async () => 1,
-        testCases: [
-          { id: 'test1', input: 0, expectedOutput: 1 },
-        ],
+        testCases: [{ id: 'test1', input: 0, expectedOutput: 1 }],
         metrics: [Evaluator.createExactMatchMetric()],
       };
 

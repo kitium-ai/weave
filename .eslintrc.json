@@ -44,6 +44,7 @@
       },
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/await-thenable": "off",
@@ -54,6 +55,24 @@
       "files": ["examples/**/*"],
       "rules": {
         "no-console": "off"
+      }
+    },
+    {
+      "files": ["packages/core/src/advanced/**/*.ts"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "curly": ["error", "multi-line"],
+        "brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+      }
+    },
+    {
+      "files": ["packages/cli/src/**/*.ts"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+        ]
       }
     }
   ],

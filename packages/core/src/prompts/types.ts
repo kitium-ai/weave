@@ -29,7 +29,15 @@ export interface PromptTemplate {
   /** Variable definitions */
   variables: Record<string, VariableSchema>;
   /** Category for organization */
-  category: 'email' | 'content' | 'classification' | 'extraction' | 'sentiment' | 'translation' | 'chat' | 'custom';
+  category:
+    | 'email'
+    | 'content'
+    | 'classification'
+    | 'extraction'
+    | 'sentiment'
+    | 'translation'
+    | 'chat'
+    | 'custom';
   /** Tags for filtering and search */
   tags: string[];
   /** Template description */

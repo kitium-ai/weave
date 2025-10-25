@@ -4,9 +4,9 @@
  */
 
 import express, { Express, Request, Response } from 'express';
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
-import { createWeaveMiddleware } from '@weave/nodejs';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
+import { createWeaveMiddleware } from '@weaveai/nodejs';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;

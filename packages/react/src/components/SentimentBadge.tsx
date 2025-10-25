@@ -16,14 +16,10 @@ export const SentimentBadge: React.FC<SentimentBadgeProps> = ({
   colorMap = {
     positive: '#10b981',
     negative: '#ef4444',
-    neutral: '#6b7280'
-  }
+    neutral: '#6b7280',
+  },
 }) => {
-  const dominantSentiment = Math.max(
-    sentiment.positive,
-    sentiment.negative,
-    sentiment.neutral
-  );
+  const dominantSentiment = Math.max(sentiment.positive, sentiment.negative, sentiment.neutral);
 
   let type: 'positive' | 'negative' | 'neutral' = 'neutral';
   if (dominantSentiment === sentiment.positive) {
@@ -41,9 +37,11 @@ export const SentimentBadge: React.FC<SentimentBadgeProps> = ({
       }`}
       role="region"
       aria-label={`Sentiment analysis: ${type}`}
-      style={{
-        '--sentiment-color': colorMap[type]
-      } as React.CSSProperties & { '--sentiment-color': string }}
+      style={
+        {
+          '--sentiment-color': colorMap[type],
+        } as React.CSSProperties & { '--sentiment-color': string }
+      }
     >
       <div className="weave-sentiment__indicator">
         {type === 'positive' && '😊'}
@@ -58,8 +56,9 @@ export const SentimentBadge: React.FC<SentimentBadgeProps> = ({
 
       <div className="weave-sentiment__details">
         <small>
-          Pos: {(sentiment.positive * 100).toFixed(0)}% | Neg: {(sentiment.negative * 100).toFixed(0)}% |
-          Neutral: {(sentiment.neutral * 100).toFixed(0)}%
+          Pos: {(sentiment.positive * 100).toFixed(0)}% | Neg:{' '}
+          {(sentiment.negative * 100).toFixed(0)}% | Neutral: {(sentiment.neutral * 100).toFixed(0)}
+          %
         </small>
       </div>
     </div>

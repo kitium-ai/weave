@@ -2,22 +2,22 @@
  * Tests for create command
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
   validateProjectName,
   validateApiKey,
   validateFramework,
   validateProvider,
-  validateModel
-} from '../utils/validation.js';
+  validateModel,
+} from '../src/utils/validation.js';
 import {
   generateEnvFile,
   generateEnvExampleFile,
   generateReadme,
   getFrameworkInfo,
   getProviderInfo,
-  getModelsByProvider
-} from '../utils/config.js';
+  getModelsByProvider,
+} from '../src/utils/config.js';
 
 describe('Validation Utils', () => {
   describe('validateProjectName', () => {
@@ -143,7 +143,7 @@ describe('Config Utils', () => {
         framework: 'react-vite',
         provider: 'openai',
         model: 'gpt-3.5-turbo',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test',
       });
 
       expect(content).toContain('VITE_WEAVE_PROVIDER=OPENAI');
@@ -157,7 +157,7 @@ describe('Config Utils', () => {
         framework: 'react-vite',
         provider: 'anthropic',
         model: 'claude-3-sonnet',
-        apiKey: 'PLACEHOLDER_API_KEY'
+        apiKey: 'PLACEHOLDER_API_KEY',
       });
 
       expect(content).toContain('PLACEHOLDER_API_KEY');
@@ -189,7 +189,7 @@ describe('Config Utils', () => {
         framework: 'react-vite',
         provider: 'openai',
         model: 'gpt-3.5-turbo',
-        apiKey: 'test'
+        apiKey: 'test',
       });
 
       expect(content).toContain('MyApp');
@@ -201,7 +201,7 @@ describe('Config Utils', () => {
         framework: 'react-vite',
         provider: 'openai',
         model: 'gpt-3.5-turbo',
-        apiKey: 'test'
+        apiKey: 'test',
       });
 
       expect(content).toContain('React');
@@ -213,7 +213,7 @@ describe('Config Utils', () => {
         framework: 'vue',
         provider: 'anthropic',
         model: 'claude-3-sonnet',
-        apiKey: 'test'
+        apiKey: 'test',
       });
 
       expect(content).toContain('anthropic');
@@ -225,7 +225,7 @@ describe('Config Utils', () => {
         framework: 'svelte',
         provider: 'google',
         model: 'gemini-pro',
-        apiKey: 'test'
+        apiKey: 'test',
       });
 
       expect(content).toContain('npm install');
@@ -240,7 +240,7 @@ describe('Config Utils', () => {
       expect(info.name).toBe('React (Vite)');
       expect(info.buildTool).toBe('vite');
       expect(info.dependencies).toContain('react');
-      expect(info.dependencies).toContain('@weave/react');
+      expect(info.dependencies).toContain('@weaveai/react');
     });
 
     it('should return info for Next.js', () => {
@@ -248,21 +248,21 @@ describe('Config Utils', () => {
       expect(info.name).toBe('React (Next.js)');
       expect(info.buildTool).toBe('next');
       expect(info.dependencies).toContain('next');
-      expect(info.dependencies).toContain('@weave/nextjs');
+      expect(info.dependencies).toContain('@weaveai/nextjs');
     });
 
     it('should return info for Vue', () => {
       const info = getFrameworkInfo('vue');
       expect(info.name).toBe('Vue 3');
       expect(info.dependencies).toContain('vue');
-      expect(info.dependencies).toContain('@weave/vue');
+      expect(info.dependencies).toContain('@weaveai/vue');
     });
 
     it('should return info for Svelte', () => {
       const info = getFrameworkInfo('svelte');
       expect(info.name).toBe('Svelte');
       expect(info.dependencies).toContain('svelte');
-      expect(info.dependencies).toContain('@weave/svelte');
+      expect(info.dependencies).toContain('@weaveai/svelte');
     });
 
     it('should return info for Angular', () => {

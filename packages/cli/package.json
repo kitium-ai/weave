@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Interactive CLI to scaffold a new Weave AI application in seconds",
   "type": "module",
-  "bin": {
-    "create-weave-app": "./dist/index.js"
-  },
+  "bin": "./dist/index.js",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -35,11 +33,11 @@
     "angular"
   ],
   "dependencies": {
-    "prompts": "^2.4.2",
     "chalk": "^5.3.0",
-    "ora": "^8.0.1",
     "fs-extra": "^11.2.0",
-    "path-exists": "^5.0.0"
+    "ora": "^8.0.1",
+    "path-exists": "^5.0.0",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.0",

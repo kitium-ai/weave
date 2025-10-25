@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback, useRef } from 'react';
-import type { Weave, GenerateOptions, ClassifyOptions, ExtractOptions } from '@weave/core';
+import type { GenerateOptions, ClassifyOptions, ExtractOptions } from '@weaveai/core';
 import { useWeaveContext } from '../context/WeaveContext.js';
 
 /**

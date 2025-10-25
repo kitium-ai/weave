@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import type { ChatMessage, ChatOptions } from '@weave/core';
+import type { ChatMessage, ChatOptions } from '@weaveai/core';
 import { useWeaveContext } from '../context';
 
 /**

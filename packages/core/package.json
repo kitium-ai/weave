@@ -1,5 +1,5 @@
 {
-  "name": "@weave/core",
+  "name": "@weaveai/core",
   "version": "1.0.0",
   "description": "Weave core framework - framework-agnostic AI operations",
   "license": "Apache-2.0",
@@ -46,7 +46,7 @@
     "clean": "rm -rf dist coverage .turbo"
   },
   "dependencies": {
-    "@weave/shared": "1.0.0",
+    "@weaveai/shared": "1.0.0",
     "zod": "^3.22.0"
   },
   "devDependencies": {

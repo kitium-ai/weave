@@ -21,7 +21,7 @@ export const StreamingText: React.FC<StreamingTextProps> = ({
   className,
   style,
   typewriter = true,
-  charsPerSecond = 50
+  charsPerSecond = 50,
 }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [isComplete, setIsComplete] = useState(false);

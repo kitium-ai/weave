@@ -2,7 +2,7 @@
  * Extract operation
  */
 
-import { validateNonEmptyString, validateObject } from '@weave/shared';
+import { validateNonEmptyString, validateObject } from '@weaveai/shared';
 import { BaseOperation } from './base.js';
 import type { ExtractOptions } from '../types/index.js';
 

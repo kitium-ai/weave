@@ -4,9 +4,9 @@
  */
 
 import React, { useState } from 'react';
-import { createWeave } from '@weave/core';
-import { OpenAIProvider } from '@weave/core/providers';
-import { WeaveProvider, useAIChat } from '@weave/react';
+import { createWeave } from '@weaveai/core';
+import { OpenAIProvider } from '@weaveai/core/providers';
+import { WeaveProvider, useAIChat } from '@weaveai/react';
 import './App.css';
 
 // Initialize Weave
