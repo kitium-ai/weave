@@ -1,0 +1,82 @@
+/**
+ * StreamingText Component Styles
+ * Supports light and dark modes, responsive design
+ */
+
+.weave-streaming-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  color: inherit;
+}
+
+.weave-streaming-text__content {
+  display: inline;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.weave-streaming-text__cursor {
+  display: inline-block;
+  margin-left: 2px;
+  animation: weave-blink 1s infinite;
+  font-weight: bold;
+  color: inherit;
+}
+
+@keyframes weave-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .weave-streaming-text {
+    color: #e0e0e0;
+  }
+}
+
+/* Light mode support */
+@media (prefers-color-scheme: light) {
+  .weave-streaming-text {
+    color: #1a1a1a;
+  }
+}
+
+/* Accessible reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .weave-streaming-text__cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Responsive font sizes */
+@media (max-width: 640px) {
+  .weave-streaming-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .weave-streaming-text {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
+@media (min-width: 1025px) {
+  .weave-streaming-text {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+}

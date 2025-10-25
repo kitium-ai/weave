@@ -1,7 +1,7 @@
 /**
- * React hooks exports
+ * Weave React Hooks
+ * Custom hooks for AI integration
  */
 
-export * from './useAI.js';
-export * from './useAIChat.js';
-export * from './useAIStream.js';
+export { useAIForm } from './useAIForm.js';
+export type { UseAIFormOptions, UseAIFormReturn } from './useAIForm.js';

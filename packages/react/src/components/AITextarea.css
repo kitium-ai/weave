@@ -1,0 +1,56 @@
+/**
+ * AITextarea Component Styles
+ */
+
+.weave-textarea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.weave-textarea__input {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.weave-textarea__input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.weave-textarea__suggest-btn {
+  align-self: flex-end;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.weave-textarea__suggest-btn:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.weave-textarea__suggest-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (prefers-color-scheme: dark) {
+  .weave-textarea__input {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    border-color: #374151;
+  }
+}

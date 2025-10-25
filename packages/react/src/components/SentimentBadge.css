@@ -1,0 +1,92 @@
+/**
+ * SentimentBadge Component Styles
+ */
+
+.weave-sentiment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #f0fdf4;
+  border: 1px solid var(--sentiment-color);
+}
+
+.weave-sentiment--small {
+  font-size: 12px;
+  padding: 4px 8px;
+  gap: 4px;
+}
+
+.weave-sentiment--medium {
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+.weave-sentiment--large {
+  font-size: 16px;
+  padding: 12px 16px;
+}
+
+.weave-sentiment__indicator {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.weave-sentiment__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.weave-sentiment__label {
+  font-weight: 600;
+  color: var(--sentiment-color);
+}
+
+.weave-sentiment__percentage {
+  font-weight: 700;
+  color: var(--sentiment-color);
+}
+
+.weave-sentiment__details {
+  margin-left: auto;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.weave-sentiment--positive {
+  background-color: #f0fdf4;
+}
+
+.weave-sentiment--negative {
+  background-color: #fef2f2;
+}
+
+.weave-sentiment--neutral {
+  background-color: #f9fafb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .weave-sentiment {
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  .weave-sentiment--positive {
+    background-color: rgba(16, 185, 129, 0.15);
+  }
+
+  .weave-sentiment--negative {
+    background-color: rgba(239, 68, 68, 0.15);
+  }
+
+  .weave-sentiment--neutral {
+    background-color: rgba(107, 114, 128, 0.15);
+  }
+}
+
+@media (max-width: 480px) {
+  .weave-sentiment__details {
+    display: none;
+  }
+}

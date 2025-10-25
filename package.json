@@ -41,6 +41,7 @@
     "packages/flutter",
     "packages/swift",
     "packages/web",
+    "packages/cli",
     "packages/integrations/*",
     "examples/*"
   ],

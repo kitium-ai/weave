@@ -1,0 +1,82 @@
+/**
+ * AIInput Component Styles
+ */
+
+.weave-input {
+  position: relative;
+  width: 100%;
+}
+
+.weave-input__field {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.weave-input__field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.weave-input__suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  list-style: none;
+  padding: 4px 0;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.weave-input__suggestion-item {
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  font-family: inherit;
+}
+
+.weave-input__suggestion-item:hover {
+  background-color: #f3f4f6;
+}
+
+.weave-input__suggestion-item:active {
+  background-color: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .weave-input__field {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    border-color: #374151;
+  }
+
+  .weave-input__suggestions {
+    background: #111827;
+    border-color: #374151;
+  }
+
+  .weave-input__suggestion-item:hover {
+    background-color: #1f2937;
+  }
+
+  .weave-input__suggestion-item:active {
+    background-color: #374151;
+  }
+}

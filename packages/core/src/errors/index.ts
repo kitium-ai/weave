@@ -1,9 +1,29 @@
 /**
- * Core-specific error classes
+ * Core-specific error classes and utilities
  */
 
 import { WeaveError } from '@weave/shared';
 
+// Re-export WeaveError
+export type { WeaveErrorOptions } from './weave-error.js';
+export {
+  WeaveError,
+  isWeaveError,
+  assertWeaveError
+} from './weave-error.js';
+
+// Re-export error handling utilities
+export {
+  extractErrorCode,
+  getErrorSolution,
+  formatErrorMessage,
+  validateConfiguration,
+  ERROR_SOLUTIONS,
+  type ErrorContext,
+  type ErrorSolution
+} from './error-handler.js';
+
+// Core-specific error classes
 export class ModelNotFoundError extends WeaveError {
   public readonly name: string = 'ModelNotFoundError';
 
