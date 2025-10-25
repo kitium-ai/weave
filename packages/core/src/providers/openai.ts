@@ -3,7 +3,6 @@
  * Supports GPT-4, GPT-3.5, and other OpenAI models
  */
 
-import { getLogger } from '@weave/shared';
 import { BaseLanguageModel } from './base.js';
 import type {
   GenerateOptions,
@@ -13,7 +12,7 @@ import type {
   ExtractOptions,
   ChatMessage,
   ChatOptions,
-} from '../types/index.js';
+} from '../types';
 
 /**
  * OpenAI provider configuration
@@ -61,11 +60,10 @@ export class OpenAIProvider extends BaseLanguageModel {
   private readonly baseUrl: string;
   private readonly timeout: number;
   private readonly maxRetries: number;
-  private readonly logger = getLogger();
 
   public constructor(config: OpenAIConfig) {
     super();
-    this.validateConfig(config as Record<string, unknown>, ['apiKey']);
+    this.validateConfig(config as unknown as Record<string, unknown>, ['apiKey']);
 
     this.apiKey = config.apiKey;
     this.model = config.model ?? 'gpt-3.5-turbo';

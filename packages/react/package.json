@@ -1,0 +1,81 @@
+{
+  "name": "@weave/react",
+  "version": "0.1.0",
+  "description": "React bindings for Weave framework - hooks and components for AI operations",
+  "license": "Apache-2.0",
+  "author": "KitiumAI",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./hooks": {
+      "import": "./dist/esm/hooks/index.js",
+      "require": "./dist/cjs/hooks/index.js",
+      "types": "./dist/types/hooks/index.d.ts"
+    },
+    "./components": {
+      "import": "./dist/esm/components/index.js",
+      "require": "./dist/cjs/components/index.js",
+      "types": "./dist/types/components/index.d.ts"
+    },
+    "./context": {
+      "import": "./dist/esm/context/index.js",
+      "require": "./dist/cjs/context/index.js",
+      "types": "./dist/types/context/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --sourcemap",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    "clean": "rm -rf dist coverage .turbo"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@weave/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "weave",
+    "react",
+    "ai",
+    "llm",
+    "hooks",
+    "openai",
+    "anthropic",
+    "google"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitium-ai/weave.git",
+    "directory": "packages/react"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

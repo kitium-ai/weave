@@ -3,7 +3,6 @@
  * Supports Claude and other Anthropic models
  */
 
-import { getLogger } from '@weave/shared';
 import { BaseLanguageModel } from './base.js';
 import type {
   GenerateOptions,
@@ -13,7 +12,7 @@ import type {
   ExtractOptions,
   ChatMessage,
   ChatOptions,
-} from '../types/index.js';
+} from '../types';
 
 /**
  * Anthropic provider configuration
@@ -59,11 +58,10 @@ export class AnthropicProvider extends BaseLanguageModel {
   private readonly baseUrl: string;
   private readonly timeout: number;
   private readonly maxRetries: number;
-  private readonly logger = getLogger();
 
   public constructor(config: AnthropicConfig) {
     super();
-    this.validateConfig(config as Record<string, unknown>, ['apiKey']);
+    this.validateConfig(config as unknown as Record<string, unknown>, ['apiKey']);
 
     this.apiKey = config.apiKey;
     this.model = config.model ?? 'claude-3-sonnet-20240229';

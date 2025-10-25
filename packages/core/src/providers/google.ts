@@ -3,7 +3,6 @@
  * Supports Google's Generative AI models (Gemini)
  */
 
-import { getLogger } from '@weave/shared';
 import { BaseLanguageModel } from './base.js';
 import type {
   GenerateOptions,
@@ -13,7 +12,7 @@ import type {
   ExtractOptions,
   ChatMessage,
   ChatOptions,
-} from '../types/index.js';
+} from '../types';
 
 /**
  * Google provider configuration
@@ -57,11 +56,10 @@ export class GoogleProvider extends BaseLanguageModel {
   private readonly baseUrl: string;
   private readonly timeout: number;
   private readonly maxRetries: number;
-  private readonly logger = getLogger();
 
   public constructor(config: GoogleConfig) {
     super();
-    this.validateConfig(config as Record<string, unknown>, ['apiKey']);
+    this.validateConfig(config as unknown as Record<string, unknown>, ['apiKey']);
 
     this.apiKey = config.apiKey;
     this.model = config.model ?? 'gemini-pro';
