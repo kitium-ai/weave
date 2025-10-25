@@ -11,4 +11,6 @@ export * from './agents/index.js';
 export * from './rag/index.js';
 export * from './evaluation/index.js';
 export { Tool } from './tools/index.js';
+export * from './prompts/index.js';
+export * from './advanced/index.js';
 export * from './weave.js';
