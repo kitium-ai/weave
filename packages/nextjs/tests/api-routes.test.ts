@@ -5,6 +5,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createGenerateHandler, createClassifyHandler, createExtractHandler } from '../src';
 import type { NextRequest } from 'next/server';
+import type { Weave } from '@weave/core';
 
 const mockWeave: Weave = {
   generate: vi.fn().mockResolvedValue({ text: 'Generated text' }),

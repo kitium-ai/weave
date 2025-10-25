@@ -154,7 +154,7 @@ Provider Abstraction (OpenAI/Anthropic/etc.)
 External APIs
 ```
 
-For detailed architecture, see [ARCHITECTURE.md](./ARCHITECTURE.md)
+For detailed architecture, see [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Project Structure
 
@@ -215,7 +215,7 @@ yarn test:coverage
 - [API Reference](./docs/api-reference/)
 - [Examples](./examples/)
 - [Contributing Guide](./CONTRIBUTING.md)
-- [Architecture](./ARCHITECTURE.md)
+- [Architecture](docs/ARCHITECTURE.md)
 
 ## Contributing
 

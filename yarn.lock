@@ -1702,6 +1702,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/testing@npm:^10.0.0":
+  version: 10.4.20
+  resolution: "@nestjs/testing@npm:10.4.20"
+  dependencies:
+    tslib: "npm:2.8.1"
+  peerDependencies:
+    "@nestjs/common": ^10.0.0
+    "@nestjs/core": ^10.0.0
+    "@nestjs/microservices": ^10.0.0
+    "@nestjs/platform-express": ^10.0.0
+  peerDependenciesMeta:
+    "@nestjs/microservices":
+      optional: true
+    "@nestjs/platform-express":
+      optional: true
+  checksum: 10/5e0256ed2e80c161f2fea67b2dcf261c0a2d2f5d26072563b165abb6c9b6e065f9b2a0db266095a8223842276685b7ebaa52f7252889e5647de157164aac793c
+  languageName: node
+  linkType: hard
+
 "@next/env@npm:14.2.33":
   version: 14.2.33
   resolution: "@next/env@npm:14.2.33"
@@ -2754,8 +2773,12 @@ __metadata:
   dependencies:
     "@angular/common": "npm:^18.0.0"
     "@angular/core": "npm:^18.0.0"
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
   peerDependencies:
     "@angular/common": ^17.0.0 || ^18.0.0
     "@angular/core": ^17.0.0 || ^18.0.0
@@ -2782,8 +2805,14 @@ __metadata:
   dependencies:
     "@nestjs/common": "npm:^10.0.0"
     "@nestjs/core": "npm:^10.0.0"
+    "@nestjs/testing": "npm:^10.0.0"
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
+    reflect-metadata: "npm:^0.1.13"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
   peerDependencies:
     "@nestjs/common": ^10.0.0
     "@nestjs/core": ^10.0.0
@@ -2794,11 +2823,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@weave/nextjs@workspace:packages/nextjs"
   dependencies:
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
     "@weave/react": "npm:1.0.0"
     next: "npm:^14.0.0"
     react: "npm:^18.0.0"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
   peerDependencies:
     next: ^14.0.0 || ^15.0.0
     react: ^18.0.0 || ^19.0.0
@@ -2809,9 +2842,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@weave/nodejs@workspace:packages/nodejs"
   dependencies:
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
     express: "npm:^4.18.0"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2819,10 +2856,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@weave/react-native@workspace:packages/react-native"
   dependencies:
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
     react: "npm:^18.0.0"
     react-native: "npm:^0.71.0"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-native: ^0.70.0 || ^0.71.0 || ^0.72.0
@@ -2866,9 +2907,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@weave/svelte@workspace:packages/svelte"
   dependencies:
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
     svelte: "npm:^4.2.0"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
   peerDependencies:
     svelte: ^4.0.0
   languageName: unknown
@@ -2878,8 +2923,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@weave/vue@workspace:packages/vue"
   dependencies:
+    "@types/node": "npm:^20.0.0"
+    "@vitest/coverage-v8": "npm:^1.0.0"
     "@weave/core": "npm:1.0.0"
     tsup: "npm:^8.0.0"
+    typescript: "npm:^5.3.0"
+    vitest: "npm:^1.0.0"
     vue: "npm:^3.3.0"
   peerDependencies:
     vue: ^3.0.0
@@ -8348,6 +8397,13 @@ __metadata:
     source-map: "npm:~0.6.1"
     tslib: "npm:^2.0.1"
   checksum: 10/b41da2bcf7e705511db2f27d17420ace027de8dd167de9f19190d4988a1f80d112f60c095101ac2f145c8657ddde0c5133eb71df20504efaf3fd9d76ad07e15d
+  languageName: node
+  linkType: hard
+
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.14
+  resolution: "reflect-metadata@npm:0.1.14"
+  checksum: 10/fcab9c17ec3b9fea0e2f748c2129aceb57c24af6d8d13842b8a77c8c79dde727d7456ce293e76e8d7b267d1dbf93eea4c5b3c9101299a789a075824f2e40f1ee
   languageName: node
   linkType: hard
 
