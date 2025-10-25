@@ -29,7 +29,7 @@ export class Agent {
   public constructor(model: ILanguageModel, config: AgentConfig) {
     this.name = config.name;
     this.description = config.description;
-    this.tools = new Map(config.tools.map(tool => [tool.name, tool]));
+    this.tools = new Map(config.tools.map((tool) => [tool.name, tool]));
     this.maxSteps = config.maxSteps ?? 10;
     this.temperature = config.temperature ?? 0.7;
     this.systemPrompt = config.systemPrompt ?? this.getDefaultSystemPrompt();
@@ -58,8 +58,8 @@ export class Agent {
     };
 
     let result: unknown = null;
-    let totalInputTokens = 0;
-    let totalOutputTokens = 0;
+    const totalInputTokens = 0;
+    const totalOutputTokens = 0;
 
     try {
       while (context.currentStep < context.maxSteps) {
@@ -154,11 +154,14 @@ export class Agent {
    */
   private buildPrompt(context: AgentExecutionContext): string {
     const toolDescriptions = Array.from(this.tools.values())
-      .map(tool => `- ${tool.name}: ${tool.description}`)
+      .map((tool) => `- ${tool.name}: ${tool.description}`)
       .join('\n');
 
     const stepsHistory = context.steps
-      .map((step, i) => `Step ${i + 1}: Executed ${step.action.tool} with reasoning "${step.action.reasoning}"\nObservation: ${JSON.stringify(step.observation)}`)
+      .map(
+        (step, i) =>
+          `Step ${i + 1}: Executed ${step.action.tool} with reasoning "${step.action.reasoning}"\nObservation: ${JSON.stringify(step.observation)}`
+      )
       .join('\n\n');
 
     return `${this.systemPrompt}
@@ -212,7 +215,10 @@ Next action (respond in format: TOOL: <tool_name>, INPUT: <json>, REASONING: <re
    */
   private isFinalAnswer(observation: unknown): boolean {
     if (typeof observation === 'string') {
-      return observation.toLowerCase().includes('final answer') || observation.toLowerCase().includes('done');
+      return (
+        observation.toLowerCase().includes('final answer') ||
+        observation.toLowerCase().includes('done')
+      );
     }
 
     if (typeof observation === 'object' && observation !== null) {

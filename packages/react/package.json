@@ -1,6 +1,6 @@
 {
   "name": "@weave/react",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "React bindings for Weave framework - hooks and components for AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI",
@@ -12,19 +12,19 @@
       "require": "./dist/index.js"
     },
     "./hooks": {
+      "types": "./dist/types/hooks/index.d.ts",
       "import": "./dist/esm/hooks/index.js",
-      "require": "./dist/cjs/hooks/index.js",
-      "types": "./dist/types/hooks/index.d.ts"
+      "require": "./dist/cjs/hooks/index.js"
     },
     "./components": {
+      "types": "./dist/types/components/index.d.ts",
       "import": "./dist/esm/components/index.js",
-      "require": "./dist/cjs/components/index.js",
-      "types": "./dist/types/components/index.d.ts"
+      "require": "./dist/cjs/components/index.js"
     },
     "./context": {
+      "types": "./dist/types/context/index.d.ts",
       "import": "./dist/esm/context/index.js",
-      "require": "./dist/cjs/context/index.js",
-      "types": "./dist/types/context/index.d.ts"
+      "require": "./dist/cjs/context/index.js"
     }
   },
   "files": [
@@ -45,7 +45,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@weave/core": "workspace:*"
+    "@weave/core": "1.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
@@ -77,5 +77,9 @@
   "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

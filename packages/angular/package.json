@@ -1,0 +1,43 @@
+{
+  "name": "@weave/angular",
+  "version": "1.0.0",
+  "description": "Angular services and directives for Weave AI framework",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./services": {
+      "import": "./dist/services/index.js",
+      "require": "./dist/services/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/services/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --watch --format esm",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@weave/core": "1.0.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^17.0.0 || ^18.0.0",
+    "@angular/core": "^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
+    "@angular/common": "^18.0.0",
+    "@angular/core": "^18.0.0",
+    "tsup": "^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

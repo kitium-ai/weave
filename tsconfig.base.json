@@ -9,9 +9,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": ".",
-    "composite": true,
+    "composite": false,
     "paths": {
       "@weave/core": ["packages/core/src"],
       "@weave/shared": ["packages/shared/src"],
@@ -19,6 +18,10 @@
       "@weave/vue": ["packages/vue/src"],
       "@weave/svelte": ["packages/svelte/src"],
       "@weave/angular": ["packages/angular/src"],
+      "@weave/nodejs": ["packages/nodejs/src"],
+      "@weave/nextjs": ["packages/nextjs/src"],
+      "@weave/nestjs": ["packages/nestjs/src"],
+      "@weave/react-native": ["packages/react-native/src"],
       "@weave/flutter": ["packages/flutter/src"],
       "@weave/swift": ["packages/swift/src"],
       "@weave/web": ["packages/web/src"],
@@ -45,14 +48,5 @@
     "noFallthroughCasesInSwitch": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false
-  },
-  "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "tests",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  }
 }

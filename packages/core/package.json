@@ -1,6 +1,6 @@
 {
   "name": "@weave/core",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Weave core framework - framework-agnostic AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI",
@@ -12,24 +12,24 @@
       "require": "./dist/index.js"
     },
     "./operations": {
+      "types": "./dist/types/operations/index.d.ts",
       "import": "./dist/esm/operations/index.js",
-      "require": "./dist/cjs/operations/index.js",
-      "types": "./dist/types/operations/index.d.ts"
+      "require": "./dist/cjs/operations/index.js"
     },
     "./providers": {
+      "types": "./dist/types/providers/index.d.ts",
       "import": "./dist/esm/providers/index.js",
-      "require": "./dist/cjs/providers/index.js",
-      "types": "./dist/types/providers/index.d.ts"
+      "require": "./dist/cjs/providers/index.js"
     },
     "./tools": {
+      "types": "./dist/types/tools/index.d.ts",
       "import": "./dist/esm/tools/index.js",
-      "require": "./dist/cjs/tools/index.js",
-      "types": "./dist/types/tools/index.d.ts"
+      "require": "./dist/cjs/tools/index.js"
     },
     "./types": {
+      "types": "./dist/types/types/index.d.ts",
       "import": "./dist/esm/types/index.js",
-      "require": "./dist/cjs/types/index.js",
-      "types": "./dist/types/types/index.d.ts"
+      "require": "./dist/cjs/types/index.js"
     }
   },
   "files": [
@@ -46,7 +46,7 @@
     "clean": "rm -rf dist coverage .turbo"
   },
   "dependencies": {
-    "@weave/shared": "workspace:*",
+    "@weave/shared": "1.0.0",
     "zod": "^3.22.0"
   },
   "devDependencies": {
@@ -76,5 +76,9 @@
   "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

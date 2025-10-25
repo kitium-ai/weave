@@ -48,7 +48,9 @@ function DefaultInputRenderer({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim()) {
+      return;
+    }
 
     await onSubmit(input);
     setInput('');

@@ -179,11 +179,12 @@ describe('Weave React Hooks', () => {
     it('should send message and receive response', async () => {
       const { result } = renderHook(() => useAIChat(), { wrapper });
 
+      let response: string | null = null;
       await act(async () => {
-        const response = await result.current.sendMessage('Hello');
-        expect(response).toBe('Chat response');
+        response = await result.current.sendMessage('Hello');
       });
 
+      expect(response).toBe('Chat response');
       expect(result.current.messages).toHaveLength(2);
       expect(result.current.messages[0].role).toBe('user');
       expect(result.current.messages[1].role).toBe('assistant');

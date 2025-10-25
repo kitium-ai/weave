@@ -1,6 +1,6 @@
 {
   "name": "@weave/shared",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Weave shared utilities - common functionality across all packages",
   "license": "Apache-2.0",
   "author": "KitiumAI",
@@ -12,19 +12,19 @@
       "require": "./dist/index.js"
     },
     "./errors": {
+      "types": "./dist/types/errors/index.d.ts",
       "import": "./dist/esm/errors/index.js",
-      "require": "./dist/cjs/errors/index.js",
-      "types": "./dist/types/errors/index.d.ts"
+      "require": "./dist/cjs/errors/index.js"
     },
     "./logger": {
+      "types": "./dist/types/logger/index.d.ts",
       "import": "./dist/esm/logger/index.js",
-      "require": "./dist/cjs/logger/index.js",
-      "types": "./dist/types/logger/index.d.ts"
+      "require": "./dist/cjs/logger/index.js"
     },
     "./validation": {
+      "types": "./dist/types/validation/index.d.ts",
       "import": "./dist/esm/validation/index.js",
-      "require": "./dist/cjs/validation/index.js",
-      "types": "./dist/types/validation/index.d.ts"
+      "require": "./dist/cjs/validation/index.js"
     }
   },
   "files": [
@@ -63,5 +63,9 @@
   "sideEffects": false,
   "engines": {
     "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
