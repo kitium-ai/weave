@@ -2,7 +2,7 @@
  * Base operation class
  */
 
-import { getLogger } from '@weaveai/shared';
+import { getLogger, generateOperationId } from '@weaveai/shared';
 import type { ILanguageModel } from '../providers/interfaces.js';
 import type { OperationMetadata } from '../types/index.js';
 import { costTracker } from '../advanced/index.js';
@@ -90,6 +90,6 @@ export abstract class BaseOperation {
    * Generate unique operation ID
    */
   protected generateOperationId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return generateOperationId();
   }
 }

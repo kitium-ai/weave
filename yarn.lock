@@ -2895,7 +2895,7 @@ __metadata:
     "@angular/core": "npm:^18.0.0"
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     rxjs: "npm:^7.8.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
@@ -2907,13 +2907,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@weaveai/core@npm:1.0.0, @weaveai/core@workspace:packages/core":
+"@weaveai/core@npm:1.1.0, @weaveai/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@weaveai/core@workspace:packages/core"
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/shared": "npm:1.0.0"
+    "@weaveai/shared": "npm:1.1.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
     vitest: "npm:^1.0.0"
@@ -2930,7 +2930,7 @@ __metadata:
     "@nestjs/testing": "npm:^10.0.0"
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     reflect-metadata: "npm:^0.1.13"
     rxjs: "npm:^7.8.0"
     tsup: "npm:^8.0.0"
@@ -2948,8 +2948,8 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
-    "@weaveai/react": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
+    "@weaveai/react": "npm:1.1.0"
     next: "npm:^14.0.0"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.0.0"
@@ -2969,7 +2969,7 @@ __metadata:
     "@types/express": "npm:^4.17.0"
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     express: "npm:^4.18.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
@@ -2983,7 +2983,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     react: "npm:^18.0.0"
     react-native: "npm:^0.71.0"
     tsup: "npm:^8.0.0"
@@ -2995,7 +2995,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@weaveai/react@npm:1.0.0, @weaveai/react@workspace:packages/react":
+"@weaveai/react@npm:1.1.0, @weaveai/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@weaveai/react@workspace:packages/react"
   dependencies:
@@ -3004,7 +3004,7 @@ __metadata:
     "@types/react": "npm:^18.0.0"
     "@types/react-dom": "npm:^18.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.0.0"
     tsup: "npm:^8.0.0"
@@ -3016,7 +3016,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@weaveai/shared@npm:1.0.0, @weaveai/shared@workspace:packages/shared":
+"@weaveai/shared@npm:1.1.0, @weaveai/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@weaveai/shared@workspace:packages/shared"
   dependencies:
@@ -3034,7 +3034,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     svelte: "npm:^4.2.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
@@ -3050,7 +3050,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.0.0"
+    "@weaveai/core": "npm:1.1.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
     vitest: "npm:^1.0.0"

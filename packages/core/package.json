@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Weave core framework - framework-agnostic AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI",
@@ -46,7 +46,7 @@
     "clean": "rm -rf dist coverage .turbo"
   },
   "dependencies": {
-    "@weaveai/shared": "1.0.0",
+    "@weaveai/shared": "1.1.0",
     "zod": "^3.22.0"
   },
   "devDependencies": {
@@ -58,6 +58,16 @@
   },
   "keywords": [
     "weave",
+    "core",
+    "framework",
+    "agnostic",
+    "operations",
+    "providers",
+    "tools",
+    "types",
+    "weaveai",
+    "Kitium",
+    "KitiumAI",
     "ai",
     "llm",
     "openai",

@@ -4,19 +4,17 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createGenerateHandler, createClassifyHandler, createExtractHandler } from '../src';
-import type { NextRequest } from 'next/server';
+import { MockWeaveFactory, MockRequestFactory } from '@weaveai/shared/testing';
 import type { Weave } from '@weaveai/core';
 
-const mockWeave: Weave = {
-  generate: vi.fn().mockResolvedValue({ text: 'Generated text' }),
-  classify: vi.fn().mockResolvedValue({ label: 'positive', confidence: 0.95 }),
-  extract: vi.fn().mockResolvedValue({ key: 'value' }),
-  getModel: vi.fn().mockReturnValue({ chat: vi.fn() }),
-} as any;
+const mockWeave: Weave = MockWeaveFactory.createMockWeave();
 
-const createMockRequest = (method: string, body: any = {}): Partial<NextRequest> => ({
+const createMockRequest = (method: string, body: Record<string, unknown> = {}): Partial<NextRequest> => ({
   method,
-  json: vi.fn().mockResolvedValue(body),
+  json: vi.fn().mockResolvedValue(body) as any,
+  headers: new Headers({
+    'content-type': 'application/json',
+  }),
 });
 
 describe('createGenerateHandler', () => {
@@ -26,43 +24,40 @@ describe('createGenerateHandler', () => {
 
   it('should generate text', async () => {
     const handler = createGenerateHandler({ weave: mockWeave });
-    const req = createMockRequest('POST', { prompt: 'test' }) as any;
+    const req = createMockRequest('POST', { prompt: 'test' });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(200);
+    expect(response?.status).toBe(200);
     expect(mockWeave.generate).toHaveBeenCalledWith('test', undefined);
   });
 
   it('should reject non-POST requests', async () => {
     const handler = createGenerateHandler({ weave: mockWeave });
-    const req = createMockRequest('GET') as any;
+    const req = createMockRequest('GET');
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(405);
+    expect(response?.status).toBe(405);
   });
 
   it('should reject missing prompt', async () => {
     const handler = createGenerateHandler({ weave: mockWeave });
-    const req = createMockRequest('POST', {}) as any;
+    const req = createMockRequest('POST', {});
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(400);
+    expect(response?.status).toBe(400);
   });
 
   it('should handle generation errors', async () => {
-    const errorWeave = {
-      ...mockWeave,
-      generate: vi.fn().mockRejectedValue(new Error('Generation failed')),
-    };
-    const handler = createGenerateHandler({ weave: errorWeave as any });
-    const req = createMockRequest('POST', { prompt: 'test' }) as any;
+    const errorWeave = MockWeaveFactory.createMockWeaveWithError(new Error('Generation failed'));
+    const handler = createGenerateHandler({ weave: errorWeave });
+    const req = createMockRequest('POST', { prompt: 'test' });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(500);
+    expect(response?.status).toBe(500);
   });
 });
 
@@ -76,39 +71,39 @@ describe('createClassifyHandler', () => {
     const req = createMockRequest('POST', {
       text: 'good product',
       labels: ['positive', 'negative'],
-    }) as any;
+    });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(200);
+    expect(response?.status).toBe(200);
     expect(mockWeave.classify).toHaveBeenCalledWith('good product', ['positive', 'negative']);
   });
 
   it('should reject non-POST requests', async () => {
     const handler = createClassifyHandler({ weave: mockWeave });
-    const req = createMockRequest('GET') as any;
+    const req = createMockRequest('GET');
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(405);
+    expect(response?.status).toBe(405);
   });
 
   it('should reject missing text', async () => {
     const handler = createClassifyHandler({ weave: mockWeave });
-    const req = createMockRequest('POST', { labels: [] }) as any;
+    const req = createMockRequest('POST', { labels: [] });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(400);
+    expect(response?.status).toBe(400);
   });
 
   it('should reject non-array labels', async () => {
     const handler = createClassifyHandler({ weave: mockWeave });
-    const req = createMockRequest('POST', { text: 'good', labels: 'invalid' }) as any;
+    const req = createMockRequest('POST', { text: 'good', labels: 'invalid' });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(400);
+    expect(response?.status).toBe(400);
   });
 });
 
@@ -120,38 +115,38 @@ describe('createExtractHandler', () => {
   it('should extract data', async () => {
     const handler = createExtractHandler({ weave: mockWeave });
     const schema = { name: 'string' };
-    const req = createMockRequest('POST', { text: 'John', schema }) as any;
+    const req = createMockRequest('POST', { text: 'John', schema });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(200);
+    expect(response?.status).toBe(200);
     expect(mockWeave.extract).toHaveBeenCalledWith('John', schema);
   });
 
   it('should reject non-POST requests', async () => {
     const handler = createExtractHandler({ weave: mockWeave });
-    const req = createMockRequest('GET') as any;
+    const req = createMockRequest('GET');
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(405);
+    expect(response?.status).toBe(405);
   });
 
   it('should reject missing text', async () => {
     const handler = createExtractHandler({ weave: mockWeave });
-    const req = createMockRequest('POST', { schema: {} }) as any;
+    const req = createMockRequest('POST', { schema: {} });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(400);
+    expect(response?.status).toBe(400);
   });
 
   it('should reject missing schema', async () => {
     const handler = createExtractHandler({ weave: mockWeave });
-    const req = createMockRequest('POST', { text: 'data' }) as any;
+    const req = createMockRequest('POST', { text: 'data' });
 
-    const response = (await handler(req)) as any;
+    const response = await handler(req as NextRequest);
 
-    expect(response.status).toBe(400);
+    expect(response?.status).toBe(400);
   });
 });

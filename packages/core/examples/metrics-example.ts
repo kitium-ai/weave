@@ -3,7 +3,7 @@
  * Demonstrates collecting and tracking operational metrics
  */
 
-import { MetricsCollector } from '../packages/core/src/observability/metrics-collector.js';
+import { MetricsCollector } from '../src/observability/metrics-collector.js';
 
 async function metricsExample() {
   console.log('=== Metrics Collection ===\n');

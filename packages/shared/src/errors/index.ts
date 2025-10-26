@@ -123,3 +123,9 @@ export function isErrorType<T extends WeaveError>(
 ): error is T {
   return error instanceof errorClass;
 }
+
+// Export error converter utilities
+export * from './error-converter.js';
+
+// Export error logger utilities
+export * from './error-logger.js';

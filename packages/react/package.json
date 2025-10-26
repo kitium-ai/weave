@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/react",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React bindings for Weave framework - hooks and components for AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI",
@@ -45,7 +45,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@weaveai/core": "1.0.0"
+    "@weaveai/core": "1.1.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
@@ -61,13 +61,18 @@
   },
   "keywords": [
     "weave",
+    "weaveai",
     "react",
     "ai",
     "llm",
     "hooks",
     "openai",
     "anthropic",
-    "google"
+    "google",
+    "typescript",
+    "javascript",
+    "kitium",
+    "kitiumai"
   ],
   "repository": {
     "type": "git",

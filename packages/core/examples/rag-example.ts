@@ -3,8 +3,8 @@
  * Demonstrates Retrieval-Augmented Generation with semantic and keyword search
  */
 
-import { DocumentStore } from '../packages/core/src/rag/document-store.js';
-import { RAGRetriever } from '../packages/core/src/rag/rag-retriever.js';
+import { DocumentStore } from '../src/rag/document-store.js';
+import { RAGRetriever } from '../src/rag/rag-retriever.js';
 
 async function ragExample() {
   console.log('=== Retrieval-Augmented Generation ===\n');

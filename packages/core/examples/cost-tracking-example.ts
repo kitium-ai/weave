@@ -3,7 +3,7 @@
  * Demonstrates token usage tracking and cost estimation
  */
 
-import { CostTracker } from '../packages/core/src/observability/cost-tracker.js';
+import { CostTracker } from '../src/observability/cost-tracker.js';
 
 async function costTrackingExample() {
   console.log('=== Cost Tracking ===\n');

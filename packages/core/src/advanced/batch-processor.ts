@@ -3,6 +3,9 @@
  * Handle batch operations with rate limiting and retry logic
  */
 
+import { generateBatchJobId } from '@weaveai/shared';
+import { configManager } from '../config/index.js';
+
 export interface BatchJob<T = unknown> {
   id: string;
   items: T[];
@@ -42,10 +45,79 @@ export class BatchProcessor {
   private maxConcurrent: number = 3;
   private rateLimiter: RateLimiter;
   private currentProcessor: ((item: any, retries: number) => Promise<any>) | null = null;
+  private cleanupInterval: NodeJS.Timeout | null = null;
+  private maxJobHistory: number;
+  private jobTTL: number;
+  private cleanupIntervalDuration: number;
 
   constructor(private options: BatchOptions = {}) {
-    const rateLimit = options.rateLimit || Infinity;
+    const config = configManager.getBatchProcessorConfig();
+    const rateLimit = options.rateLimit || config.rateLimit;
     this.rateLimiter = new RateLimiter(rateLimit);
+    this.maxJobHistory = config.maxJobHistory;
+    this.jobTTL = config.jobTTL;
+    this.cleanupIntervalDuration = config.cleanupInterval;
+    this.maxConcurrent = config.maxConcurrent;
+    this.startAutoCleanup();
+  }
+
+  /**
+   * Start automatic cleanup interval
+   */
+  private startAutoCleanup(): void {
+    this.cleanupInterval = setInterval(() => {
+      this.cleanupExpiredJobs();
+    }, this.cleanupIntervalDuration);
+
+    // Allow process to exit even if cleanup interval is running
+    if (this.cleanupInterval.unref) {
+      this.cleanupInterval.unref();
+    }
+  }
+
+  /**
+   * Stop automatic cleanup
+   */
+  private stopAutoCleanup(): void {
+    if (this.cleanupInterval) {
+      clearInterval(this.cleanupInterval);
+      this.cleanupInterval = null;
+    }
+  }
+
+  /**
+   * Clean up expired jobs to prevent memory leaks
+   */
+  private cleanupExpiredJobs(): void {
+    const now = Date.now();
+    const toDelete: string[] = [];
+
+    for (const [jobId, job] of this.jobs.entries()) {
+      // Delete completed/failed jobs older than TTL
+      if ((job.status === 'completed' || job.status === 'failed') && job.endTime) {
+        const jobAge = now - job.endTime.getTime();
+        if (jobAge > this.jobTTL) {
+          toDelete.push(jobId);
+        }
+      }
+    }
+
+    toDelete.forEach((jobId) => this.jobs.delete(jobId));
+
+    // If too many jobs in memory, delete oldest completed ones
+    if (this.jobs.size > this.maxJobHistory) {
+      const sortedJobs = Array.from(this.jobs.entries()).sort((a, b) => {
+        const aTime = a[1].endTime?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bTime = b[1].endTime?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        return aTime - bTime;
+      });
+
+      const jobsToRemove = sortedJobs.length - this.maxJobHistory;
+      for (let i = 0; i < jobsToRemove; i++) {
+        const [jobId] = sortedJobs[i];
+        this.jobs.delete(jobId);
+      }
+    }
   }
 
   /**
@@ -55,7 +127,7 @@ export class BatchProcessor {
     items: T[],
     processor: (item: T, retries: number) => Promise<any>
   ): Promise<BatchJob> {
-    const jobId = `job-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const jobId = generateBatchJobId();
 
     const job: BatchJob<T> = {
       id: jobId,
@@ -90,7 +162,10 @@ export class BatchProcessor {
    * Process queue of jobs
    */
   private async processQueue(): Promise<void> {
-    while (this.jobQueue.length > 0 && this.activeJobs < this.maxConcurrent) {
+    const config = configManager.getBatchProcessorConfig();
+    const maxConcurrent = config.maxConcurrent;
+
+    while (this.jobQueue.length > 0 && this.activeJobs < maxConcurrent) {
       const jobId = this.jobQueue.shift() ?? '';
       const job = this.jobs.get(jobId) ?? undefined;
 
@@ -107,7 +182,8 @@ export class BatchProcessor {
     job.status = 'processing';
     job.startTime = new Date();
 
-    const batchSize = this.options.batchSize || 10;
+    const config = configManager.getBatchProcessorConfig();
+    const batchSize = this.options.batchSize || config.batchSize;
     const batches = Math.ceil(job.items.length / batchSize);
 
     for (let i = 0; i < batches; i++) {
@@ -135,9 +211,10 @@ export class BatchProcessor {
     itemIndex: number,
     retryCount: number
   ): Promise<void> {
-    const maxRetries = this.options.maxRetries || 3;
-    const retryDelay = this.options.retryDelay || 1000;
-    const timeout = this.options.timeout || 30000;
+    const config = configManager.getBatchProcessorConfig();
+    const maxRetries = this.options.maxRetries || config.maxRetries;
+    const retryDelay = this.options.retryDelay || config.retryDelay;
+    const timeout = this.options.timeout || config.timeout;
 
     try {
       // Rate limiting
@@ -214,6 +291,57 @@ export class BatchProcessor {
         this.jobs.delete(jobId);
       }
     }
+  }
+
+  /**
+   * Dispose of the batch processor and clean up resources
+   */
+  dispose(): void {
+    this.stopAutoCleanup();
+    this.jobs.clear();
+    this.jobQueue = [];
+    this.currentProcessor = null;
+  }
+
+  /**
+   * Get job statistics
+   */
+  getStats(): {
+    totalJobs: number;
+    pendingJobs: number;
+    processingJobs: number;
+    completedJobs: number;
+    failedJobs: number;
+  } {
+    let pending = 0;
+    let processing = 0;
+    let completed = 0;
+    let failed = 0;
+
+    for (const job of this.jobs.values()) {
+      switch (job.status) {
+        case 'pending':
+          pending++;
+          break;
+        case 'processing':
+          processing++;
+          break;
+        case 'completed':
+          completed++;
+          break;
+        case 'failed':
+          failed++;
+          break;
+      }
+    }
+
+    return {
+      totalJobs: this.jobs.size,
+      pendingJobs: pending,
+      processingJobs: processing,
+      completedJobs: completed,
+      failedJobs: failed,
+    };
   }
 
   private delay(ms: number): Promise<void> {

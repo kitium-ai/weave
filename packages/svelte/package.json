@@ -29,7 +29,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@weaveai/core": "1.0.0",
+    "@weaveai/core": "1.1.0",
     "svelte": "^4.0.0"
   },
   "peerDependencies": {
@@ -46,5 +46,16 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  }
+  },
+  "keywords": [
+    "weave",
+    "weaveai",
+    "svelte",
+    "ai",
+    "llm",
+    "typescript",
+    "javascript",
+    "kitium",
+    "kitiumai"
+  ]
 }

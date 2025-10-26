@@ -3,7 +3,7 @@
  * Demonstrates streaming responses with backpressure handling
  */
 
-import { StreamHandler } from '../packages/core/src/streaming/stream-handler.js';
+import { StreamHandler } from '../src/streaming/stream-handler.js';
 
 async function streamingExample() {
   console.log('=== Streaming with Backpressure ===\n');
