@@ -274,35 +274,40 @@ export function getErrorSolution(errorCode: string): ErrorSolution {
 export function formatErrorMessage(error: unknown, context?: ErrorContext): string {
   const code = extractErrorCode(error);
   const solution = getErrorSolution(code);
-  const _originalMessage = error instanceof Error ? error.message : String(error);
+  const originalMessage = error instanceof Error ? error.message : String(error);
 
   const lines: string[] = [
-    `❌ ${solution.title}`,
+    `Summary: ${solution.title}`,
     '',
     solution.description,
     '',
     'Steps to resolve:',
-    ...solution.steps,
+    ...solution.steps.map((step) => `  - ${step}`),
   ];
 
   if (context?.details) {
     lines.push('');
     lines.push('Context:');
     Object.entries(context.details).forEach(([key, value]) => {
-      lines.push(`  • ${key}: ${JSON.stringify(value)}`);
+      lines.push(`  - ${key}: ${JSON.stringify(value)}`);
     });
+  }
+
+  if (originalMessage) {
+    lines.push('');
+    lines.push(`Original error: ${originalMessage}`);
   }
 
   if (solution.documentation) {
     lines.push('');
-    lines.push(`📚 Learn more: ${solution.documentation}`);
+    lines.push(`Documentation: ${solution.documentation}`);
   }
 
   if (solution.examples && solution.examples.length > 0) {
     lines.push('');
     lines.push('Examples:');
     solution.examples.forEach((example) => {
-      lines.push(`  • ${example}`);
+      lines.push(`  - ${example}`);
     });
   }
 

@@ -28,7 +28,7 @@ export interface TokenUsage {
 /**
  * Cost estimate
  */
-export interface CostEstimate {
+export interface UsageCostEstimate {
   provider: string;
   model: string;
   tokenUsage: TokenUsage;

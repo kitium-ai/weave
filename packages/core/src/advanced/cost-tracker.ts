@@ -37,7 +37,7 @@ export interface CostSummary {
 /**
  * Cost Tracker for LLM operations
  */
-export class CostTracker {
+export class AdvancedCostTracker {
   private operations: OperationCost[] = [];
   private pricing: Map<string, ProviderPricing> = new Map();
 
@@ -206,4 +206,4 @@ export class CostTracker {
 }
 
 // Singleton instance
-export const costTracker = new CostTracker();
+export const advancedCostTracker = new AdvancedCostTracker();

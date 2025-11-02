@@ -30,6 +30,7 @@
   "workspaces": [
     "packages/core",
     "packages/shared",
+    "packages/component-generator",
     "packages/react",
     "packages/vue",
     "packages/svelte",

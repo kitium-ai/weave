@@ -2,7 +2,7 @@
  * Core-specific error classes and utilities
  */
 
-import { WeaveError } from '@weaveai/shared';
+import { WeaveError } from '@weaveai/shared/errors';
 
 // Re-export WeaveError
 export type { WeaveErrorOptions } from './weave-error.js';

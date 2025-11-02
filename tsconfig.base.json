@@ -14,6 +14,8 @@
     "paths": {
       "@weaveai/core": ["packages/core/src"],
       "@weaveai/shared": ["packages/shared/src"],
+      "@weaveai/shared/errors": ["packages/shared/src/errors"],
+      "@weaveai/component-generator": ["packages/component-generator/src"],
       "@weaveai/react": ["packages/react/src"],
       "@weaveai/vue": ["packages/vue/src"],
       "@weaveai/svelte": ["packages/svelte/src"],

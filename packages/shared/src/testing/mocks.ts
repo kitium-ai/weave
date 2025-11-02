@@ -3,8 +3,30 @@
  * Provides type-safe mock factories for Weave and related objects
  */
 
-import type { Weave, WeaveConfig } from '../types/index.js';
-import type { AIOperation } from '../types/index.js';
+import { vi, type Mock } from 'vitest';
+import type { Request, Response } from 'express';
+
+type MockWeaveFn = Mock;
+
+interface MockWeaveConfig extends Record<string, unknown> {
+  provider?: string;
+  model?: string;
+  apiKey?: string;
+  [key: string]: unknown;
+}
+
+interface MockWeave {
+  config?: MockWeaveConfig;
+  generate: MockWeaveFn;
+  classify: MockWeaveFn;
+  extract: MockWeaveFn;
+  evaluate: MockWeaveFn;
+  batch: MockWeaveFn;
+  rag: MockWeaveFn;
+  getModel: MockWeaveFn;
+  getProvider: MockWeaveFn;
+  [key: string]: unknown;
+}
 
 /**
  * Factory for creating mock Weave instances with proper typing
@@ -13,13 +35,13 @@ export class MockWeaveFactory {
   /**
    * Create a mock Weave with all operations mocked
    */
-  static createMockWeave(overrides?: Partial<Weave>): Weave {
-    const mockWeave: Weave = {
+  static createMockWeave<T extends MockWeave = MockWeave>(overrides?: Partial<T>): T {
+    const mockWeave: MockWeave = {
       config: {
         provider: 'anthropic',
         model: 'claude-3-sonnet-20240229',
         apiKey: 'test-key',
-      } as WeaveConfig,
+      },
 
       generate: vi.fn().mockResolvedValue({
         text: 'Generated text',
@@ -63,35 +85,35 @@ export class MockWeaveFactory {
         isInitialized: true,
       }),
 
-      ...overrides,
+      ...(overrides as Record<string, unknown> | undefined),
     };
 
-    return mockWeave;
+    return mockWeave as T;
   }
 
   /**
    * Create a mock Weave with custom operation responses
    */
-  static createMockWeaveWithResponses(responses: {
+  static createMockWeaveWithResponses<T extends MockWeave = MockWeave>(responses: {
     generateResponse?: unknown;
     classifyResponse?: unknown;
     extractResponse?: unknown;
-  }): Weave {
-    return this.createMockWeave({
+  }): T {
+    return this.createMockWeave<T>({
       generate: vi.fn().mockResolvedValue(responses.generateResponse),
       classify: vi.fn().mockResolvedValue(responses.classifyResponse),
       extract: vi.fn().mockResolvedValue(responses.extractResponse),
-    });
+    } as Partial<T>);
   }
 
   /**
    * Create a mock Weave that throws errors
    */
-  static createMockWeaveWithError(error: Error): Weave {
-    const mockWeave = this.createMockWeave();
-    (mockWeave.generate as any).mockRejectedValue(error);
-    (mockWeave.classify as any).mockRejectedValue(error);
-    (mockWeave.extract as any).mockRejectedValue(error);
+  static createMockWeaveWithError<T extends MockWeave = MockWeave>(error: Error): T {
+    const mockWeave = this.createMockWeave<T>();
+    (mockWeave.generate as Mock).mockRejectedValue(error);
+    (mockWeave.classify as Mock).mockRejectedValue(error);
+    (mockWeave.extract as Mock).mockRejectedValue(error);
     return mockWeave;
   }
 }
@@ -108,7 +130,7 @@ export class MockRequestFactory {
     body?: Record<string, unknown>,
     query?: Record<string, string | string[]>,
     params?: Record<string, string>
-  ): Partial<Express.Request> {
+  ): Partial<Request> {
     return {
       method,
       body: body || {},
@@ -117,13 +139,13 @@ export class MockRequestFactory {
       headers: {
         'content-type': 'application/json',
       },
-      get: (header: string) => {
-        const headerMap: Record<string, string> = {
+      get: ((header: string) => {
+        const headerMap: Record<string, string | string[] | undefined> = {
           'content-type': 'application/json',
           authorization: 'Bearer token',
         };
-        return headerMap[header.toLowerCase()] || '';
-      },
+        return headerMap[header.toLowerCase()];
+      }) as Request['get'],
     };
   }
 
@@ -131,21 +153,21 @@ export class MockRequestFactory {
    * Create a mock Express response
    */
   static createMockResponse(): {
-    res: Partial<Express.Response>;
-    status: jest.Mock;
-    json: jest.Mock;
-    send: jest.Mock;
+    res: Partial<Response>;
+    status: Mock;
+    json: Mock;
+    send: Mock;
   } {
     const status = vi.fn().mockReturnThis();
     const json = vi.fn().mockReturnThis();
     const send = vi.fn().mockReturnThis();
 
-    const res: Partial<Express.Response> = {
-      status,
-      json,
-      send,
-      setHeader: vi.fn().mockReturnThis(),
-      end: vi.fn(),
+    const res: Partial<Response> = {
+      status: status as unknown as Response['status'],
+      json: json as unknown as Response['json'],
+      send: send as unknown as Response['send'],
+      setHeader: vi.fn().mockReturnThis() as unknown as Response['setHeader'],
+      end: vi.fn() as unknown as Response['end'],
     };
 
     return { res, status, json, send };
@@ -176,7 +198,7 @@ export class MockRequestFactory {
  * Mock Weave configuration factory
  */
 export class MockConfigFactory {
-  static createMockConfig(overrides?: Partial<WeaveConfig>): WeaveConfig {
+  static createMockConfig(overrides?: Partial<MockWeaveConfig>): MockWeaveConfig {
     return {
       provider: 'anthropic',
       model: 'claude-3-sonnet-20240229',
@@ -184,7 +206,7 @@ export class MockConfigFactory {
       temperature: 0.7,
       maxTokens: 1024,
       ...overrides,
-    } as WeaveConfig;
+    };
   }
 }
 
@@ -195,7 +217,7 @@ export class MockAssertions {
   /**
    * Assert a function was called with specific arguments
    */
-  static assertCalledWith(fn: any, ...args: unknown[]): void {
+  static assertCalledWith(fn: Mock, ...args: unknown[]): void {
     if (!fn.mock.calls.some((call: unknown[]) => JSON.stringify(call) === JSON.stringify(args))) {
       throw new Error(
         `Expected function to be called with ${JSON.stringify(args)}, ` +
@@ -207,7 +229,7 @@ export class MockAssertions {
   /**
    * Assert a function was called a specific number of times
    */
-  static assertCallCount(fn: any, count: number): void {
+  static assertCallCount(fn: Mock, count: number): void {
     if (fn.mock.calls.length !== count) {
       throw new Error(`Expected function to be called ${count} times, but was called ${fn.mock.calls.length} times`);
     }
@@ -216,7 +238,7 @@ export class MockAssertions {
   /**
    * Assert a function was called at least once
    */
-  static assertCalled(fn: any): void {
+  static assertCalled(fn: Mock): void {
     if (fn.mock.calls.length === 0) {
       throw new Error('Expected function to be called at least once, but was never called');
     }

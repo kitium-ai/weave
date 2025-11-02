@@ -2,12 +2,19 @@
  * useComponentGenerator hook - Generate React components with AI
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { GenerateOptions } from '@weaveai/core';
 import { useWeaveContext } from '../context/WeaveContext.js';
 import { ComponentBuilder } from '../generators/component-builder.js';
 import { SpecParser } from '../generators/spec-parser.js';
-import type { GeneratedComponent, ComponentGeneratorOptions, UseComponentGeneratorOptions } from '../generators/types.js';
+import type {
+  GeneratedComponent,
+  ComponentGeneratorOptions,
+  UseComponentGeneratorOptions,
+  ComponentSpec,
+} from '../generators/types.js';
+
+const METADATA_GENERATOR_ID = 'weave-component-generator';
 
 /**
  * useComponentGenerator hook return type
@@ -39,6 +46,8 @@ export function useComponentGenerator(
   const [component, setComponent] = useState<GeneratedComponent | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const parser = useMemo(() => new SpecParser(), []);
+  const builder = useMemo(() => new ComponentBuilder(), []);
 
   const generate = useCallback(
     async (
@@ -58,20 +67,55 @@ export function useComponentGenerator(
         setError(null);
         options?.onStart?.();
 
+        const {
+          includeTests,
+          includeExamples,
+          includeDocumentation,
+          styling: stylingOverride,
+          complexity: complexityOverride,
+          ...weaveGenerateOptions
+        } = generatorOptions ?? {};
+
         // Step 1: Parse the description into a component specification
-        const spec = SpecParser.parse(description, componentName);
+        const parsedSpec = parser.parse(description, componentName);
+        const spec: ComponentSpec = {
+          ...parsedSpec,
+          styling: stylingOverride ?? parsedSpec.styling,
+          complexity: complexityOverride ?? parsedSpec.complexity,
+        };
 
         // Step 2: Generate enhancement prompt for AI to improve the spec
-        const enhancementPrompt = this.buildEnhancementPrompt(spec, description, generatorOptions);
+        const enhancementPrompt = buildEnhancementPrompt(spec, description, generatorOptions);
 
         // Step 3: Call Weave's generate to enhance the specification
-        const aiEnhancement = await weave.generate(enhancementPrompt, {
-          ...generatorOptions,
+        await weave.generate(enhancementPrompt, {
+          ...(weaveGenerateOptions as GenerateOptions),
           streaming: false,
         });
 
         // Step 4: Build the component with the enhanced spec
-        const generatedComponent = ComponentBuilder.buildComponent(spec, description);
+        const generatorOutput = builder.build(spec, description, {
+          includeTests,
+          includeExamples,
+          includeDocumentation,
+          includeTypes: true,
+        });
+
+        const generatedComponent: GeneratedComponent = {
+          componentCode: generatorOutput.code,
+          componentName: spec.name,
+          componentSpec: spec,
+          propsInterface: generatorOutput.types ?? '',
+          exampleUsage: generatorOutput.examples ?? '',
+          testFile: generatorOutput.tests ?? '',
+          metadata: {
+            generatedAt: generatorOutput.metadata.generatedAt,
+            generatedBy: METADATA_GENERATOR_ID,
+            version: generatorOutput.metadata.version,
+            description: generatorOutput.metadata.description,
+            keywords: spec.features,
+          },
+        };
 
         setComponent(generatedComponent);
         options?.onSuccess?.(generatedComponent);
@@ -86,7 +130,7 @@ export function useComponentGenerator(
         setLoading(false);
       }
     },
-    [weave, options]
+    [weave, options, parser, builder]
   );
 
   return {
@@ -101,17 +145,25 @@ export function useComponentGenerator(
  * Build enhancement prompt for AI
  */
 function buildEnhancementPrompt(
-  spec: any,
+  spec: ComponentSpec,
   userDescription: string,
   generatorOptions?: ComponentGeneratorOptions
 ): string {
+  const featureSummary = spec.features.length > 0 ? spec.features.join(', ') : 'none';
+  const includeTests = generatorOptions?.includeTests ?? false;
+  const includeExamples = generatorOptions?.includeExamples ?? false;
+  const includeDocumentation = generatorOptions?.includeDocumentation ?? false;
+
   return `Based on this React component request, provide enhancement suggestions:
 
 Component Name: ${spec.name}
 Description: ${userDescription}
-Detected Features: ${spec.features.join(', ')}
+Detected Features: ${featureSummary}
 Complexity: ${spec.complexity}
 Styling: ${spec.styling}
+Include Tests: ${includeTests ? 'yes' : 'no'}
+Include Examples: ${includeExamples ? 'yes' : 'no'}
+Include Documentation: ${includeDocumentation ? 'yes' : 'no'}
 
 Provide a JSON response with:
 1. Improved prop descriptions and types

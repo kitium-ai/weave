@@ -48,6 +48,11 @@ export class ProviderRouter {
     this.routes = [config.primaryRoute, ...(config.fallbackRoutes ?? [])];
     this.strategy = config.strategy ?? 'first-success';
     this.healthCheckIntervalMs = config.healthCheckIntervalMs ?? 60000;
+    this.logger.debug('Provider router initialized', {
+      strategy: this.strategy,
+      routeCount: this.routes.length,
+      healthCheckIntervalMs: this.healthCheckIntervalMs,
+    });
   }
 
   /**

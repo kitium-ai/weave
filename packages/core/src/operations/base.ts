@@ -5,7 +5,7 @@
 import { getLogger, generateOperationId } from '@weaveai/shared';
 import type { ILanguageModel } from '../providers/interfaces.js';
 import type { OperationMetadata } from '../types/index.js';
-import { costTracker } from '../advanced/index.js';
+import { advancedCostTracker } from '../advanced/index.js';
 
 /**
  * Base class for all operations
@@ -54,7 +54,7 @@ export abstract class BaseOperation {
       // Attempt cost tracking when token counts are available
       try {
         const info = this.model.getProviderInfo();
-        const op = costTracker.trackOperation(
+        const op = advancedCostTracker.trackOperation(
           metadata.id,
           info.provider,
           info.model,

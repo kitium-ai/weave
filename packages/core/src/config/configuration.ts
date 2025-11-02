@@ -30,7 +30,7 @@ export interface BatchProcessorConfig {
 /**
  * Provider Configuration
  */
-export interface ProviderConfig {
+export interface RuntimeProviderConfig {
   /** Default timeout in milliseconds for API calls (default: 30000) */
   timeout: number;
   /** Maximum number of retries for failed requests (default: 3) */
@@ -96,9 +96,9 @@ export interface LoggingConfig {
 /**
  * Complete Weave Configuration
  */
-export interface WeaveConfig {
+export interface WeaveRuntimeConfig {
   batchProcessor: BatchProcessorConfig;
-  provider: ProviderConfig;
+  provider: RuntimeProviderConfig;
   costTracker: CostTrackerConfig;
   rateLimit: RateLimitConfig;
   logging: LoggingConfig;
@@ -107,7 +107,7 @@ export interface WeaveConfig {
 /**
  * Default configuration values
  */
-export const DEFAULT_CONFIG: WeaveConfig = {
+export const DEFAULT_CONFIG: WeaveRuntimeConfig = {
   batchProcessor: {
     batchSize: 10,
     maxRetries: 3,
@@ -168,7 +168,7 @@ export const DEFAULT_CONFIG: WeaveConfig = {
  */
 export class ConfigurationManager {
   private static instance: ConfigurationManager;
-  private config: WeaveConfig = structuredClone(DEFAULT_CONFIG);
+  private config: WeaveRuntimeConfig = structuredClone(DEFAULT_CONFIG);
 
   /**
    * Get singleton instance
@@ -183,14 +183,14 @@ export class ConfigurationManager {
   /**
    * Get current configuration
    */
-  public getConfig(): Readonly<WeaveConfig> {
+  public getConfig(): Readonly<WeaveRuntimeConfig> {
     return Object.freeze(structuredClone(this.config));
   }
 
   /**
    * Update configuration
    */
-  public updateConfig(updates: Partial<WeaveConfig>): void {
+  public updateConfig(updates: Partial<WeaveRuntimeConfig>): void {
     this.config = {
       ...this.config,
       ...updates,
@@ -220,7 +220,7 @@ export class ConfigurationManager {
   /**
    * Get provider configuration
    */
-  public getProviderConfig(): Readonly<ProviderConfig> {
+  public getProviderConfig(): Readonly<RuntimeProviderConfig> {
     return Object.freeze(structuredClone(this.config.provider));
   }
 
@@ -309,14 +309,14 @@ export const configManager = ConfigurationManager.getInstance();
 /**
  * Helper to get configuration
  */
-export function getConfig(): Readonly<WeaveConfig> {
+export function getConfig(): Readonly<WeaveRuntimeConfig> {
   return configManager.getConfig();
 }
 
 /**
  * Helper to update configuration
  */
-export function updateConfig(updates: Partial<WeaveConfig>): void {
+export function updateConfig(updates: Partial<WeaveRuntimeConfig>): void {
   configManager.updateConfig(updates);
 }
 

@@ -20,7 +20,7 @@ export interface Document {
 /**
  * Search result
  */
-export interface SearchResult {
+export interface DocumentSearchResult {
   document: Document;
   similarity: number;
   rank: number;
@@ -188,7 +188,7 @@ export class DocumentStore {
   /**
    * Search documents by semantic similarity
    */
-  public async search(query: string, limit: number = 10): Promise<SearchResult[]> {
+  public async search(query: string, limit: number = 10): Promise<DocumentSearchResult[]> {
     let queryEmbedding: number[];
     if (!this.embeddingProvider) {
       // Use simple embedding when no provider is configured
@@ -196,7 +196,7 @@ export class DocumentStore {
     } else {
       queryEmbedding = await this.embeddingProvider.embed(query);
     }
-    const results: SearchResult[] = [];
+    const results: DocumentSearchResult[] = [];
 
     for (const [, document] of this.documents) {
       if (!document.embedding) {
@@ -217,7 +217,7 @@ export class DocumentStore {
       result.rank = index + 1;
     });
 
-    let top = results.slice(0, limit);
+    let top: DocumentSearchResult[] = results.slice(0, limit);
 
     // If no semantic results, fallback to keyword search to ensure some recall
     if (top.length === 0) {
@@ -231,8 +231,8 @@ export class DocumentStore {
   /**
    * Search by keyword (text-based)
    */
-  public searchKeyword(keyword: string, limit: number = 10): SearchResult[] {
-    const results: SearchResult[] = [];
+  public searchKeyword(keyword: string, limit: number = 10): DocumentSearchResult[] {
+    const results: DocumentSearchResult[] = [];
     const lowerKeyword = keyword.toLowerCase();
 
     for (const [, document] of this.documents) {

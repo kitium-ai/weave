@@ -163,9 +163,9 @@ export class BatchProcessor {
    */
   private async processQueue(): Promise<void> {
     const config = configManager.getBatchProcessorConfig();
-    const maxConcurrent = config.maxConcurrent;
+    this.maxConcurrent = config.maxConcurrent;
 
-    while (this.jobQueue.length > 0 && this.activeJobs < maxConcurrent) {
+    while (this.jobQueue.length > 0 && this.activeJobs < this.maxConcurrent) {
       const jobId = this.jobQueue.shift() ?? '';
       const job = this.jobs.get(jobId) ?? undefined;
 

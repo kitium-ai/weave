@@ -166,7 +166,6 @@ export class MetricsCollector {
    * Time a synchronous function execution
    */
   public timeSync<T>(name: string, fn: () => T, tags?: Record<string, string>): T {
-    const start = Date.now();
     const startHR = process.hrtime.bigint();
     try {
       return fn();

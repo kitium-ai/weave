@@ -220,8 +220,9 @@ function TypeGeneratorExample() {
       examples={examples}
       onExampleClick={(example) => {
         setInput(example.desc);
-        setUseMultiple(example.multiple);
-        if (example.multiple) {
+        const multiple = Boolean(example.multiple);
+        setUseMultiple(multiple);
+        if (multiple) {
           generateMultiple(['Type1', 'Type2'], example.desc);
         } else {
           generate(example.name, example.desc);
@@ -282,8 +283,9 @@ function UtilGeneratorExample() {
       examples={examples}
       onExampleClick={(example) => {
         setInput(example.desc);
-        setUseMultiple(example.multiple);
-        if (example.multiple) {
+        const multiple = Boolean(example.multiple);
+        setUseMultiple(multiple);
+        if (multiple) {
           generateMultiple(['util1', 'util2'], example.desc);
         } else {
           generate(example.name, example.desc);
@@ -361,8 +363,8 @@ interface GeneratorTemplateProps {
   error: Error | null;
   output: any;
   onGenerate: () => void;
-  examples: Array<{ name: string; desc: string }>;
-  onExampleClick: (example: { name: string; desc: string }) => void;
+  examples: Array<{ name: string; desc: string; multiple?: boolean }>;
+  onExampleClick: (example: { name: string; desc: string; multiple?: boolean }) => void;
   outputSections: Array<{ label: string; content?: string }>;
 }
 

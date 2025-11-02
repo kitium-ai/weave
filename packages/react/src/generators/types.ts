@@ -10,7 +10,9 @@ import type { BaseSpec } from '@weaveai/shared';
  */
 export interface ComponentSpec extends BaseSpec {
   framework: 'react';
+  language: 'typescript' | 'javascript';
   props: ComponentProp[];
+  features: string[];
   styling: 'tailwind' | 'styled-components' | 'css-modules' | 'inline';
   complexity: 'simple' | 'medium' | 'complex';
 }

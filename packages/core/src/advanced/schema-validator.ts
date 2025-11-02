@@ -140,7 +140,7 @@ export class SchemaValidator {
     }
 
     if (value === undefined || value === null) {
-      return { valid: true, value: null };
+      return { valid: true, value: null, errors: [] };
     }
 
     // Type validation
@@ -191,7 +191,7 @@ export class SchemaValidator {
     }
 
     // Transform if specified
-    let transformedValue = value;
+    let transformedValue: unknown = value;
     if (fieldSchema.transform) {
       try {
         transformedValue = fieldSchema.transform(value);
@@ -210,7 +210,7 @@ export class SchemaValidator {
       }
     }
 
-    return { valid: true, value: transformedValue };
+    return { valid: true, value: transformedValue, errors: [] };
   }
 
   /**

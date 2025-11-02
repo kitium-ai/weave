@@ -14,15 +14,17 @@ export class SpecParser extends BaseSpecParser {
    * Parse a natural language description into a component specification
    */
   public parse(description: string, componentName: string): ComponentSpec {
-    const features = this.extractFeatures(description);
-    const props = this.extractProps(description);
-    const complexity = this.assessComplexity(description);
-    const styling = this.detectStylingPreference(description);
+    const normalizedDescription = description.trim();
+    const features = this.extractFeatures(normalizedDescription);
+    const props = this.extractProps(normalizedDescription);
+    const complexity = this.assessComplexity(normalizedDescription, features);
+    const styling = this.detectStylingPreference(normalizedDescription);
 
     return {
       name: this.normalizeName(componentName),
-      description: description.substring(0, 200), // Limit to 200 chars
+      description: normalizedDescription.substring(0, 200), // Limit to 200 chars
       framework: 'react',
+      language: 'typescript',
       props: props.length > 0 ? props : this.generateDefaultProps(componentName),
       features,
       styling,

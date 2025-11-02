@@ -20,16 +20,26 @@ export class ComponentBuilder extends BaseCodeBuilder<ComponentSpec> {
   /**
    * Build a complete generated component from specification
    */
-  public build(spec: ComponentSpec, description: string, options?: CodeGenerationOptions): GeneratorOutput<ComponentSpec> {
+  public build(
+    spec: ComponentSpec,
+    description: string,
+    options?: CodeGenerationOptions
+  ): GeneratorOutput<ComponentSpec> {
+    const includeTests = options?.includeTests ?? true;
+    const includeExamples = options?.includeExamples ?? true;
+    const includeTypes = options?.includeTypes ?? true;
+
     const code = this.generateComponentCode(spec);
-    const tests = this.generateTestFile(spec);
-    const examples = this.generateExampleUsage(spec);
+    const tests = includeTests ? this.generateTestFile(spec) : undefined;
+    const examples = includeExamples ? this.generateExampleUsage(spec) : undefined;
+    const types = includeTypes ? this.generatePropsInterface(spec) : undefined;
     const metadata = this.createMetadata(spec, description, 'weave-react-component-generator');
 
     return {
       code,
       tests,
       examples,
+      types,
       metadata,
       spec,
     };

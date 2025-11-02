@@ -2,6 +2,8 @@
  * Core type definitions for Weave framework
  */
 
+import type { StreamResult, StreamingConfig } from '../streaming/stream-handler.js';
+
 /**
  * Log level for operations
  */
@@ -23,8 +25,8 @@ export interface BaseOperationOptions {
 export interface GenerateOptions extends BaseOperationOptions {
   temperature?: number;
   maxTokens?: number;
-  streaming?: boolean;
-  onChunk?: (chunk: string) => void;
+  streaming?: boolean | StreamingConfig<string>;
+  onChunk?: (chunk: string) => void | Promise<void>;
   topP?: number;
   frequencyPenalty?: number;
   presencePenalty?: number;
@@ -41,6 +43,7 @@ export interface GenerateResult {
     output: number;
   };
   finishReason: 'stop' | 'length' | 'error';
+  stream?: StreamResult<string>;
 }
 
 /**
@@ -106,8 +109,8 @@ export interface ChatMessage {
  * Chat options
  */
 export interface ChatOptions extends BaseOperationOptions {
-  streaming?: boolean;
-  onChunk?: (chunk: string) => void;
+  streaming?: boolean | StreamingConfig<string>;
+  onChunk?: (chunk: string) => void | Promise<void>;
   systemPrompt?: string;
 }
 

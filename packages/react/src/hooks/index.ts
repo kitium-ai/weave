@@ -12,6 +12,14 @@ export type { UseAIChatOptions, UseAIChatReturn } from './useAIChat.js';
 export { useAIForm } from './useAIForm.js';
 export type { UseAIFormOptions, UseAIFormReturn } from './useAIForm.js';
 
+export { useFormValidator } from './useFormValidator.js';
+export type {
+  UseFormValidatorOptions,
+  UseFormValidatorReturn,
+  FormValidationIssue,
+  FormValidatorOperation,
+} from './useFormValidator.js';
+
 export { useAIStream } from './useAIStream.js';
 export type { UseAIStreamOptions, UseAIStreamReturn } from './useAIStream.js';
 
@@ -29,3 +37,11 @@ export type { UseUtilGeneratorReturn } from './useUtilGenerator.js';
 
 export { useQueryGenerator } from './useQueryGenerator.js';
 export type { UseQueryGeneratorReturn } from './useQueryGenerator.js';
+
+export { useSmartExtract } from './useSmartExtract.js';
+export type {
+  UseSmartExtractOptions,
+  UseSmartExtractReturn,
+  SmartExtractResult,
+  UseSmartExtractRunOptions,
+} from './useSmartExtract.js';

@@ -11,8 +11,8 @@ export {
   type ValidationErrorDetail,
 } from './schema-validator.js';
 export {
-  CostTracker,
-  costTracker,
+  AdvancedCostTracker,
+  advancedCostTracker,
   type TokenCost,
   type ProviderPricing,
   type OperationCost,

@@ -1,0 +1,65 @@
+{
+  "name": "@weaveai/component-generator",
+  "version": "1.1.0",
+  "description": "AI-assisted UI component generator powered by Weave",
+  "license": "Apache-2.0",
+  "author": "KitiumAI",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --sourcemap",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    "clean": "rm -rf dist coverage .turbo"
+  },
+  "dependencies": {
+    "@weaveai/core": "1.1.0",
+    "@weaveai/shared": "1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "weave",
+    "component",
+    "generator",
+    "ui",
+    "react",
+    "vue",
+    "angular",
+    "react-native",
+    "tailwind",
+    "kitium",
+    "kitiumai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kitium-ai/weave.git",
+    "directory": "packages/component-generator"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

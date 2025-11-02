@@ -4,7 +4,7 @@
  */
 
 import { getLogger } from '@weaveai/shared';
-import { DocumentStore, SearchResult } from './document-store.js';
+import { DocumentStore, DocumentSearchResult } from './document-store.js';
 
 /**
  * Retriever options
@@ -56,7 +56,7 @@ export class RAGRetriever {
       includeMetadata = true,
     } = options;
 
-    let results: SearchResult[] = [];
+    let results: DocumentSearchResult[] = [];
 
     if (searchMethod === 'semantic') {
       results = await this.store.search(query, topK * 2);
@@ -67,7 +67,7 @@ export class RAGRetriever {
       const keywordResults = this.store.searchKeyword(query, topK);
 
       // Merge results, preferring higher scores
-      const merged = new Map<string, SearchResult>();
+      const merged = new Map<string, DocumentSearchResult>();
 
       for (const result of semanticResults) {
         merged.set(result.document.id, {
