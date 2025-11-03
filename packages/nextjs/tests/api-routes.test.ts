@@ -9,7 +9,10 @@ import type { Weave } from '@weaveai/core';
 
 const mockWeave: Weave = MockWeaveFactory.createMockWeave();
 
-const createMockRequest = (method: string, body: Record<string, unknown> = {}): Partial<NextRequest> => ({
+const createMockRequest = (
+  method: string,
+  body: Record<string, unknown> = {}
+): Partial<NextRequest> => ({
   method,
   json: vi.fn().mockResolvedValue(body) as any,
   headers: new Headers({

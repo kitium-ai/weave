@@ -35,10 +35,7 @@ const DEFAULT_OPTIONS: ChatControllerOptions = {
   streaming: { enabled: false, framework: 'svelte' },
 };
 
-export function createChatStore(
-  weave: Weave,
-  options?: ChatControllerOptions
-): ChatStore {
+export function createChatStore(weave: Weave, options?: ChatControllerOptions): ChatStore {
   let controller = new ChatController(
     (prompt, generateOptions) => weave.generate(prompt, generateOptions),
     { ...DEFAULT_OPTIONS, ...(options ?? {}) }

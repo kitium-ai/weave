@@ -1,8 +1,4 @@
-import {
-  ProviderSwitch,
-  ProviderEventFeed,
-  useProviderRouting,
-} from '@weaveai/react';
+import { ProviderSwitch, ProviderEventFeed, useProviderRouting } from '@weaveai/react';
 import type { UIAwareProviderRouter } from '@weaveai/core';
 
 export function ProvidersPanel({ router }: { router: UIAwareProviderRouter }) {

@@ -13,6 +13,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ### What Changed
 
 **Before**: Hardcoded colors
+
 ```css
 .component {
   background: #ffffff;
@@ -22,6 +23,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **After**: Theme variables
+
 ```css
 .component {
   background: var(--kt-surface-primary);
@@ -35,11 +37,13 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ## Updated Files
 
 ### CSS Files (3 components)
+
 - ✅ `src/components/PromptEditor.css` - Complete theme variable integration
 - ✅ `src/components/ProviderSwitch.css` - Complete theme variable integration
 - ✅ `src/components/CacheFeedback.css` - Complete theme variable integration
 
 ### Global Styles (NEW)
+
 - ✅ `src/styles/index.css` - Global styles with theme imports
 - ✅ `src/styles/theme-variables.css` - All 6 theme presets with CSS custom properties
 
@@ -48,6 +52,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 #### Color Categories
 
 **Surface Colors** (Backgrounds)
+
 ```css
 --kt-surface-primary    /* Main background */
 --kt-surface-secondary  /* Secondary background */
@@ -55,6 +60,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Text Colors** (Foregrounds)
+
 ```css
 --kt-text-primary       /* Primary text */
 --kt-text-secondary     /* Secondary text */
@@ -63,6 +69,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Border Colors**
+
 ```css
 --kt-border-default     /* Default borders */
 --kt-border-light       /* Light borders */
@@ -71,6 +78,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Interactive States**
+
 ```css
 --kt-hover-bg           /* Hover background */
 --kt-active-bg          /* Active background */
@@ -80,6 +88,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Semantic Colors**
+
 ```css
 --kt-primary            /* Primary action color */
 --kt-primary-light      /* Light variant */
@@ -99,6 +108,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Typography**
+
 ```css
 --kt-font-family        /* Font stack */
 --kt-font-size-sm       /* Small font */
@@ -107,6 +117,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Spacing**
+
 ```css
 --kt-spacing-xs         /* Extra small (0.25rem) */
 --kt-spacing-sm         /* Small (0.5rem) */
@@ -116,6 +127,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Borders & Radius**
+
 ```css
 --kt-radius-sm          /* Small radius */
 --kt-radius-md          /* Medium radius */
@@ -123,6 +135,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Shadows**
+
 ```css
 --kt-shadow-sm          /* Small shadow */
 --kt-shadow-md          /* Medium shadow */
@@ -130,6 +143,7 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 ```
 
 **Transitions**
+
 ```css
 --kt-transition-fast    /* Fast transition (0.15s) */
 --kt-transition-normal  /* Normal transition (0.2s) */
@@ -143,31 +157,37 @@ All Weave React components have been updated to use kitium-ui theme variables fo
 All 6 kitium-ui theme presets are supported:
 
 ### 1. Light Theme (Default)
+
 - **Applied**: `:root` selector
 - **Palette**: Bright, clean colors on white
 - **Use Case**: Default desktop application theme
 
 ### 2. Dark Theme
+
 - **Applied**: `[data-theme='dark']` selector
 - **Palette**: Cool colors on dark background
 - **Use Case**: Night mode, dark preference
 
 ### 3. Ocean Theme
+
 - **Applied**: `[data-theme='ocean']` selector
 - **Palette**: Blue/teal colors with light background
 - **Use Case**: Professional, oceanic feel
 
 ### 4. Material Theme
+
 - **Applied**: `[data-theme='material']` selector
 - **Palette**: Material Design colors and typography
 - **Use Case**: Material Design compliance
 
 ### 5. Apple Theme
+
 - **Applied**: `[data-theme='apple']` selector
 - **Palette**: iOS-inspired colors and rounded corners
 - **Use Case**: Apple ecosystem consistency
 
 ### 6. Minimal Theme
+
 - **Applied**: `[data-theme='minimal']` selector
 - **Palette**: Monochromatic with accent colors
 - **Use Case**: Minimalist, distraction-free interface
@@ -177,29 +197,33 @@ All 6 kitium-ui theme presets are supported:
 ## Usage Example
 
 ### Apply Theme in HTML
+
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" href="@weaveai/react/dist/index.css">
-</head>
-<body>
-  <div id="app"></div>
+  <head>
+    <link rel="stylesheet" href="@weaveai/react/dist/index.css" />
+  </head>
+  <body>
+    <div id="app"></div>
 
-  <script>
-    // Apply theme
-    document.documentElement.setAttribute('data-theme', 'dark');
-  </script>
-</body>
+    <script>
+      // Apply theme
+      document.documentElement.setAttribute('data-theme', 'dark');
+    </script>
+  </body>
 </html>
 ```
 
 ### Apply Theme in React
+
 ```tsx
 import '@weaveai/react/dist/index.css';
 
 export function App() {
-  const [theme, setTheme] = useState<'light' | 'dark' | 'ocean' | 'material' | 'apple' | 'minimal'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'ocean' | 'material' | 'apple' | 'minimal'>(
+    'light'
+  );
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -223,6 +247,7 @@ export function App() {
 ## Component Styling Summary
 
 ### PromptEditor Component
+
 - ✅ Background uses surface colors (primary)
 - ✅ Text uses text colors (primary, secondary, tertiary)
 - ✅ Buttons use semantic colors (success, primary)
@@ -233,6 +258,7 @@ export function App() {
 - ✅ Error states use error colors (error, error-light)
 
 ### ProviderSwitch Component
+
 - ✅ Grid items use surface colors
 - ✅ Active states use active backgrounds
 - ✅ Health indicators use success/error colors
@@ -242,6 +268,7 @@ export function App() {
 - ✅ Hover effects use interactive colors
 
 ### CacheFeedback Component
+
 - ✅ Toast background uses surface primary
 - ✅ Cache hit uses success colors
 - ✅ Cache miss uses warning colors
@@ -283,7 +310,9 @@ export function App() {
 ## Integration with kitium-ui
 
 ### Current State
+
 Weave components use kitium-ui theme variables exclusively:
+
 - All colors reference CSS custom properties
 - All fonts use `--kt-font-family`
 - All spacing uses `--kt-spacing-*` variables
@@ -291,13 +320,16 @@ Weave components use kitium-ui theme variables exclusively:
 - All transitions use `--kt-transition-*` variables
 
 ### Theme Consistency
+
 When kitium-ui theme is applied (via `data-theme` attribute), all Weave components automatically adapt:
+
 - Text colors match foreground palette
 - Background colors match surface palette
 - Borders and dividers use border palette
 - Interactive states use designated colors
 
 ### No Hard Dependency
+
 - Weave components don't import kitium-ui code
 - Variables defined in `theme-variables.css`
 - Components work with any CSS that provides `--kt-*` variables
@@ -308,18 +340,22 @@ When kitium-ui theme is applied (via `data-theme` attribute), all Weave componen
 ## Migration Notes
 
 ### For Component Users
+
 No changes required! Components automatically use theme:
+
 ```tsx
 // Just import and use
 import { PromptEditor } from '@weaveai/react';
 import '@weaveai/react/dist/index.css';
 
 // Components automatically use active theme
-<PromptEditor {...props} />
+<PromptEditor {...props} />;
 ```
 
 ### For Theme Switchers
+
 Apply theme to document root:
+
 ```tsx
 document.documentElement.setAttribute('data-theme', themeName);
 // All Weave components update instantly
@@ -330,6 +366,7 @@ document.documentElement.setAttribute('data-theme', themeName);
 ## Future Enhancements
 
 ### Phase 1: Complete ✅
+
 - [x] Extract all hardcoded colors
 - [x] Create CSS variable mappings
 - [x] Update component CSS files
@@ -337,12 +374,14 @@ document.documentElement.setAttribute('data-theme', themeName);
 - [x] Test builds succeed
 
 ### Phase 2: Integration Testing
+
 - [ ] Create visual regression tests
 - [ ] Test all theme combinations
 - [ ] Storybook theme switcher
 - [ ] Document theme system
 
 ### Phase 3: Feature Parity
+
 - [ ] Component-level theme overrides
 - [ ] Custom theme creation guide
 - [ ] Theme animation preferences

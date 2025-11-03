@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { useCache } from '../hooks/useCache.js';
-import {
-  CacheFeedback,
-  CacheFeedbackHistory,
-  CacheBadge,
-} from '../components/CacheFeedback.js';
+import { CacheFeedback, CacheFeedbackHistory, CacheBadge } from '../components/CacheFeedback.js';
 import type { CacheConfig } from '../hooks/useCache.js';
 
 /**
@@ -17,12 +13,7 @@ export const BasicCacheIntegrationExample = () => {
     ttl: 3600,
   };
 
-  const {
-    queryCache,
-    storeInCache,
-    lastFeedback,
-    feedbackHistory,
-  } = useCache({
+  const { queryCache, storeInCache, lastFeedback, feedbackHistory } = useCache({
     cacheConfig,
     showNotification: true,
     notificationDuration: 3000,
@@ -124,13 +115,7 @@ export const CacheWithMetricsExample = () => {
     }),
   };
 
-  const {
-    queryCache,
-    storeInCache,
-    lastFeedback,
-    stats,
-    refreshStats,
-  } = useCache({
+  const { queryCache, storeInCache, lastFeedback, stats, refreshStats } = useCache({
     cacheConfig,
     showNotification: true,
   });
@@ -162,25 +147,19 @@ export const CacheWithMetricsExample = () => {
             }}
           >
             <div>
-              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                Entries
-              </p>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Entries</p>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>
                 {stats.entriesCount}
               </p>
             </div>
             <div>
-              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                Hit Rate
-              </p>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Hit Rate</p>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>
                 {(stats.hitRate * 100).toFixed(1)}%
               </p>
             </div>
             <div>
-              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                Avg Latency
-              </p>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Avg Latency</p>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>
                 {stats.avgLatency.toFixed(0)}ms
               </p>
@@ -206,12 +185,7 @@ export const CacheStrategiesComparisonExample = () => {
     ttl: 3600,
   };
 
-  const {
-    queryCache,
-    storeInCache,
-    lastFeedback,
-    clearCache,
-  } = useCache({
+  const { queryCache, storeInCache, lastFeedback, clearCache } = useCache({
     cacheConfig,
     showNotification: true,
   });
@@ -315,25 +289,19 @@ export const CacheWithCostBreakdownExample = () => {
           }}
         >
           <div>
-            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#047857' }}>
-              Cost Saved
-            </p>
+            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#047857' }}>Cost Saved</p>
             <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#065f46' }}>
               ${totalSavings.cost.toFixed(4)}
             </p>
           </div>
           <div>
-            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#047857' }}>
-              Latency Saved
-            </p>
+            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#047857' }}>Latency Saved</p>
             <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#065f46' }}>
               {totalSavings.latency.toFixed(0)}ms
             </p>
           </div>
           <div>
-            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#047857' }}>
-              Tokens Saved
-            </p>
+            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#047857' }}>Tokens Saved</p>
             <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#065f46' }}>
               {totalSavings.tokens}
             </p>
@@ -481,17 +449,13 @@ export const CompleteCacheUIExample = () => {
               }}
             >
               <div>
-                <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                  Entries
-                </p>
+                <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Entries</p>
                 <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>
                   {stats.entriesCount}
                 </p>
               </div>
               <div>
-                <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                  Hit Rate
-                </p>
+                <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Hit Rate</p>
                 <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>
                   {(stats.hitRate * 100).toFixed(1)}%
                 </p>

@@ -12,10 +12,7 @@ import type { UIAwareProviderRouter } from '@weaveai/core';
         <p>Status: {{ provider.healthy ? 'Healthy' : 'Offline' }}</p>
         <p>Latency: {{ provider.latency | number: '1.0-0' }} ms</p>
         <p>Success: {{ provider.successRate | number: '1.1-1' }}%</p>
-        <button
-          (click)="selectProvider(provider.name)"
-          [disabled]="!provider.healthy"
-        >
+        <button (click)="selectProvider(provider.name)" [disabled]="!provider.healthy">
           Route here
         </button>
       </article>
@@ -23,10 +20,9 @@ import type { UIAwareProviderRouter } from '@weaveai/core';
       <h3>Recent events</h3>
       <ul>
         <li *ngFor="let event of routingState.events">
-          <strong>{{ event.type }}</strong>:
-          <span *ngIf="event.from">
-            {{ event.from }} → {{ event.to }}
-          </span>
+          <strong>{{ event.type }}</strong
+          >:
+          <span *ngIf="event.from"> {{ event.from }} → {{ event.to }} </span>
           <span *ngIf="!event.from">{{ event.to }}</span>
           <small>{{ event.timestamp.toLocaleTimeString() }}</small>
         </li>

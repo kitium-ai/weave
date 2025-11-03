@@ -269,7 +269,10 @@ export class DocumentStore {
    */
   private generateSimpleEmbedding(text: string | undefined): number[] {
     const safeText = typeof text === 'string' ? text : '';
-    const words = safeText.toLowerCase().split(/\s+/).filter((w) => w.length > 0);
+    const words = safeText
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 0);
     const embedding = new Array(128).fill(0);
     if (words.length === 0) return embedding;
     for (const word of words) {

@@ -16,6 +16,7 @@ Whether you're building with React, Vue, Angular, Flutter, or Node.js backends, 
 ## Key Features
 
 ### AI Operations
+
 - **Generate** — Create text from prompts
 - **Classify** — Categorize text into predefined labels
 - **Extract** — Pull structured data from unstructured text
@@ -26,6 +27,7 @@ Whether you're building with React, Vue, Angular, Flutter, or Node.js backends, 
 - **Sentiment** — Emotional tone analysis
 
 ### Framework Support
+
 - **React** — Hooks + Components
 - **Vue** — Composables + Components
 - **Svelte** — Reactive stores
@@ -38,7 +40,9 @@ Whether you're building with React, Vue, Angular, Flutter, or Node.js backends, 
 - **Plain JavaScript** — No framework needed
 
 ### AI Providers
+
 Works with any AI provider:
+
 - OpenAI (GPT-4, GPT-3.5-turbo)
 - Anthropic (Claude 3)
 - Google (Gemini)
@@ -47,6 +51,7 @@ Works with any AI provider:
 - Custom providers
 
 ### Production Ready
+
 - Full TypeScript support with strict mode
 - Comprehensive error handling
 - Built-in cost tracking and analytics
@@ -55,6 +60,7 @@ Works with any AI provider:
 - Security best practices
 
 ### Unified UI Building Blocks
+
 - **Shared AI controllers** – Reuse the same budgeting, cost tracking, and execution logic across every framework.
 - **Chat orchestration** – Vue composables, Svelte stores, Angular services, and React Native hooks now share the rich multi-turn chat engine from the React package.
 - **Smart caching helpers** – Cache feedback, stats, and invalidation flows are exposed consistently through framework primitives.
@@ -67,32 +73,38 @@ Works with any AI provider:
 For your framework:
 
 **React/Vue/Svelte/Angular:**
+
 ```bash
 npm install @weaveai/core @weaveai/react
 # or @weaveai/vue, @weaveai/svelte, @weaveai/angular
 ```
 
 **Node.js/Express:**
+
 ```bash
 npm install @weaveai/core @weaveai/nodejs
 ```
 
 **Next.js:**
+
 ```bash
 npm install @weaveai/core @weaveai/nextjs @weaveai/react
 ```
 
 **NestJS:**
+
 ```bash
 npm install @weaveai/core @weaveai/nestjs
 ```
 
 **React Native:**
+
 ```bash
 npm install @weaveai/core @weaveai/react-native
 ```
 
 **Flutter:**
+
 ```bash
 flutter pub add weave_flutter
 ```
@@ -100,6 +112,7 @@ flutter pub add weave_flutter
 ### Basic Example
 
 **React:**
+
 ```typescript
 import { useAI } from '@weaveai/react';
 
@@ -117,11 +130,12 @@ function MyComponent() {
 ```
 
 **Node.js/Express:**
+
 ```typescript
 import { Weave } from '@weaveai/core';
 
 const weave = await Weave.createAsync({
-  provider: { type: 'openai', apiKey: process.env.OPENAI_API_KEY! }
+  provider: { type: 'openai', apiKey: process.env.OPENAI_API_KEY! },
 });
 
 app.post('/api/generate', async (req, res) => {
@@ -131,6 +145,7 @@ app.post('/api/generate', async (req, res) => {
 ```
 
 **Vue:**
+
 ```typescript
 import { useAI } from '@weaveai/vue';
 
@@ -141,17 +156,18 @@ export default {
     });
 
     return { result, loading };
-  }
-}
+  },
+};
 ```
 
 **Angular:**
+
 ```typescript
 import { AIService } from '@weaveai/angular';
 
 @Component({
   selector: 'app-chat',
-  template: `<div>{{ result$ | async }}</div>`
+  template: `<div>{{ result$ | async }}</div>`,
 })
 export class ChatComponent {
   result$ = this.ai.generate('Write a haiku about AI');
@@ -161,11 +177,12 @@ export class ChatComponent {
 ```
 
 **Next.js API Route:**
+
 ```typescript
 import { Weave } from '@weaveai/core';
 
 const weave = await Weave.createAsync({
-  provider: { type: 'openai', apiKey: process.env.OPENAI_API_KEY! }
+  provider: { type: 'openai', apiKey: process.env.OPENAI_API_KEY! },
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -175,15 +192,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 ```
 
 **Svelte:**
+
 ```typescript
 import { createAI } from '@weaveai/svelte';
 
-const { result, loading } = createAI(() =>
-  weave.generate('Write a haiku about AI')
-);
+const { result, loading } = createAI(() => weave.generate('Write a haiku about AI'));
 ```
 
 **NestJS:**
+
 ```typescript
 @Controller('ai')
 export class AIController {
@@ -197,6 +214,7 @@ export class AIController {
 ```
 
 **React Native:**
+
 ```typescript
 import { useAI } from '@weaveai/react-native';
 
@@ -214,6 +232,7 @@ function ChatScreen() {
 ```
 
 **Flutter:**
+
 ```dart
 import 'package:weave_flutter/weave_flutter.dart';
 
@@ -254,7 +273,7 @@ const data = await weave.extract(text, schema);
 const response = await weave.chat([
   { role: 'user', content: 'Hello' },
   { role: 'assistant', content: 'Hi there!' },
-  { role: 'user', content: 'How are you?' }
+  { role: 'user', content: 'How are you?' },
 ]);
 ```
 
@@ -267,9 +286,9 @@ const weave = await Weave.createAsync({
     apiKey: process.env.API_KEY,
     model: 'gpt-4', // model name
   },
-  streaming: true,  // enable streaming
-  timeout: 30000,   // request timeout
-  maxRetries: 3,    // auto-retry failed requests
+  streaming: true, // enable streaming
+  timeout: 30000, // request timeout
+  maxRetries: 3, // auto-retry failed requests
 });
 ```
 
@@ -309,6 +328,7 @@ AZURE_OPENAI_ENDPOINT=...
 ```
 
 For frontend apps (React, Vue, etc.), use framework-specific env variables:
+
 ```bash
 REACT_APP_OPENAI_API_KEY=sk_...
 VITE_OPENAI_API_KEY=sk_...

@@ -79,9 +79,7 @@ const ChatPage: NextPage = () => {
     <div className="chat-container">
       <div className="chat-header">
         <h1>🎯 Weave Chat - Next.js</h1>
-        <p className="status">
-          {loading ? 'Sending...' : error ? 'Error' : 'Ready'}
-        </p>
+        <p className="status">{loading ? 'Sending...' : error ? 'Error' : 'Ready'}</p>
       </div>
 
       <div className="chat-messages">

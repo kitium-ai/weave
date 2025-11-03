@@ -15,6 +15,7 @@ export function exampleComponentGeneration(): void {
     name: 'product-card',
     description: 'Displays a product card with title, price, and add to cart button',
     framework: 'angular',
+    language: 'typescript',
     inputs: [
       {
         name: 'productId',
@@ -78,6 +79,7 @@ export function exampleServiceGeneration(): void {
     name: 'user-service',
     description: 'Service for managing user data and authentication',
     framework: 'angular',
+    language: 'typescript',
     methods: [
       {
         name: 'getUsers',

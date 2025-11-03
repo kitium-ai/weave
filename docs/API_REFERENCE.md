@@ -32,12 +32,12 @@ class Weave {
 
 ```typescript
 interface GenerateOptions {
-  temperature?: number;        // 0-2, controls randomness
-  maxTokens?: number;         // Maximum tokens to generate
-  topP?: number;              // Nucleus sampling parameter
-  frequencyPenalty?: number;  // Reduce repetition
-  presencePenalty?: number;   // Encourage new topics
-  stopSequences?: string[];   // Stop generation at these sequences
+  temperature?: number; // 0-2, controls randomness
+  maxTokens?: number; // Maximum tokens to generate
+  topP?: number; // Nucleus sampling parameter
+  frequencyPenalty?: number; // Reduce repetition
+  presencePenalty?: number; // Encourage new topics
+  stopSequences?: string[]; // Stop generation at these sequences
 }
 ```
 
@@ -81,10 +81,7 @@ interface Message {
 Generic hook for any AI operation.
 
 ```typescript
-function useAI<T = unknown>(
-  weave: Weave,
-  options?: UseAIOptions
-): UseAIReturn<T>
+function useAI<T = unknown>(weave: Weave, options?: UseAIOptions): UseAIReturn<T>;
 
 interface UseAIOptions {
   onStart?: () => void;
@@ -235,10 +232,11 @@ function setupWeaveRoutes(
   app: Express,
   weave: Weave,
   options?: WeaveRouteOptions & { basePath?: string }
-): void
+): void;
 ```
 
 Creates three endpoints:
+
 - `POST /generate`
 - `POST /classify`
 - `POST /extract`
@@ -246,6 +244,7 @@ Creates three endpoints:
 ### Request/Response Examples
 
 **Generate**
+
 ```json
 POST /api/ai/generate
 Content-Type: application/json
@@ -263,6 +262,7 @@ Response: 200 OK
 ```
 
 **Classify**
+
 ```json
 POST /api/ai/classify
 Content-Type: application/json

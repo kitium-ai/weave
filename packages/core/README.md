@@ -47,6 +47,7 @@ const weave = await Weave.createAsync(config: WeaveConfig);
 ```
 
 **Config Options**:
+
 - `provider` (ProviderConfig): AI provider configuration (OpenAI, Anthropic, Google, etc.)
 - `cache` (boolean): Enable response caching
 - `logging` (LogLevel): Log level ('debug' | 'info' | 'error')
@@ -72,10 +73,11 @@ const { text } = await weave.generate('Write a poem about AI', {
 Classify text into predefined categories.
 
 ```typescript
-const result = await weave.classify(
-  'This product is amazing!',
-  ['positive', 'negative', 'neutral']
-);
+const result = await weave.classify('This product is amazing!', [
+  'positive',
+  'negative',
+  'neutral',
+]);
 ```
 
 #### extract(text, schema, options?)

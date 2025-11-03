@@ -23,7 +23,11 @@ export interface UseComponentGeneratorReturn {
   component: GeneratedComponent | null;
   loading: boolean;
   error: Error | null;
-  generate: (componentName: string, description: string, options?: ComponentGeneratorOptions & GenerateOptions) => Promise<GeneratedComponent | null>;
+  generate: (
+    componentName: string,
+    description: string,
+    options?: ComponentGeneratorOptions & GenerateOptions
+  ) => Promise<GeneratedComponent | null>;
 }
 
 /**

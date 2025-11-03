@@ -32,9 +32,9 @@ export class HookSpecParser {
       'dependency|dependencies|watch|effect': 'dependencies: unknown[]',
       'timeout|delay': 'timeout: number',
       'enabled|disabled': 'enabled: boolean',
-      'retry': 'retryCount: number',
-      'callback': 'callback: () => void',
-      'options': 'options: Record<string, unknown>',
+      retry: 'retryCount: number',
+      callback: 'callback: () => void',
+      options: 'options: Record<string, unknown>',
     };
 
     for (const [keyword, param] of Object.entries(paramPatterns)) {
@@ -68,7 +68,8 @@ export class HookSpecParser {
     if (lowerDesc.includes('string')) return 'string';
     if (lowerDesc.includes('number')) return 'number';
     if (lowerDesc.includes('array')) return 'unknown[]';
-    if (lowerDesc.includes('object') || lowerDesc.includes('state')) return 'Record<string, unknown>';
+    if (lowerDesc.includes('object') || lowerDesc.includes('state'))
+      return 'Record<string, unknown>';
 
     return 'unknown';
   }
@@ -80,7 +81,8 @@ export class HookSpecParser {
     if (lowerDesc.includes('react')) deps.push('react');
     if (lowerDesc.includes('router')) deps.push('react-router-dom');
     if (lowerDesc.includes('form') || lowerDesc.includes('input')) deps.push('react-hook-form');
-    if (lowerDesc.includes('query') || lowerDesc.includes('fetch')) deps.push('@tanstack/react-query');
+    if (lowerDesc.includes('query') || lowerDesc.includes('fetch'))
+      deps.push('@tanstack/react-query');
     if (lowerDesc.includes('state') && lowerDesc.includes('manage')) deps.push('zustand');
 
     return deps;
@@ -95,7 +97,7 @@ export class HookSpecParser {
       'loading|pending': 'loading states',
       'cache|caching': 'caching',
       'storage|persist': 'persistence',
-      'validation': 'validation',
+      validation: 'validation',
       'real-time|stream': 'real-time updates',
       'debounce|throttle': 'debouncing/throttling',
     };
@@ -188,7 +190,8 @@ export class TypeSpecParser {
 
     if (lowerDesc.includes('readonly')) features.push('immutable');
     if (lowerDesc.includes('generic')) features.push('generic');
-    if (lowerDesc.includes('discriminate') || lowerDesc.includes('union')) features.push('discriminated union');
+    if (lowerDesc.includes('discriminate') || lowerDesc.includes('union'))
+      features.push('discriminated union');
 
     return features;
   }
@@ -303,7 +306,10 @@ export class UtilSpecParser {
   }
 
   private static normalizeName(name: string): string {
-    return name.charAt(0).toLowerCase() + name.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+    return (
+      name.charAt(0).toLowerCase() +
+      name.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+    );
   }
 }
 
@@ -329,7 +335,8 @@ export class QuerySpecParser {
 
     if (lowerDesc.includes('delete')) return 'DELETE';
     if (lowerDesc.includes('update') || lowerDesc.includes('put')) return 'PUT';
-    if (lowerDesc.includes('create') || lowerDesc.includes('post') || lowerDesc.includes('submit')) return 'POST';
+    if (lowerDesc.includes('create') || lowerDesc.includes('post') || lowerDesc.includes('submit'))
+      return 'POST';
     return 'GET';
   }
 

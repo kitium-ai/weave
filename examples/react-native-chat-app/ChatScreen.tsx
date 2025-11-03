@@ -82,42 +82,26 @@ export const ChatScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>🎯 Weave Chat - React Native</Text>
-        <Text style={styles.status}>
-          {loading ? 'Sending...' : error ? 'Error' : 'Ready'}
-        </Text>
+        <Text style={styles.status}>{loading ? 'Sending...' : error ? 'Error' : 'Ready'}</Text>
       </View>
 
       <ScrollView
         ref={scrollViewRef}
         style={styles.messagesContainer}
-        onContentSizeChange={() =>
-          scrollViewRef.current?.scrollToEnd({ animated: true })
-        }
+        onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
       >
         {messages.map((msg, idx) => (
           <View
             key={idx}
             style={[
               styles.messageBubble,
-              msg.role === 'user'
-                ? styles.userMessage
-                : styles.assistantMessage,
+              msg.role === 'user' ? styles.userMessage : styles.assistantMessage,
             ]}
           >
-            <Text
-              style={[
-                styles.messageText,
-                msg.role === 'user' && styles.userMessageText,
-              ]}
-            >
+            <Text style={[styles.messageText, msg.role === 'user' && styles.userMessageText]}>
               {msg.content}
             </Text>
-            <Text
-              style={[
-                styles.messageTime,
-                msg.role === 'user' && styles.userMessageTime,
-              ]}
-            >
+            <Text style={[styles.messageTime, msg.role === 'user' && styles.userMessageTime]}>
               {msg.timestamp.toLocaleTimeString()}
             </Text>
           </View>
@@ -148,16 +132,11 @@ export const ChatScreen: React.FC = () => {
           editable={!loading}
         />
         <TouchableOpacity
-          style={[
-            styles.sendButton,
-            (loading || !input.trim()) && styles.sendButtonDisabled,
-          ]}
+          style={[styles.sendButton, (loading || !input.trim()) && styles.sendButtonDisabled]}
           onPress={handleSendMessage}
           disabled={loading || !input.trim()}
         >
-          <Text style={styles.sendButtonText}>
-            {loading ? '...' : 'Send'}
-          </Text>
+          <Text style={styles.sendButtonText}>{loading ? '...' : 'Send'}</Text>
         </TouchableOpacity>
       </View>
     </View>

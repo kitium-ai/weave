@@ -2,13 +2,7 @@
  * In-Memory Cache Storage Implementation
  */
 
-import type {
-  ICacheStorage,
-  CacheEntry,
-  CacheStatistics,
-  CacheEntryMetadata,
-  CostSavings,
-} from './types.js';
+import type { ICacheStorage, CacheEntry, CacheStatistics } from './types.js';
 
 /**
  * In-memory cache storage with TTL and size management

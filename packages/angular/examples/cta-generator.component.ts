@@ -11,9 +11,7 @@ import { GenerateService } from '@weaveai/angular';
       </button>
 
       <pre *ngIf="state.data">{{ state.data.data.text }}</pre>
-      <small *ngIf="state.cost">
-        Cost so far: {{ state.cost.totalCost | number: '1.4-4' }}
-      </small>
+      <small *ngIf="state.cost"> Cost so far: {{ state.cost.totalCost | number: '1.4-4' }} </small>
     </section>
   `,
 })

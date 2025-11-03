@@ -5,8 +5,4 @@
 
 export { ExpressServerBuilder } from './server-generator.js';
 export { ExpressControllerBuilder } from './controller-generator.js';
-export type {
-  ExpressServerSpec,
-  ExpressControllerSpec,
-  ExpressMiddlewareSpec,
-} from './types.js';
+export type { ExpressServerSpec, ExpressControllerSpec, ExpressMiddlewareSpec } from './types.js';

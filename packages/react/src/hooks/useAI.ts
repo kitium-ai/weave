@@ -164,10 +164,7 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
             }
           }
 
-          if (
-            budget?.perSession !== undefined &&
-            sessionCostRef.current > budget.perSession
-          ) {
+          if (budget?.perSession !== undefined && sessionCostRef.current > budget.perSession) {
             handleBudgetExceeded('Session budget exceeded', onBudgetExceeded);
             if (onBudgetExceeded === 'block') {
               options?.onError?.(new Error('Session budget exceeded'), result as unknown as T);

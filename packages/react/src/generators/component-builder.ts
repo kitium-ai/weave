@@ -10,7 +10,6 @@ import type { ComponentSpec } from './types.js';
  * ComponentBuilder - Generates React component code from specifications
  */
 export class ComponentBuilder extends BaseCodeBuilder<ComponentSpec> {
-
   /**
    * Build a complete generated component from specification
    */

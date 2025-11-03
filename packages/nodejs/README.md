@@ -131,47 +131,47 @@ console.log('Generated Tests:', output.tests);
 
 ## Server Specification (ExpressServerSpec)
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | string | Server name (e.g., 'main-server') |
-| `description` | string | Server description |
-| `framework` | 'express' | Framework identifier |
-| `port` | number | Server port (default: 3000) |
-| `middleware` | Array | Custom middleware configurations |
-| `routes` | string[] | API route paths |
-| `security` | Object | Security settings (cors, helmet, rateLimit) |
-| `features` | string[] | Features like 'logging', 'authentication' |
+| Property      | Type      | Description                                 |
+| ------------- | --------- | ------------------------------------------- |
+| `name`        | string    | Server name (e.g., 'main-server')           |
+| `description` | string    | Server description                          |
+| `framework`   | 'express' | Framework identifier                        |
+| `port`        | number    | Server port (default: 3000)                 |
+| `middleware`  | Array     | Custom middleware configurations            |
+| `routes`      | string[]  | API route paths                             |
+| `security`    | Object    | Security settings (cors, helmet, rateLimit) |
+| `features`    | string[]  | Features like 'logging', 'authentication'   |
 
 ### Middleware Structure
 
 ```typescript
 interface Middleware {
-  name: string;       // Middleware name
-  purpose: string;   // What the middleware does
-  source?: string;   // Optional import path
+  name: string; // Middleware name
+  purpose: string; // What the middleware does
+  source?: string; // Optional import path
 }
 ```
 
 ## Controller Specification (ExpressControllerSpec)
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | string | Controller name (e.g., 'products') |
-| `description` | string | Controller description |
-| `framework` | 'express' | Framework identifier |
-| `endpoint` | string | Base endpoint (e.g., '/api/products') |
-| `methods` | Array | HTTP handler methods |
-| `features` | string[] | Features like 'validation', 'caching' |
+| Property      | Type      | Description                           |
+| ------------- | --------- | ------------------------------------- |
+| `name`        | string    | Controller name (e.g., 'products')    |
+| `description` | string    | Controller description                |
+| `framework`   | 'express' | Framework identifier                  |
+| `endpoint`    | string    | Base endpoint (e.g., '/api/products') |
+| `methods`     | Array     | HTTP handler methods                  |
+| `features`    | string[]  | Features like 'validation', 'caching' |
 
 ### Method Structure
 
 ```typescript
 interface Method {
-  name: string;                              // Method name
+  name: string; // Method name
   httpMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  description: string;                       // Method documentation
+  description: string; // Method documentation
   params?: Array<{ name: string; type: string }>;
-  returnType: string;                        // Return type
+  returnType: string; // Return type
 }
 ```
 
@@ -179,11 +179,11 @@ interface Method {
 
 ```typescript
 interface GeneratorOutput<T extends BaseSpec> {
-  code: string;          // Generated server/controller code
-  tests: string;         // Generated unit tests
-  examples: string;      // Usage examples and documentation
+  code: string; // Generated server/controller code
+  tests: string; // Generated unit tests
+  examples: string; // Usage examples and documentation
   metadata: CodeMetadata; // Generation metadata
-  spec: T;              // Original specification
+  spec: T; // Original specification
 }
 ```
 
@@ -204,10 +204,12 @@ const port = process.env.PORT || 3000;
 
 // Security middleware
 app.use(helmet());
-app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS || '*',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGINS || '*',
+    credentials: true,
+  })
+);
 
 // Rate limiting
 const limiter = rateLimit({
@@ -361,11 +363,7 @@ export class ProductsController {
 ### Middleware Pattern
 
 ```typescript
-export const authMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
@@ -426,17 +424,13 @@ describe('Express Server', () => {
   });
 
   it('should handle GET requests', async () => {
-    const response = await request(app)
-      .get('/api/health')
-      .expect(200);
+    const response = await request(app).get('/api/health').expect(200);
 
     expect(response.body).toHaveProperty('success', true);
   });
 
   it('should handle 404 errors', async () => {
-    const response = await request(app)
-      .get('/nonexistent')
-      .expect(404);
+    const response = await request(app).get('/nonexistent').expect(404);
   });
 });
 ```

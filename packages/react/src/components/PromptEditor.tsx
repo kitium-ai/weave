@@ -5,7 +5,6 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import type {
-  PromptTemplate,
   PromptVariable,
   PromptEditorProps,
   PromptTestResult,
@@ -88,15 +87,12 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
   );
 
   // Handle test input changes
-  const handleVariableChange = useCallback(
-    (name: string, value: string) => {
-      setTestInput((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    },
-    []
-  );
+  const handleVariableChange = useCallback((name: string, value: string) => {
+    setTestInput((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
 
   // Run test
   const handleTest = useCallback(async () => {
@@ -172,9 +168,7 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
                 key={variant.id}
                 onClick={() => handleVariantSelect(variant.id)}
                 className={`prompt-editor__variant ${
-                  selectedVariantId === variant.id
-                    ? 'prompt-editor__variant--active'
-                    : ''
+                  selectedVariantId === variant.id ? 'prompt-editor__variant--active' : ''
                 }`}
                 aria-label={`Select variant ${variant.name || variant.id}`}
               >
@@ -201,8 +195,8 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
           aria-label="Prompt template"
         />
         <p className="prompt-editor__hint">
-          Use {'{{'} {'}}'} syntax for variables, e.g., {'{{'} topic {'}}'} →
-          Replace with actual value during testing
+          Use {'{{'} {'}}'} syntax for variables, e.g., {'{{'} topic {'}}'} → Replace with actual
+          value during testing
         </p>
       </div>
 
@@ -212,33 +206,19 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
           <label className="prompt-editor__label">Variables</label>
           <div className="prompt-editor__variables">
             {variables.map((variable) => (
-              <div
-                key={variable.name}
-                className="prompt-editor__variable"
-              >
-                <label
-                  htmlFor={`var-${variable.name}`}
-                  className="prompt-editor__var-label"
-                >
-                  <span className="prompt-editor__var-name">
-                    {variable.name}
-                  </span>
-                  {variable.required && (
-                    <span className="prompt-editor__required">*</span>
-                  )}
+              <div key={variable.name} className="prompt-editor__variable">
+                <label htmlFor={`var-${variable.name}`} className="prompt-editor__var-label">
+                  <span className="prompt-editor__var-name">{variable.name}</span>
+                  {variable.required && <span className="prompt-editor__required">*</span>}
                   {variable.description && (
-                    <span className="prompt-editor__var-desc">
-                      {variable.description}
-                    </span>
+                    <span className="prompt-editor__var-desc">{variable.description}</span>
                   )}
                 </label>
                 <input
                   id={`var-${variable.name}`}
                   type="text"
                   value={testInput[variable.name] || ''}
-                  onChange={(e) =>
-                    handleVariableChange(variable.name, e.target.value)
-                  }
+                  onChange={(e) => handleVariableChange(variable.name, e.target.value)}
                   placeholder={variable.placeholder || `Enter ${variable.name}`}
                   className="prompt-editor__var-input"
                   aria-label={`Value for ${variable.name}`}
@@ -258,9 +238,7 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
               <div className="prompt-editor__result-success">✅ Success</div>
               <div className="prompt-editor__rendered">
                 <h4>Rendered Prompt:</h4>
-                <pre className="prompt-editor__output">
-                  {testResult.renderedPrompt}
-                </pre>
+                <pre className="prompt-editor__output">{testResult.renderedPrompt}</pre>
               </div>
               {testResult.duration > 0 && (
                 <div className="prompt-editor__duration">
@@ -294,8 +272,7 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
         <div className="prompt-editor__section">
           <label className="prompt-editor__label">Metrics</label>
           <p className="prompt-editor__info">
-            Metrics tracking is available via the usePromptTemplate hook with
-            trackMetrics: true
+            Metrics tracking is available via the usePromptTemplate hook with trackMetrics: true
           </p>
         </div>
       )}

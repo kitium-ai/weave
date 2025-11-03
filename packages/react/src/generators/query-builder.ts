@@ -337,7 +337,10 @@ describe('${hookName}', () => {
    * Convert to camelCase
    */
   private static toLowerCamelCase(str: string): string {
-    return str.charAt(0).toLowerCase() + str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+    return (
+      str.charAt(0).toLowerCase() +
+      str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+    );
   }
 
   /**

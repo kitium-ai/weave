@@ -24,11 +24,7 @@ export interface ILanguageModel {
   /**
    * Classify text into categories
    */
-  classify(
-    text: string,
-    labels: string[],
-    options?: ClassifyOptions
-  ): Promise<ClassificationData>;
+  classify(text: string, labels: string[], options?: ClassifyOptions): Promise<ClassificationData>;
 
   /**
    * Extract structured data from text

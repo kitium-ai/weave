@@ -87,10 +87,7 @@ export function useAI<T = unknown>(_weave: Weave, options?: UseAIOptions<T>): Us
 /**
  * React Native hook for text generation
  */
-export function useGenerateAI(
-  weave: Weave,
-  options?: UseAIOptions<GenerateResult>
-) {
+export function useGenerateAI(weave: Weave, options?: UseAIOptions<GenerateResult>) {
   const ai = useAI<GenerateResult>(weave, { ...(options ?? {}), operation: 'generate' });
 
   const generate = useCallback(
@@ -109,10 +106,7 @@ export function useGenerateAI(
 /**
  * React Native hook for text classification
  */
-export function useClassifyAI(
-  weave: Weave,
-  options?: UseAIOptions<ClassificationResult>
-) {
+export function useClassifyAI(weave: Weave, options?: UseAIOptions<ClassificationResult>) {
   const ai = useAI<ClassificationResult>(weave, { ...(options ?? {}), operation: 'classify' });
 
   const classify = useCallback(
@@ -135,10 +129,7 @@ export function useClassifyAI(
 /**
  * React Native hook for data extraction
  */
-export function useExtractAI<T = unknown>(
-  weave: Weave,
-  options?: UseAIOptions<ExtractResult<T>>
-) {
+export function useExtractAI<T = unknown>(weave: Weave, options?: UseAIOptions<ExtractResult<T>>) {
   const ai = useAI<ExtractResult<T>>(weave, { ...(options ?? {}), operation: 'extract' });
 
   const extract = useCallback(

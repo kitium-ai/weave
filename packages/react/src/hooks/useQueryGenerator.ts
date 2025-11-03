@@ -16,7 +16,11 @@ export interface UseQueryGeneratorReturn {
   query: GeneratedQuery | null;
   loading: boolean;
   error: Error | null;
-  generate: (queryName: string, description: string, options?: GenerateOptions) => Promise<GeneratedQuery | null>;
+  generate: (
+    queryName: string,
+    description: string,
+    options?: GenerateOptions
+  ) => Promise<GeneratedQuery | null>;
 }
 
 /**
@@ -39,7 +43,11 @@ export function useQueryGenerator(): UseQueryGeneratorReturn {
   const [error, setError] = useState<Error | null>(null);
 
   const generate = useCallback(
-    async (queryName: string, description: string, options?: GenerateOptions): Promise<GeneratedQuery | null> => {
+    async (
+      queryName: string,
+      description: string,
+      _options?: GenerateOptions
+    ): Promise<GeneratedQuery | null> => {
       if (!weave) {
         const err = new Error('Weave instance not available');
         setError(err);

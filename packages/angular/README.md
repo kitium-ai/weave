@@ -69,9 +69,7 @@ import { GenerateService } from '@weaveai/angular';
     </button>
 
     <pre *ngIf="state.data">{{ state.data.data.text }}</pre>
-    <small *ngIf="state.cost">
-      Cost: {{ state.cost.totalCost | number: '1.4-4' }}
-    </small>
+    <small *ngIf="state.cost"> Cost: {{ state.cost.totalCost | number: '1.4-4' }} </small>
   `,
 })
 export class CallToActionComponent {
@@ -79,9 +77,7 @@ export class CallToActionComponent {
   state = this.generateService.getState();
 
   async generate(): Promise<void> {
-    await this.generateService.generate(
-      'Write a playful CTA for a collaborative whiteboard.'
-    );
+    await this.generateService.generate('Write a playful CTA for a collaborative whiteboard.');
     this.state = this.generateService.getState();
   }
 }

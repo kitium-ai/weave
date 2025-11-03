@@ -170,11 +170,7 @@ export async function exampleCacheStats() {
   const cache = new CacheManager(config);
 
   // Store multiple items
-  const prompts = [
-    'What is AI?',
-    'Explain deep learning',
-    'What is neural networks?',
-  ];
+  const prompts = ['What is AI?', 'Explain deep learning', 'What is neural networks?'];
 
   for (const prompt of prompts) {
     await cache.store(

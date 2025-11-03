@@ -50,10 +50,7 @@ export function InspirationCard() {
       {loading && <ActivityIndicator />}
       {data && <Text>{data.data.text}</Text>}
       {cost && <Text>Cost: ${cost.totalCost.toFixed(4)}</Text>}
-      <Button
-        title="Generate again"
-        onPress={() => generate('Share another motivational note.')}
-      />
+      <Button title="Generate again" onPress={() => generate('Share another motivational note.')} />
     </SafeAreaView>
   );
 }

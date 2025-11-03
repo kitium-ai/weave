@@ -2,11 +2,7 @@
  * Framework-agnostic provider routing controller for UI integrations.
  */
 
-import type {
-  UIAwareProviderRouter,
-  ProviderRoutingEvent,
-  ProviderStatus,
-} from '@weaveai/core';
+import type { UIAwareProviderRouter, ProviderRoutingEvent, ProviderStatus } from '@weaveai/core';
 
 export interface ProviderRoutingControllerOptions {
   autoRefresh?: boolean;

@@ -22,6 +22,17 @@ import {
   type WeaveConfig,
 } from '../utils/config.js';
 
+type PackageMap = Record<string, string>;
+
+interface FrameworkPackageJson {
+  name: string;
+  version: string;
+  type: string;
+  scripts: PackageMap;
+  dependencies: PackageMap;
+  devDependencies: PackageMap;
+}
+
 export async function createCommand() {
   console.log(chalk.cyan('? Select your preferences:\n'));
 
@@ -125,7 +136,7 @@ export async function createCommand() {
       type: 'password',
       name: 'apiKey',
       message: `Enter your ${providerResult.provider} API key`,
-      validate: (value) => {
+      validate: (value: string) => {
         const validation = validateApiKey(providerResult.provider, value);
         return validation.valid || validation.message || 'Invalid API key format';
       },
@@ -637,8 +648,8 @@ export class AppComponent {
 /**
  * Get framework-specific package.json
  */
-function getFrameworkPackageJson(config: WeaveConfig): Record<string, unknown> {
-  const basePackage = {
+function getFrameworkPackageJson(config: WeaveConfig): FrameworkPackageJson {
+  const basePackage: FrameworkPackageJson = {
     name: config.projectName.toLowerCase().replace(/\s+/g, '-'),
     version: '0.1.0',
     type: 'module',

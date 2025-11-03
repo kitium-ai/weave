@@ -33,7 +33,10 @@ function createMetadata(overrides: Partial<WeaveOperationMetadata> = {}): WeaveO
   };
 }
 
-function createResult<T>(data: T, metadata?: Partial<WeaveOperationMetadata>): WeaveOperationResult<T> {
+function createResult<T>(
+  data: T,
+  metadata?: Partial<WeaveOperationMetadata>
+): WeaveOperationResult<T> {
   return {
     status: 'success',
     data,
@@ -50,9 +53,7 @@ describe('AIExecutionController', () => {
       states.push(state);
     });
 
-    const result = await controller.execute(async () =>
-      createResult({ message: 'hello' })
-    );
+    const result = await controller.execute(async () => createResult({ message: 'hello' }));
 
     expect(result?.data.message).toBe('hello');
     const latest = states.at(-1);

@@ -23,7 +23,9 @@ import type {
 } from '@weaveai/core';
 
 // Mock Weave instance
-const createMockMetadata = (overrides?: Partial<WeaveOperationMetadata>): WeaveOperationMetadata => ({
+const createMockMetadata = (
+  overrides?: Partial<WeaveOperationMetadata>
+): WeaveOperationMetadata => ({
   operationId: 'op-123',
   duration: 25,
   timestamp: new Date('2025-01-01T00:00:00Z'),

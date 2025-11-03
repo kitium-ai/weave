@@ -69,7 +69,9 @@ export function useAIChat(options?: UseAIChatOptions): UseAIChatReturn {
     (updater: ChatMessage[] | ((prev: ChatMessage[]) => ChatMessage[])) => {
       setMessages((prev) => {
         const next =
-          typeof updater === 'function' ? (updater as (prev: ChatMessage[]) => ChatMessage[])(prev) : updater;
+          typeof updater === 'function'
+            ? (updater as (prev: ChatMessage[]) => ChatMessage[])(prev)
+            : updater;
         messagesRef.current = next;
         if (autoSave && persistenceKey && typeof window !== 'undefined') {
           try {
@@ -160,9 +162,7 @@ export function useAIChat(options?: UseAIChatOptions): UseAIChatReturn {
   );
 
   const buildSummaryPrompt = useCallback((conversation: ChatMessage[]): string => {
-    const body = conversation
-      .map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`)
-      .join('\n');
+    const body = conversation.map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n');
 
     return `Summarize the following conversation, keeping key decisions and action items.\n${body}`;
   }, []);
@@ -296,7 +296,10 @@ export function useAIChat(options?: UseAIChatOptions): UseAIChatReturn {
                 if (now - streamingLastEmitRef.current >= streamingUpdateFrequency) {
                   streamingLastEmitRef.current = now;
                   persistMessages((prev) => {
-                    if (assistantIndexRef.current === null || assistantIndexRef.current >= prev.length) {
+                    if (
+                      assistantIndexRef.current === null ||
+                      assistantIndexRef.current >= prev.length
+                    ) {
                       return prev;
                     }
                     const updated = [...prev];

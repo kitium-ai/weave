@@ -5,7 +5,11 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { OpenAIProvider } from '../../src/providers/openai.js';
-import type { GenerateOptions, ClassifyOptions, ExtractOptions } from '../../src/providers/interfaces.js';
+import type {
+  GenerateOptions,
+  ClassifyOptions,
+  ExtractOptions,
+} from '../../src/providers/interfaces.js';
 
 // Mock the OpenAI SDK
 vi.mock('openai', () => ({
@@ -119,9 +123,11 @@ describe('OpenAIProvider', () => {
       const callSpy = vi.spyOn(provider as any, 'callAPI');
       await provider.generate('test', options).catch(() => {});
 
-      expect(callSpy).toHaveBeenCalledWith(expect.objectContaining({
-        temperature: 0.1,
-      }));
+      expect(callSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          temperature: 0.1,
+        })
+      );
     });
 
     it('should respect maxTokens setting', async () => {
@@ -132,9 +138,11 @@ describe('OpenAIProvider', () => {
       const callSpy = vi.spyOn(provider as any, 'callAPI');
       await provider.generate('test', options).catch(() => {});
 
-      expect(callSpy).toHaveBeenCalledWith(expect.objectContaining({
-        max_tokens: 1500,
-      }));
+      expect(callSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          max_tokens: 1500,
+        })
+      );
     });
   });
 
@@ -169,13 +177,19 @@ describe('OpenAIProvider', () => {
     });
 
     it('should handle invalid labels array', async () => {
-      await expect(provider.classify('test', [], {})).rejects.toThrow('Labels array cannot be empty');
+      await expect(provider.classify('test', [], {})).rejects.toThrow(
+        'Labels array cannot be empty'
+      );
     });
 
     it('should handle classification errors', async () => {
-      vi.spyOn(provider as any, 'callAPI').mockRejectedValueOnce(new Error('Classification failed'));
+      vi.spyOn(provider as any, 'callAPI').mockRejectedValueOnce(
+        new Error('Classification failed')
+      );
 
-      await expect(provider.classify('test', ['pos', 'neg'], {})).rejects.toThrow('Classification failed');
+      await expect(provider.classify('test', ['pos', 'neg'], {})).rejects.toThrow(
+        'Classification failed'
+      );
     });
 
     it('should handle malformed JSON response', async () => {
@@ -335,14 +349,14 @@ describe('OpenAIProvider', () => {
 
       vi.spyOn(provider as any, 'callAPI').mockResolvedValue(mockResponse);
 
-      const requests = Array(5).fill(null).map((_, i) =>
-        provider.generate(`prompt ${i}`, {})
-      );
+      const requests = Array(5)
+        .fill(null)
+        .map((_, i) => provider.generate(`prompt ${i}`, {}));
 
       const results = await Promise.all(requests);
 
       expect(results).toHaveLength(5);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.text).toBe('response');
       });
     });

@@ -142,12 +142,16 @@ export class SpecParser extends BaseSpecParser {
   /**
    * Detect styling preference from description
    */
-  private detectStylingPreference(description: string): 'tailwind' | 'styled-components' | 'css-modules' | 'inline' {
+  private detectStylingPreference(
+    description: string
+  ): 'tailwind' | 'styled-components' | 'css-modules' | 'inline' {
     const lowerDesc = description.toLowerCase();
 
     if (lowerDesc.includes('tailwind')) return 'tailwind';
-    if (lowerDesc.includes('styled-components') || lowerDesc.includes('styled')) return 'styled-components';
-    if (lowerDesc.includes('css modules') || lowerDesc.includes('css-modules')) return 'css-modules';
+    if (lowerDesc.includes('styled-components') || lowerDesc.includes('styled'))
+      return 'styled-components';
+    if (lowerDesc.includes('css modules') || lowerDesc.includes('css-modules'))
+      return 'css-modules';
     if (lowerDesc.includes('inline styles') || lowerDesc.includes('inline')) return 'inline';
 
     // Default to tailwind (most common)
@@ -157,7 +161,7 @@ export class SpecParser extends BaseSpecParser {
   /**
    * Generate default props based on component type
    */
-  private generateDefaultProps(componentName: string): ComponentProp[] {
+  private generateDefaultProps(_componentName: string): ComponentProp[] {
     return [
       {
         name: 'children',

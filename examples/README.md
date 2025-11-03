@@ -7,9 +7,11 @@ Comprehensive examples demonstrating how to use Weave across different framework
 ### Frontend Frameworks
 
 #### 🎨 [React Chat App](./react-chat-app/)
+
 **Location**: `examples/react-chat-app/App.tsx`
 
 A complete React chat application demonstrating:
+
 - React hooks integration with Weave
 - `useAIChat` hook for multi-turn conversations
 - Context API for state management
@@ -17,6 +19,7 @@ A complete React chat application demonstrating:
 - Error handling and loading states
 
 **Key Features**:
+
 - Auto-scroll to latest messages
 - Keyboard shortcuts (Shift+Enter for newline)
 - Typing indicator animation
@@ -27,21 +30,25 @@ A complete React chat application demonstrating:
 ---
 
 #### 🖖 [Vue 3 Chat App](./vue-chat-app/)
+
 **Location**: `examples/vue-chat-app/`
 
 A Vue 3 chat application using Composition API:
+
 - `useAI` composable from @weaveai/vue
 - Reactive state management with ref and computed
 - Provide/inject for dependency injection
 - Smooth animations and transitions
 
 **Key Features**:
+
 - Vue 3 Composition API patterns
 - TypeScript support
 - Responsive component architecture
 - Real-time UI updates
 
 **Files**:
+
 - `main.ts` - Application entry point with Weave initialization
 - `App.vue` - Main chat component
 
@@ -50,15 +57,18 @@ A Vue 3 chat application using Composition API:
 ---
 
 #### ⚡ [Svelte Chat App](./svelte-chat-app/)
+
 **Location**: `examples/svelte-chat-app/App.svelte`
 
 A Svelte chat application demonstrating:
+
 - Svelte stores for state management
 - `createAIChat` store factory from @weaveai/svelte
 - Reactive declarations and bindings
 - Scoped styling with animations
 
 **Key Features**:
+
 - Minimal boilerplate
 - Built-in reactivity
 - Smooth component transitions
@@ -69,21 +79,25 @@ A Svelte chat application demonstrating:
 ---
 
 #### 🅰️ [Angular Chat App](./angular-chat-app/)
+
 **Location**: `examples/angular-chat-app/chat.component.ts`
 
 An Angular chat component featuring:
+
 - AIService from @weaveai/angular
 - RxJS Observables for async operations
 - Angular dependency injection
 - Component lifecycle management
 
 **Key Features**:
+
 - Observable-based state management
 - Service-oriented architecture
 - Type-safe RxJS patterns
 - Proper memory management
 
 **Files**:
+
 - `chat.component.ts` - Chat component with service integration
 - `chat.component.html` - Template (to be created)
 - `chat.component.css` - Styles (to be created)
@@ -95,15 +109,18 @@ An Angular chat component featuring:
 ### Mobile Frameworks
 
 #### 📱 [React Native Chat App](./react-native-chat-app/)
+
 **Location**: `examples/react-native-chat-app/ChatScreen.tsx`
 
 A React Native mobile chat application:
+
 - `useAI` hook adapted for mobile
 - Native UI components (ScrollView, TextInput, etc.)
 - Memory leak prevention with isMounted ref
 - Touch-friendly interface
 
 **Key Features**:
+
 - Cross-platform iOS/Android support
 - Optimized for mobile performance
 - Gesture handling
@@ -114,21 +131,25 @@ A React Native mobile chat application:
 ---
 
 #### 🐦 [Flutter Chat App](./flutter-chat-app/)
+
 **Location**: `examples/flutter-chat-app/lib/screens/chat_screen.dart`
 
 A Flutter mobile chat application:
+
 - Provider package for state management
 - AI provider with ChangeNotifier pattern
 - Material Design UI
 - Dart async/await patterns
 
 **Key Features**:
+
 - Beautiful Material Design interface
 - Smooth animations
 - Responsive layout
 - Cross-platform (iOS, Android, Web)
 
 **Files**:
+
 - `lib/screens/chat_screen.dart` - Main chat screen
 - `lib/providers/ai_provider.dart` - State management provider
 - `pubspec.yaml` - Package dependencies
@@ -140,15 +161,18 @@ A Flutter mobile chat application:
 ### Backend Frameworks
 
 #### 🟢 [Node.js/Express API](./nodejs-express-api/)
+
 **Location**: `examples/nodejs-express-api/app.ts`
 
 An Express.js REST API server:
+
 - Weave middleware integration
 - Multiple endpoints for different AI operations
 - Error handling and validation
 - Production-ready patterns
 
 **Key Endpoints**:
+
 - `POST /api/chat` - Multi-turn chat
 - `POST /api/generate` - Text generation
 - `POST /api/classify` - Text classification
@@ -156,6 +180,7 @@ An Express.js REST API server:
 - `GET /health` - Health check
 
 **Key Features**:
+
 - Middleware-based architecture
 - Type-safe TypeScript implementation
 - Comprehensive error handling
@@ -164,6 +189,7 @@ An Express.js REST API server:
 **Dependencies**: Express 4.x, @weaveai/nodejs
 
 **Running**:
+
 ```bash
 cd examples/nodejs-express-api
 npm install
@@ -173,15 +199,18 @@ npm run dev
 ---
 
 #### ⚡ [Next.js API Routes](./nextjs-api/)
+
 **Location**: `examples/nextjs-api/pages/api/chat.ts`
 
 A Next.js serverless API:
+
 - Next.js API route handlers
 - Serverless deployment ready
 - Automatic request/response handling
 - Built-in middleware support
 
 **Key Features**:
+
 - Zero-configuration deployment
 - Automatic scaling
 - Built-in caching
@@ -192,15 +221,18 @@ A Next.js serverless API:
 ---
 
 #### 🔷 [Next.js Pages Router Chat](./nextjs-pages-app/)
+
 **Location**: `examples/nextjs-pages-app/pages/chat.tsx`
 
 A Next.js full-stack chat application:
+
 - Client-side React component
 - Server-side API integration
 - Integrated styling with styled-jsx
 - Server-side rendering support
 
 **Key Features**:
+
 - Full-stack TypeScript
 - Integrated frontend and backend
 - Built-in CSS support
@@ -209,6 +241,7 @@ A Next.js full-stack chat application:
 **Dependencies**: Next.js 14.x+, @weaveai/react
 
 **Running**:
+
 ```bash
 cd examples/nextjs-pages-app
 npm install
@@ -219,15 +252,18 @@ npm run dev
 ---
 
 #### 🎯 [NestJS API](./nestjs-api/)
+
 **Location**: `examples/nestjs-api/src/weave/weave.controller.ts`
 
 A NestJS microservices API:
+
 - Module-based architecture
 - Dependency injection
 - Service layer pattern
 - OpenAPI/Swagger support
 
 **Key Features**:
+
 - Enterprise-grade structure
 - Modular design
 - Built-in validation pipes
@@ -277,6 +313,7 @@ GOOGLE_API_KEY=AIza...
 ### Running Examples
 
 **React**:
+
 ```bash
 cd examples/react-chat-app
 npm install
@@ -284,6 +321,7 @@ npm run dev
 ```
 
 **Vue**:
+
 ```bash
 cd examples/vue-chat-app
 npm install
@@ -291,6 +329,7 @@ npm run dev
 ```
 
 **Svelte**:
+
 ```bash
 cd examples/svelte-chat-app
 npm install
@@ -298,6 +337,7 @@ npm run dev
 ```
 
 **Angular**:
+
 ```bash
 cd examples/angular-chat-app
 npm install
@@ -305,6 +345,7 @@ ng serve
 ```
 
 **Next.js**:
+
 ```bash
 cd examples/nextjs-pages-app
 npm install
@@ -312,6 +353,7 @@ npm run dev
 ```
 
 **NestJS**:
+
 ```bash
 cd examples/nestjs-api
 npm install
@@ -319,6 +361,7 @@ npm run start:dev
 ```
 
 **React Native**:
+
 ```bash
 cd examples/react-native-chat-app
 npm install
@@ -326,6 +369,7 @@ npm start
 ```
 
 **Flutter**:
+
 ```bash
 cd examples/flutter-chat-app
 flutter pub get
@@ -349,6 +393,7 @@ flutter run
 All examples follow these patterns:
 
 ### Initialize Weave
+
 ```typescript
 import { createWeave } from '@weaveai/core';
 import { OpenAIProvider } from '@weaveai/core/providers';
@@ -362,9 +407,11 @@ const weave = createWeave({
 ```
 
 ### Use with Framework
+
 Each framework has a specific integration pattern - see the example files for details.
 
 ### Make API Calls
+
 ```typescript
 const response = await weave.generate(prompt);
 const classified = await weave.classify(text, labels);
@@ -376,16 +423,19 @@ const extracted = await weave.extract(text, schema);
 ## 🐛 Troubleshooting
 
 ### API Key Errors
+
 - Check that your API key is set in environment variables
 - Ensure the key has the correct permissions
 - Verify the API key hasn't expired
 
 ### Module Not Found Errors
+
 - Run `npm install` or `yarn install`
 - Ensure you're in the correct directory
-- Check that all @weaveai/* packages are installed
+- Check that all @weaveai/\* packages are installed
 
 ### TypeScript Errors
+
 - Run `npm run type-check` to identify issues
 - Ensure TypeScript is installed: `npm install -D typescript`
 - Check tsconfig.json is properly configured

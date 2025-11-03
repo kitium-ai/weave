@@ -41,6 +41,7 @@ METRICS_ENDPOINT=http://prometheus:9090
 ### Node.js/Express - Docker
 
 **Dockerfile**
+
 ```dockerfile
 FROM node:18-alpine
 
@@ -68,6 +69,7 @@ CMD ["node", "dist/index.js"]
 ```
 
 **docker-compose.yml**
+
 ```yaml
 version: '3.8'
 
@@ -75,13 +77,13 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=production
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - LOG_LEVEL=info
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -90,12 +92,12 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
 
   prometheus:
     image: prom/prometheus
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
 ```
@@ -103,6 +105,7 @@ services:
 ### Next.js - Vercel
 
 **vercel.json**
+
 ```json
 {
   "env": {
@@ -136,6 +139,7 @@ pm2 start .next/standalone/server.js --name "weave-app" --instances max
 ### NestJS - Docker + K8s
 
 **Dockerfile**
+
 ```dockerfile
 FROM node:18-alpine AS builder
 
@@ -159,6 +163,7 @@ CMD ["node", "dist/main.js"]
 ```
 
 **k8s-deployment.yaml**
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -180,37 +185,37 @@ spec:
         app: weave-api
     spec:
       containers:
-      - name: api
-        image: weave-api:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: OPENAI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: weave-secrets
-              key: openai-api-key
-        - name: NODE_ENV
-          value: "production"
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: api
+          image: weave-api:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: weave-secrets
+                  key: openai-api-key
+            - name: NODE_ENV
+              value: 'production'
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -221,14 +226,15 @@ spec:
     app: weave-api
   type: LoadBalancer
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
 ```
 
 ### React/Vue/Svelte - Static Hosting
 
 **Netlify Configuration**
+
 ```toml
 [build]
   command = "yarn build"
@@ -250,6 +256,7 @@ spec:
 ```
 
 **AWS S3 + CloudFront**
+
 ```bash
 # Build
 yarn build
@@ -264,6 +271,7 @@ aws cloudfront create-invalidation --distribution-id E123ABCD --paths "/*"
 ### React Native - EAS Build
 
 **eas.json**
+
 ```json
 {
   "build": {
@@ -356,7 +364,7 @@ try {
 ### Error Tracking with Sentry
 
 ```typescript
-import * as Sentry from "@sentry/node";
+import * as Sentry from '@sentry/node';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -389,10 +397,12 @@ try {
 ```typescript
 import cors from 'cors';
 
-app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
+    credentials: true,
+  })
+);
 ```
 
 ### Rate Limiting
@@ -414,12 +424,9 @@ app.use('/api/', limiter);
 ```typescript
 import { body, validationResult } from 'express-validator';
 
-app.post('/api/generate',
-  body('prompt')
-    .isString()
-    .trim()
-    .isLength({ min: 1, max: 4000 })
-    .escape(),
+app.post(
+  '/api/generate',
+  body('prompt').isString().trim().isLength({ min: 1, max: 4000 }).escape(),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -471,16 +478,16 @@ const pool = new Pool({
 ```yaml
 # Load balance across multiple instances
 upstream api {
-  server app1:3000;
-  server app2:3000;
-  server app3:3000;
+server app1:3000;
+server app2:3000;
+server app3:3000;
 }
 
 server {
-  listen 80;
-  location /api/ {
-    proxy_pass http://api;
-  }
+listen 80;
+location /api/ {
+proxy_pass http://api;
+}
 }
 ```
 
@@ -498,13 +505,16 @@ generateQueue.process(async (job) => {
 });
 
 // Add to queue
-generateQueue.add({ prompt: 'hello' }, {
-  attempts: 3,
-  backoff: {
-    type: 'exponential',
-    delay: 2000,
-  },
-});
+generateQueue.add(
+  { prompt: 'hello' },
+  {
+    attempts: 3,
+    backoff: {
+      type: 'exponential',
+      delay: 2000,
+    },
+  }
+);
 ```
 
 ## Backup and Recovery

@@ -41,7 +41,10 @@ export interface ChatControllerState {
 
 type ChatListener = (state: ChatControllerState) => void;
 
-export type GenerateExecutor = (prompt: string, options?: GenerateOptions) => Promise<GenerateResult>;
+export type GenerateExecutor = (
+  prompt: string,
+  options?: GenerateOptions
+) => Promise<GenerateResult>;
 
 const DEFAULT_SYSTEM_PROMPT = 'You are a helpful assistant.';
 
@@ -50,7 +53,9 @@ function getDefaultStorageAdapter(): StorageAdapter | undefined {
     return undefined;
   }
 
-  const rawStorage = (globalThis as Record<string, unknown>)['localStorage'] as StorageAdapter | undefined;
+  const rawStorage = (globalThis as Record<string, unknown>)['localStorage'] as
+    | StorageAdapter
+    | undefined;
   if (!rawStorage) {
     return undefined;
   }
@@ -278,9 +283,7 @@ export class ChatController {
   }
 
   private buildSummaryPrompt(conversation: ChatMessage[]): string {
-    const body = conversation
-      .map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`)
-      .join('\n');
+    const body = conversation.map((msg) => `${msg.role.toUpperCase()}: ${msg.content}`).join('\n');
 
     return `Summarize the following conversation, keeping key decisions and action items.\n${body}`;
   }

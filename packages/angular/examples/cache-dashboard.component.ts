@@ -18,7 +18,8 @@ const cacheConfig: CacheConfig = {
       <button (click)="clear()">Clear cache</button>
 
       <div *ngIf="state.lastFeedback">
-        <strong>{{ state.lastFeedback.type.toUpperCase() }}</strong>:
+        <strong>{{ state.lastFeedback.type.toUpperCase() }}</strong
+        >:
         {{ state.lastFeedback.message }}
       </div>
 

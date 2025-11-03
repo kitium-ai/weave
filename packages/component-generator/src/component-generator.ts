@@ -1,4 +1,9 @@
-import { getLogger, validateDefined, validateNonEmptyString, validateObject } from '@weaveai/shared';
+import {
+  getLogger,
+  validateDefined,
+  validateNonEmptyString,
+  validateObject,
+} from '@weaveai/shared';
 import type { GenerateOptions, GenerateData } from '@weaveai/core';
 import {
   ComponentGenerationError,
@@ -235,9 +240,7 @@ export class ComponentGenerator {
     }
 
     if (spec.dataSources?.length) {
-      sections.push(
-        `Data Sources:\n${spec.dataSources.map((item) => `- ${item}`).join('\n')}`
-      );
+      sections.push(`Data Sources:\n${spec.dataSources.map((item) => `- ${item}`).join('\n')}`);
     }
 
     if (spec.notes) {
@@ -245,9 +248,7 @@ export class ComponentGenerator {
     }
 
     if (spec.exampleProps) {
-      sections.push(
-        `Example Props JSON:\n${JSON.stringify(spec.exampleProps, null, 2)}`
-      );
+      sections.push(`Example Props JSON:\n${JSON.stringify(spec.exampleProps, null, 2)}`);
     }
 
     sections.push(JSON_INSTRUCTIONS);
@@ -308,7 +309,17 @@ export class ComponentGenerator {
     }
 
     const imports = this.normalizeImports(parsed.imports, warnings);
-    const metadata = this.extractMetadata(parsed.metadata, framework, styledWith, language, raw, prompt, warnings, tokens, imports);
+    const metadata = this.extractMetadata(
+      parsed.metadata,
+      framework,
+      styledWith,
+      language,
+      raw,
+      prompt,
+      warnings,
+      tokens,
+      imports
+    );
 
     return {
       component: {

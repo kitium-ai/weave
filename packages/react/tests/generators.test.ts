@@ -38,7 +38,10 @@ describe('SpecParser', () => {
       const simpleDesc = SpecParser.parse('A simple text display', 'Simple');
       expect(simpleDesc.complexity).toBe('simple');
 
-      const complexDesc = SpecParser.parse('A real-time, advanced multi-step nested tree component with virtualization and websocket support', 'Complex');
+      const complexDesc = SpecParser.parse(
+        'A real-time, advanced multi-step nested tree component with virtualization and websocket support',
+        'Complex'
+      );
       expect(complexDesc.complexity).toBe('complex');
     });
 
@@ -222,7 +225,8 @@ describe('ComponentBuilder', () => {
 
 describe('Component Generation Integration', () => {
   it('should parse description and build component successfully', () => {
-    const description = 'A user profile card with name, email, and edit button with tailwind styling';
+    const description =
+      'A user profile card with name, email, and edit button with tailwind styling';
     const spec = SpecParser.parse(description, 'ProfileCard');
     const result = ComponentBuilder.buildComponent(spec, description);
 
@@ -233,7 +237,8 @@ describe('Component Generation Integration', () => {
   });
 
   it('should handle complex component descriptions', () => {
-    const description = 'A responsive, searchable data table with pagination, sorting, dark mode support, and accessibility features';
+    const description =
+      'A responsive, searchable data table with pagination, sorting, dark mode support, and accessibility features';
     const spec = SpecParser.parse(description, 'DataTable');
     const result = ComponentBuilder.buildComponent(spec, description);
 

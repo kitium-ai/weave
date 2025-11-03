@@ -95,7 +95,9 @@ export function ComponentGeneratorExample() {
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-lg mb-2">Component Name</h3>
-                <code className="bg-gray-100 p-2 rounded block text-sm">{generatedComponent.componentName}</code>
+                <code className="bg-gray-100 p-2 rounded block text-sm">
+                  {generatedComponent.componentName}
+                </code>
               </div>
 
               <div>
@@ -153,7 +155,9 @@ export function ComponentGeneratorExample() {
             description="A card component that displays user information with avatar, name, email, and action buttons"
             onClick={() => {
               setComponentName('UserCard');
-              setDescription('A card component that displays user information with avatar, name, email, and action buttons');
+              setDescription(
+                'A card component that displays user information with avatar, name, email, and action buttons'
+              );
             }}
           />
 
@@ -162,7 +166,9 @@ export function ComponentGeneratorExample() {
             description="A responsive, searchable data table with pagination, sorting, and dark mode support"
             onClick={() => {
               setComponentName('DataTable');
-              setDescription('A responsive, searchable data table with pagination, sorting, and dark mode support');
+              setDescription(
+                'A responsive, searchable data table with pagination, sorting, and dark mode support'
+              );
             }}
           />
 
@@ -171,7 +177,9 @@ export function ComponentGeneratorExample() {
             description="A form input component with validation, error messages, and helper text using inline styles"
             onClick={() => {
               setComponentName('FormInput');
-              setDescription('A form input component with validation, error messages, and helper text using inline styles');
+              setDescription(
+                'A form input component with validation, error messages, and helper text using inline styles'
+              );
             }}
           />
 
@@ -180,7 +188,9 @@ export function ComponentGeneratorExample() {
             description="A modal dialog component with animated backdrop, close button, and accessibility features"
             onClick={() => {
               setComponentName('Modal');
-              setDescription('A modal dialog component with animated backdrop, close button, and accessibility features');
+              setDescription(
+                'A modal dialog component with animated backdrop, close button, and accessibility features'
+              );
             }}
           />
         </div>

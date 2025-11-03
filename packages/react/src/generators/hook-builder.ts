@@ -173,9 +173,7 @@ export interface ${returnTypeInterface} {
  * const result = ${spec.name}(options);
  */
 export function ${spec.name}(${
-      spec.parameters.length > 0
-        ? `options: ${optionsInterface}`
-        : ''
+      spec.parameters.length > 0 ? `options: ${optionsInterface}` : ''
     }): ${returnTypeInterface} {
   const [state, setState] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -350,6 +348,9 @@ ${spec.parameters
    * @returns PascalCase version of the string
    */
   private static toCamelCase(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+    return (
+      str.charAt(0).toUpperCase() +
+      str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+    );
   }
 }

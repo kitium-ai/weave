@@ -6,16 +6,7 @@
 import React, { useState } from 'react';
 import { ProviderSwitch, ProviderStatusIndicator } from '../components/ProviderSwitch';
 import { useProviderRouting } from '../hooks/useProviderRouting';
-import {
-  KtButton,
-  KtCard,
-  KtLayout,
-  KtBadge,
-  KtAlert,
-  KtPanel,
-  KtTabs,
-  KtToast,
-} from '@kitium/ui';
+import { KtButton, KtCard, KtLayout, KtBadge, KtAlert, KtPanel, KtTabs, KtToast } from '@kitium/ui';
 
 /**
  * Example 1: Basic Provider Selection with KtCard Layout
@@ -39,7 +30,9 @@ export function ProviderSwitchBasicIntegration() {
     <KtLayout direction="vertical" gap="lg">
       <KtCard header="AI Provider Selection" variant="elevated">
         <KtLayout direction="vertical" gap="md">
-          <p>Current Provider: <strong>{currentProvider?.name}</strong></p>
+          <p>
+            Current Provider: <strong>{currentProvider?.name}</strong>
+          </p>
 
           <KtLayout direction="horizontal" gap="md">
             {providers.map((provider) => (
@@ -76,9 +69,7 @@ export function ProviderSwitchBasicIntegration() {
             ))}
           </KtLayout>
 
-          {notification && (
-            <KtAlert variant="success">{notification}</KtAlert>
-          )}
+          {notification && <KtAlert variant="success">{notification}</KtAlert>}
         </KtLayout>
       </KtCard>
     </KtLayout>
@@ -105,9 +96,7 @@ export function ProviderSwitchMetricsDashboard() {
               header={
                 <KtLayout direction="horizontal" gap="sm" justifyContent="space-between">
                   <span>{provider.name}</span>
-                  {currentProvider?.id === provider.id && (
-                    <KtBadge variant="info">Active</KtBadge>
-                  )}
+                  {currentProvider?.id === provider.id && <KtBadge variant="info">Active</KtBadge>}
                 </KtLayout>
               }
               style={{ flex: '1 1 calc(50% - 12px)', minWidth: '250px' }}
@@ -240,10 +229,7 @@ export function ProviderSwitchConfigurationTabs() {
                             ${provider.metrics?.costPer1kTokens?.toFixed(4)} per 1K tokens
                           </p>
                         </KtLayout>
-                        <KtButton
-                          variant="secondary"
-                          onClick={() => selectProvider(provider.id)}
-                        >
+                        <KtButton variant="secondary" onClick={() => selectProvider(provider.id)}>
                           Select
                         </KtButton>
                       </KtLayout>
@@ -266,10 +252,7 @@ export function ProviderSwitchConfigurationTabs() {
                             ~{provider.metrics?.latency}ms latency
                           </p>
                         </KtLayout>
-                        <KtButton
-                          variant="secondary"
-                          onClick={() => selectProvider(provider.id)}
-                        >
+                        <KtButton variant="secondary" onClick={() => selectProvider(provider.id)}>
                           Select
                         </KtButton>
                       </KtLayout>
@@ -295,9 +278,7 @@ export function ProviderSwitchConfigurationTabs() {
                       }
                     >
                       <KtLayout direction="vertical" gap="sm">
-                        <p style={{ margin: 0, opacity: 0.7 }}>
-                          Highest performance & reliability
-                        </p>
+                        <p style={{ margin: 0, opacity: 0.7 }}>Highest performance & reliability</p>
                         <KtButton
                           variant="primary"
                           fullWidth
@@ -323,13 +304,8 @@ export function ProviderSwitchConfigurationTabs() {
  * Full-featured provider management with all kitium-ui components
  */
 export function ProviderSwitchCompleteDashboard() {
-  const {
-    providers,
-    currentProvider,
-    selectProvider,
-    eventHistory,
-    getProviderStatus,
-  } = useProviderRouting();
+  const { providers, currentProvider, selectProvider, eventHistory, getProviderStatus } =
+    useProviderRouting();
 
   const [showDetails, setShowDetails] = useState(true);
   const [showHistory, setShowHistory] = useState(true);
@@ -338,11 +314,14 @@ export function ProviderSwitchCompleteDashboard() {
     <KtPanel>
       <KtLayout direction="vertical" gap="lg">
         {/* Header */}
-        <KtLayout direction="horizontal" gap="md" justifyContent="space-between" alignItems="center">
+        <KtLayout
+          direction="horizontal"
+          gap="md"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <h1>AI Provider Management</h1>
-          <KtBadge variant="success">
-            {currentProvider?.name || 'No provider selected'}
-          </KtBadge>
+          <KtBadge variant="success">{currentProvider?.name || 'No provider selected'}</KtBadge>
         </KtLayout>
 
         {/* Provider Grid */}
@@ -377,9 +356,7 @@ export function ProviderSwitchCompleteDashboard() {
                   <KtLayout direction="vertical" gap="sm">
                     <div className="metric-row">
                       <span className="metric-label">Latency:</span>
-                      <span className="metric-value">
-                        {provider.metrics?.latency}ms
-                      </span>
+                      <span className="metric-value">{provider.metrics?.latency}ms</span>
                     </div>
                     <div className="metric-row">
                       <span className="metric-label">Success Rate:</span>
@@ -422,9 +399,7 @@ export function ProviderSwitchCompleteDashboard() {
                   <KtLayout direction="horizontal" gap="lg">
                     <div>
                       <div className="detail-label">Response Time</div>
-                      <div className="detail-value">
-                        {currentProvider.metrics?.latency}ms
-                      </div>
+                      <div className="detail-value">{currentProvider.metrics?.latency}ms</div>
                     </div>
                     <div>
                       <div className="detail-label">Availability</div>
@@ -434,9 +409,7 @@ export function ProviderSwitchCompleteDashboard() {
                     </div>
                     <div>
                       <div className="detail-label">Uptime</div>
-                      <div className="detail-value">
-                        {currentProvider.metrics?.uptime}%
-                      </div>
+                      <div className="detail-value">{currentProvider.metrics?.uptime}%</div>
                     </div>
                   </KtLayout>
                 </div>
@@ -469,11 +442,7 @@ export function ProviderSwitchCompleteDashboard() {
                 <KtAlert
                   key={idx}
                   variant={
-                    event.type === 'success'
-                      ? 'success'
-                      : event.type === 'error'
-                        ? 'error'
-                        : 'info'
+                    event.type === 'success' ? 'success' : event.type === 'error' ? 'error' : 'info'
                   }
                 >
                   <strong>{event.provider}</strong>: {event.message}

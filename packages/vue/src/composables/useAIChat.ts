@@ -65,10 +65,10 @@ function mapOptions(options?: UseAIChatOptions): ChatControllerOptions {
           autoSave: options.persistence.autoSave,
         }
       : options.persistence?.autoSave
-      ? {
-          autoSave: options.persistence.autoSave,
-        }
-      : undefined,
+        ? {
+            autoSave: options.persistence.autoSave,
+          }
+        : undefined,
     trackCosts: options.trackCosts,
     maxMessages: options.maxMessages,
     onOverflow: options.onOverflow,
@@ -80,15 +80,12 @@ function mapOptions(options?: UseAIChatOptions): ChatControllerOptions {
 export function useAIChat(options?: UseAIChatOptions): UseAIChatReturn {
   const weave = inject<Weave>('weave');
 
-  const controller = new ChatController(
-    async (prompt, generateOptions) => {
-      if (!weave) {
-        throw new Error('Weave instance not available');
-      }
-      return weave.generate(prompt, generateOptions);
-    },
-    mapOptions(options)
-  );
+  const controller = new ChatController(async (prompt, generateOptions) => {
+    if (!weave) {
+      throw new Error('Weave instance not available');
+    }
+    return weave.generate(prompt, generateOptions);
+  }, mapOptions(options));
 
   const state = controller.getState();
   const messages = ref<ChatMessage[]>([...state.messages]);

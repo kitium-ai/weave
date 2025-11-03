@@ -2,42 +2,36 @@ import React, { useState } from 'react';
 import { usePromptTemplate, PromptEditor } from '@weaveai/react';
 
 export const BasicPromptTemplateExample = () => {
-  const {
-    currentTemplate,
-    render,
-    testRender,
-    setTemplate,
-    updateVariable,
-    getVariables,
-  } = usePromptTemplate({
-    name: 'article-writer',
-    template: 'Write a {{wordCount}} word article about {{topic}} for {{audience}}.',
-    variables: [
-      {
-        name: 'wordCount',
-        type: 'string',
-        required: true,
-        placeholder: '500',
-        description: 'Desired word count',
-      },
-      {
-        name: 'topic',
-        type: 'string',
-        required: true,
-        placeholder: 'Machine Learning',
-        description: 'Article topic',
-      },
-      {
-        name: 'audience',
-        type: 'string',
-        required: true,
-        placeholder: 'Beginners',
-        description: 'Target audience',
-      },
-    ],
-    editable: true,
-    trackMetrics: true,
-  });
+  const { currentTemplate, render, testRender, setTemplate, updateVariable, getVariables } =
+    usePromptTemplate({
+      name: 'article-writer',
+      template: 'Write a {{wordCount}} word article about {{topic}} for {{audience}}.',
+      variables: [
+        {
+          name: 'wordCount',
+          type: 'string',
+          required: true,
+          placeholder: '500',
+          description: 'Desired word count',
+        },
+        {
+          name: 'topic',
+          type: 'string',
+          required: true,
+          placeholder: 'Machine Learning',
+          description: 'Article topic',
+        },
+        {
+          name: 'audience',
+          type: 'string',
+          required: true,
+          placeholder: 'Beginners',
+          description: 'Target audience',
+        },
+      ],
+      editable: true,
+      trackMetrics: true,
+    });
 
   const handleTest = async (variables: Record<string, any>) => {
     return testRender(variables);
@@ -63,38 +57,30 @@ export const BasicPromptTemplateExample = () => {
 };
 
 export const PromptTemplateWithVariantsExample = () => {
-  const {
-    currentTemplate,
-    currentVariant,
-    variants,
-    setVariant,
-    testRender,
-    compareVariants,
-  } = usePromptTemplate({
-    name: 'email-generator',
-    template: 'Draft a professional email to {{recipient}} about {{subject}}.',
-    variants: [
-      {
-        id: 'formal',
-        name: 'Formal',
-        template:
-          'Please prepare a formal email correspondence to {{recipient}} regarding {{subject}}.',
-      },
-      {
-        id: 'casual',
-        name: 'Casual',
-        template:
-          'Write a friendly email to {{recipient}} about {{subject}}.',
-      },
-      {
-        id: 'urgent',
-        name: 'Urgent',
-        template:
-          'Compose an urgent email to {{recipient}} concerning {{subject}}.',
-      },
-    ],
-    trackMetrics: true,
-  });
+  const { currentTemplate, currentVariant, variants, setVariant, testRender, compareVariants } =
+    usePromptTemplate({
+      name: 'email-generator',
+      template: 'Draft a professional email to {{recipient}} about {{subject}}.',
+      variants: [
+        {
+          id: 'formal',
+          name: 'Formal',
+          template:
+            'Please prepare a formal email correspondence to {{recipient}} regarding {{subject}}.',
+        },
+        {
+          id: 'casual',
+          name: 'Casual',
+          template: 'Write a friendly email to {{recipient}} about {{subject}}.',
+        },
+        {
+          id: 'urgent',
+          name: 'Urgent',
+          template: 'Compose an urgent email to {{recipient}} concerning {{subject}}.',
+        },
+      ],
+      trackMetrics: true,
+    });
 
   const handleVariantTest = async (variantId: string) => {
     setVariant(variantId);
@@ -118,8 +104,7 @@ export const PromptTemplateWithVariantsExample = () => {
             style={{
               padding: '8px 16px',
               marginRight: '8px',
-              backgroundColor:
-                currentVariant?.id === variant.id ? '#3b82f6' : '#e5e7eb',
+              backgroundColor: currentVariant?.id === variant.id ? '#3b82f6' : '#e5e7eb',
               color: currentVariant?.id === variant.id ? 'white' : 'black',
               border: 'none',
               borderRadius: '4px',
@@ -158,8 +143,7 @@ export const PromptTemplateWithVariantsExample = () => {
               {v.winner && ' ⭐ (Winner)'}
             </p>
             <p style={{ fontSize: '12px', color: '#6b7280' }}>
-              Runs: {v.metrics.totalRuns} | Success Rate:{' '}
-              {(v.metrics.successRate || 0).toFixed(1)}%
+              Runs: {v.metrics.totalRuns} | Success Rate: {(v.metrics.successRate || 0).toFixed(1)}%
             </p>
           </div>
         ))}
@@ -279,12 +263,7 @@ export const PromptTemplatePersistenceExample = () => {
           }}
         >
           📤 Import
-          <input
-            type="file"
-            accept=".json"
-            onChange={handleImport}
-            style={{ display: 'none' }}
-          />
+          <input type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
         </label>
       </div>
 
@@ -305,12 +284,7 @@ export const PromptTemplatePersistenceExample = () => {
 };
 
 export const PromptTemplateValidationExample = () => {
-  const {
-    currentTemplate,
-    testRender,
-    validateTemplate,
-    validateVariables,
-  } = usePromptTemplate({
+  const { currentTemplate, testRender, validateTemplate, validateVariables } = usePromptTemplate({
     name: 'form-generator',
     template: 'Generate a {{type}} form with {{fieldCount}} fields.',
     variables: [
@@ -370,8 +344,7 @@ export const PromptTemplateValidationExample = () => {
           <strong>Template:</strong> {currentTemplate.template}
         </p>
         <p>
-          <strong>Variables:</strong>{' '}
-          {currentTemplate.variables.map((v) => v.name).join(', ')}
+          <strong>Variables:</strong> {currentTemplate.variables.map((v) => v.name).join(', ')}
         </p>
       </div>
     </div>

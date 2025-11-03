@@ -4,11 +4,7 @@
 
 import { writable } from 'svelte/store';
 import type { Readable } from 'svelte/store';
-import type {
-  UIAwareProviderRouter,
-  ProviderRoutingEvent,
-  ProviderStatus,
-} from '@weaveai/core';
+import type { UIAwareProviderRouter, ProviderRoutingEvent, ProviderStatus } from '@weaveai/core';
 import {
   ProviderRoutingController,
   type ProviderRoutingControllerOptions,

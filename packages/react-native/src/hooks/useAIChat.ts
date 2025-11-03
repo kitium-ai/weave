@@ -65,8 +65,8 @@ function mapOptions(options?: UseAIChatOptions): ChatControllerOptions {
           autoSave: options.persistence.autoSave,
         }
       : options.persistence?.autoSave
-      ? { autoSave: options.persistence.autoSave }
-      : undefined,
+        ? { autoSave: options.persistence.autoSave }
+        : undefined,
     trackCosts: options.trackCosts,
     maxMessages: options.maxMessages,
     onOverflow: options.onOverflow,
@@ -77,8 +77,7 @@ export function useAIChat(weave: Weave, options?: UseAIChatOptions): UseAIChatRe
   const controllerRef = useRef<ChatController | null>(null);
   const controllerOptions = useMemo(() => mapOptions(options), [options]);
   const generateExecutor = useCallback(
-    (prompt: string, generateOptions?: GenerateOptions) =>
-      weave.generate(prompt, generateOptions),
+    (prompt: string, generateOptions?: GenerateOptions) => weave.generate(prompt, generateOptions),
     [weave]
   );
 
@@ -112,16 +111,13 @@ export function useAIChat(weave: Weave, options?: UseAIChatOptions): UseAIChatRe
     };
   }, [generateExecutor, controllerOptions]);
 
-  const sendMessage = useCallback(
-    (content: string, generateOptions?: GenerateOptions) => {
-      const controller = controllerRef.current;
-      if (!controller) {
-        return Promise.resolve(null);
-      }
-      return controller.sendMessage(content, generateOptions);
-    },
-    []
-  );
+  const sendMessage = useCallback((content: string, generateOptions?: GenerateOptions) => {
+    const controller = controllerRef.current;
+    if (!controller) {
+      return Promise.resolve(null);
+    }
+    return controller.sendMessage(content, generateOptions);
+  }, []);
 
   const addMessage = useCallback((message: ChatMessage) => {
     controllerRef.current?.addMessage(message);

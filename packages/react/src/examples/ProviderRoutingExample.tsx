@@ -10,11 +10,7 @@ import type { ProviderStatus, UIAwareProviderRouter } from '@weaveai/core';
 /**
  * Example 1: Basic provider switching
  */
-export const BasicProviderSwitchingExample = ({
-  router,
-}: {
-  router: UIAwareProviderRouter;
-}) => {
+export const BasicProviderSwitchingExample = ({ router }: { router: UIAwareProviderRouter }) => {
   const { currentProvider, providers, selectProvider } = useProviderRouting({
     router,
     autoRefresh: true,
@@ -37,11 +33,7 @@ export const BasicProviderSwitchingExample = ({
 /**
  * Example 2: Provider selector dropdown
  */
-export const ProviderSelectorExample = ({
-  router,
-}: {
-  router: UIAwareProviderRouter;
-}) => {
+export const ProviderSelectorExample = ({ router }: { router: UIAwareProviderRouter }) => {
   const { currentProvider, providers, selectProvider } = useProviderRouting({
     router,
   });
@@ -76,17 +68,12 @@ export const ProviderSelectorExample = ({
 /**
  * Example 3: Provider status monitoring
  */
-export const ProviderStatusMonitoringExample = ({
-  router,
-}: {
-  router: UIAwareProviderRouter;
-}) => {
-  const { providers, lastEvent, refreshStatus, isLoading, error } =
-    useProviderRouting({
-      router,
-      autoRefresh: true,
-      refreshInterval: 5000,
-    });
+export const ProviderStatusMonitoringExample = ({ router }: { router: UIAwareProviderRouter }) => {
+  const { providers, lastEvent, refreshStatus, isLoading, error } = useProviderRouting({
+    router,
+    autoRefresh: true,
+    refreshInterval: 5000,
+  });
 
   const healthyCount = providers.filter((p) => p.healthy).length;
   const totalCount = providers.length;
@@ -114,9 +101,7 @@ export const ProviderStatusMonitoringExample = ({
             </p>
           </div>
           <div>
-            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-              Status
-            </p>
+            <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Status</p>
             <p
               style={{
                 margin: 0,
@@ -140,10 +125,7 @@ export const ProviderStatusMonitoringExample = ({
         </div>
       </div>
 
-      <ProviderSwitch
-        providers={providers}
-        showMetrics={true}
-      />
+      <ProviderSwitch providers={providers} showMetrics={true} />
 
       {lastEvent && (
         <div
@@ -201,11 +183,7 @@ export const ProviderStatusMonitoringExample = ({
 /**
  * Example 4: Provider events timeline
  */
-export const ProviderEventsTimelineExample = ({
-  router,
-}: {
-  router: UIAwareProviderRouter;
-}) => {
+export const ProviderEventsTimelineExample = ({ router }: { router: UIAwareProviderRouter }) => {
   const { events, clearEvents } = useProviderRouting({
     router,
   });
@@ -248,26 +226,19 @@ export const ProviderEventsTimelineExample = ({
 /**
  * Example 5: Complete provider routing dashboard
  */
-export const CompleteProviderDashboardExample = ({
-  router,
-}: {
-  router: UIAwareProviderRouter;
-}) => {
-  const [activeTab, setActiveTab] = useState<'switch' | 'status' | 'events'>(
-    'switch'
-  );
+export const CompleteProviderDashboardExample = ({ router }: { router: UIAwareProviderRouter }) => {
+  const [activeTab, setActiveTab] = useState<'switch' | 'status' | 'events'>('switch');
   const [showNotifications, setShowNotifications] = useState(true);
   const [notification, setNotification] = useState<{
     message: string;
     type: string;
   } | null>(null);
 
-  const { currentProvider, providers, selectProvider, events, refreshStatus } =
-    useProviderRouting({
-      router,
-      autoRefresh: true,
-      refreshInterval: 5000,
-    });
+  const { currentProvider, providers, selectProvider, events, refreshStatus } = useProviderRouting({
+    router,
+    autoRefresh: true,
+    refreshInterval: 5000,
+  });
 
   useProviderNotifications({
     events,
@@ -413,9 +384,7 @@ export const CompleteProviderDashboardExample = ({
           </div>
         )}
 
-        {activeTab === 'events' && (
-          <ProviderEventFeed events={events} maxItems={10} />
-        )}
+        {activeTab === 'events' && <ProviderEventFeed events={events} maxItems={10} />}
       </div>
 
       {/* Right Column - Detailed View */}
@@ -455,9 +424,7 @@ export const CompleteProviderDashboardExample = ({
                       backgroundColor: provider.healthy ? '#10b981' : '#ef4444',
                     }}
                   />
-                  <span style={{ fontWeight: '600', color: '#1f2937' }}>
-                    {provider.name}
-                  </span>
+                  <span style={{ fontWeight: '600', color: '#1f2937' }}>{provider.name}</span>
                   {currentProvider === provider.name && (
                     <span
                       style={{

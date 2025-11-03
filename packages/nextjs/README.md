@@ -90,49 +90,49 @@ console.log('Generated Tests:', output.tests);
 
 ## API Route Specification (NextJSApiRouteSpec)
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | string | Route name (e.g., 'products-api') |
-| `description` | string | Route description |
-| `framework` | 'nextjs' | Framework identifier |
-| `endpoint` | string | API endpoint path (e.g., '/api/products') |
-| `method` | 'GET' \| 'POST' \| 'PUT' \| 'DELETE' \| 'PATCH' | HTTP method |
-| `queryParams` | Array | Query parameters with types |
-| `bodySchema` | Object | Request body schema |
-| `responseSchema` | Object | Response schema |
-| `features` | string[] | Features like 'validation', 'caching', etc. |
+| Property         | Type                                            | Description                                 |
+| ---------------- | ----------------------------------------------- | ------------------------------------------- |
+| `name`           | string                                          | Route name (e.g., 'products-api')           |
+| `description`    | string                                          | Route description                           |
+| `framework`      | 'nextjs'                                        | Framework identifier                        |
+| `endpoint`       | string                                          | API endpoint path (e.g., '/api/products')   |
+| `method`         | 'GET' \| 'POST' \| 'PUT' \| 'DELETE' \| 'PATCH' | HTTP method                                 |
+| `queryParams`    | Array                                           | Query parameters with types                 |
+| `bodySchema`     | Object                                          | Request body schema                         |
+| `responseSchema` | Object                                          | Response schema                             |
+| `features`       | string[]                                        | Features like 'validation', 'caching', etc. |
 
 ### Query Parameter Structure
 
 ```typescript
 interface QueryParam {
-  name: string;        // Parameter name
-  type: string;       // TypeScript type (e.g., 'string', 'number')
-  required: boolean;  // Whether parameter is required
+  name: string; // Parameter name
+  type: string; // TypeScript type (e.g., 'string', 'number')
+  required: boolean; // Whether parameter is required
 }
 ```
 
 ## Page Specification (NextJSPageSpec)
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `name` | string | Page name (e.g., 'dashboard') |
-| `description` | string | Page description |
-| `framework` | 'nextjs' | Framework identifier |
-| `title` | string | Page title for metadata |
-| `route` | string | Route path (e.g., '/dashboard') |
-| `isServerComponent` | boolean | Whether to use Server Components |
-| `features` | string[] | Features like 'forms', 'animations', etc. |
+| Property            | Type     | Description                               |
+| ------------------- | -------- | ----------------------------------------- |
+| `name`              | string   | Page name (e.g., 'dashboard')             |
+| `description`       | string   | Page description                          |
+| `framework`         | 'nextjs' | Framework identifier                      |
+| `title`             | string   | Page title for metadata                   |
+| `route`             | string   | Route path (e.g., '/dashboard')           |
+| `isServerComponent` | boolean  | Whether to use Server Components          |
+| `features`          | string[] | Features like 'forms', 'animations', etc. |
 
 ## Generated Output (GeneratorOutput)
 
 ```typescript
 interface GeneratorOutput<T extends BaseSpec> {
-  code: string;          // Generated API route/page code
-  tests: string;         // Generated unit tests
-  examples: string;      // Usage examples and documentation
+  code: string; // Generated API route/page code
+  tests: string; // Generated unit tests
+  examples: string; // Usage examples and documentation
   metadata: CodeMetadata; // Generation metadata
-  spec: T;              // Original specification
+  spec: T; // Original specification
 }
 ```
 
@@ -151,10 +151,7 @@ type ResponseData = {
   error?: string;
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   // Method validation
   if (req.method !== 'GET') {
     return res.status(405).json({
@@ -253,10 +250,7 @@ Pages can include:
 // pages/api/custom/[id].ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
   switch (req.method) {

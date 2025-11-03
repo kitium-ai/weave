@@ -76,4 +76,4 @@ export function createChat(weave: Weave) {
 3. Keep documentation in sync with the framework bindings.
 
 The shared layer is the contract that keeps Weave behaviour consistent across
-React, Vue, Angular, Svelte, React Native, and beyond.*** End Patch
+React, Vue, Angular, Svelte, React Native, and beyond.\*\*\* End Patch

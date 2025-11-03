@@ -113,7 +113,9 @@ function validateVariables(
       if (def.validation) {
         const result = def.validation(value);
         if (result !== true) {
-          errors.push(`Variable ${def.name}: ${typeof result === 'string' ? result : 'validation failed'}`);
+          errors.push(
+            `Variable ${def.name}: ${typeof result === 'string' ? result : 'validation failed'}`
+          );
         }
       }
     }
@@ -200,7 +202,14 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
         console.warn(`Failed to save template to localStorage: ${e}`);
       }
     }
-  }, [currentTemplate, currentVariables, variants, history, storageKey, options.persistToLocalStorage]);
+  }, [
+    currentTemplate,
+    currentVariables,
+    variants,
+    history,
+    storageKey,
+    options.persistToLocalStorage,
+  ]);
 
   // Track metrics
   const updateMetrics = useCallback(
@@ -228,15 +237,23 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
   );
 
   // Template Management
-  const handleSetTemplate = useCallback((template: string | PromptTemplate) => {
-    const newTemplate =
-      typeof template === 'string'
-        ? { ...currentTemplate, template, updatedAt: new Date(), version: currentTemplate.version + 1 }
-        : template;
+  const handleSetTemplate = useCallback(
+    (template: string | PromptTemplate) => {
+      const newTemplate =
+        typeof template === 'string'
+          ? {
+              ...currentTemplate,
+              template,
+              updatedAt: new Date(),
+              version: currentTemplate.version + 1,
+            }
+          : template;
 
-    setCurrentTemplate(newTemplate);
-    options.onTemplateChange?.(newTemplate.template);
-  }, [currentTemplate, options]);
+      setCurrentTemplate(newTemplate);
+      options.onTemplateChange?.(newTemplate.template);
+    },
+    [currentTemplate, options]
+  );
 
   const handleUpdateVariable = useCallback((name: string, value: any) => {
     setCurrentVariables((prev) => ({
@@ -340,41 +357,44 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
   );
 
   // Variant Management
-  const handleSetVariant = useCallback((variantId: string) => {
-    const variant = variants.find((v) => v.id === variantId);
-    if (variant) {
-      setCurrentVariantId(variantId);
-      handleSetTemplate(variant.template);
-    }
-  }, [variants, handleSetTemplate]);
+  const handleSetVariant = useCallback(
+    (variantId: string) => {
+      const variant = variants.find((v) => v.id === variantId);
+      if (variant) {
+        setCurrentVariantId(variantId);
+        handleSetTemplate(variant.template);
+      }
+    },
+    [variants, handleSetTemplate]
+  );
 
   const handleAddVariant = useCallback((variant: PromptVariant) => {
     setVariants((prev) => [...prev, variant]);
   }, []);
 
-  const handleRemoveVariant = useCallback((variantId: string) => {
-    setVariants((prev) => prev.filter((v) => v.id !== variantId));
-    if (currentVariantId === variantId) {
-      setCurrentVariantId(null);
-    }
-  }, [currentVariantId]);
-
-  const handleUpdateVariant = useCallback(
-    (variantId: string, updates: Partial<PromptVariant>) => {
-      setVariants((prev) =>
-        prev.map((v) =>
-          v.id === variantId
-            ? {
-                ...v,
-                ...updates,
-                updatedAt: new Date(),
-              }
-            : v
-        )
-      );
+  const handleRemoveVariant = useCallback(
+    (variantId: string) => {
+      setVariants((prev) => prev.filter((v) => v.id !== variantId));
+      if (currentVariantId === variantId) {
+        setCurrentVariantId(null);
+      }
     },
-    []
+    [currentVariantId]
   );
+
+  const handleUpdateVariant = useCallback((variantId: string, updates: Partial<PromptVariant>) => {
+    setVariants((prev) =>
+      prev.map((v) =>
+        v.id === variantId
+          ? {
+              ...v,
+              ...updates,
+              updatedAt: new Date(),
+            }
+          : v
+      )
+    );
+  }, []);
 
   // A/B Testing
   const handleGetVariantMetrics = useCallback(
@@ -443,27 +463,30 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
     }
   }, [currentTemplate, currentVariables, variants, history, storageKey, options]);
 
-  const handleLoad = useCallback(async (templateId: string) => {
-    setIsLoading(true);
-    try {
-      // In a real app, this would load from a backend
-      if (options.persistToLocalStorage) {
-        const stored = localStorage.getItem(`${storageKey}-${templateId}`);
-        if (stored) {
-          const data = JSON.parse(stored);
-          setCurrentTemplate(data.template);
-          setCurrentVariables(data.variables || {});
-          setVariants(data.variants || []);
+  const handleLoad = useCallback(
+    async (templateId: string) => {
+      setIsLoading(true);
+      try {
+        // In a real app, this would load from a backend
+        if (options.persistToLocalStorage) {
+          const stored = localStorage.getItem(`${storageKey}-${templateId}`);
+          if (stored) {
+            const data = JSON.parse(stored);
+            setCurrentTemplate(data.template);
+            setCurrentVariables(data.variables || {});
+            setVariants(data.variants || []);
+          }
         }
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options.onError?.(error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      setError(error);
-      options.onError?.(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [storageKey, options]);
+    },
+    [storageKey, options]
+  );
 
   const handleExport = useCallback(() => {
     return JSON.stringify(
@@ -478,19 +501,22 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
     );
   }, [currentTemplate, currentVariables, variants, history]);
 
-  const handleImport = useCallback((data: string) => {
-    try {
-      const imported = JSON.parse(data);
-      setCurrentTemplate(imported.template);
-      setCurrentVariables(imported.variables || {});
-      setVariants(imported.variants || []);
-      setHistory(imported.history || []);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      setError(error);
-      options.onError?.(error);
-    }
-  }, [options]);
+  const handleImport = useCallback(
+    (data: string) => {
+      try {
+        const imported = JSON.parse(data);
+        setCurrentTemplate(imported.template);
+        setCurrentVariables(imported.variables || {});
+        setVariants(imported.variants || []);
+        setHistory(imported.history || []);
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options.onError?.(error);
+      }
+    },
+    [options]
+  );
 
   const handleReset = useCallback(() => {
     setCurrentTemplate({

@@ -3,11 +3,7 @@
  */
 
 import { ref, onBeforeUnmount, type Ref } from 'vue';
-import type {
-  UIAwareProviderRouter,
-  ProviderStatus,
-  ProviderRoutingEvent,
-} from '@weaveai/core';
+import type { UIAwareProviderRouter, ProviderStatus, ProviderRoutingEvent } from '@weaveai/core';
 import {
   ProviderRoutingController,
   type ProviderRoutingControllerOptions,
@@ -15,7 +11,10 @@ import {
 } from '@weaveai/shared';
 
 export interface UseProviderRoutingOptions
-  extends Omit<ProviderRoutingControllerOptions, 'onProviderChange' | 'onRoutingEvent' | 'onStatusChange'> {
+  extends Omit<
+    ProviderRoutingControllerOptions,
+    'onProviderChange' | 'onRoutingEvent' | 'onStatusChange'
+  > {
   router: UIAwareProviderRouter;
   onProviderChange?: (from: string, to: string, reason?: string) => void;
   onRoutingEvent?: (event: ProviderRoutingEvent) => void;
@@ -35,9 +34,7 @@ export interface UseProviderRoutingReturn {
   dispose: () => void;
 }
 
-export function useProviderRouting(
-  options: UseProviderRoutingOptions
-): UseProviderRoutingReturn {
+export function useProviderRouting(options: UseProviderRoutingOptions): UseProviderRoutingReturn {
   const controller = new ProviderRoutingController(options.router, {
     autoRefresh: options.autoRefresh,
     refreshInterval: options.refreshInterval,

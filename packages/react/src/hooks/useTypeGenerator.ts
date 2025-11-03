@@ -17,7 +17,11 @@ export interface UseTypeGeneratorReturn {
   types: GeneratedTypes | null;
   loading: boolean;
   error: Error | null;
-  generate: (typeName: string, description: string, options?: GenerateOptions) => Promise<GeneratedTypes | null>;
+  generate: (
+    typeName: string,
+    description: string,
+    options?: GenerateOptions
+  ) => Promise<GeneratedTypes | null>;
   generateMultiple: (
     typeNames: string[],
     description: string,
@@ -45,7 +49,11 @@ export function useTypeGenerator(): UseTypeGeneratorReturn {
   const [error, setError] = useState<Error | null>(null);
 
   const generate = useCallback(
-    async (typeName: string, description: string, options?: GenerateOptions): Promise<GeneratedTypes | null> => {
+    async (
+      typeName: string,
+      description: string,
+      _options?: GenerateOptions
+    ): Promise<GeneratedTypes | null> => {
       if (!weave) {
         const err = new Error('Weave instance not available');
         setError(err);
@@ -76,7 +84,11 @@ export function useTypeGenerator(): UseTypeGeneratorReturn {
   );
 
   const generateMultiple = useCallback(
-    async (typeNames: string[], description: string, options?: GenerateOptions): Promise<GeneratedTypes | null> => {
+    async (
+      typeNames: string[],
+      description: string,
+      _options?: GenerateOptions
+    ): Promise<GeneratedTypes | null> => {
       if (!weave) {
         const err = new Error('Weave instance not available');
         setError(err);

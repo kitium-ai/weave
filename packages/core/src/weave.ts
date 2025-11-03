@@ -7,11 +7,7 @@ import type { ILanguageModel } from './providers';
 import { getProviderRegistry, MockLanguageModel } from './providers';
 import { GenerateOperation, ClassifyOperation, ExtractOperation } from './operations';
 import { Agent } from './agents/agent.js';
-import type {
-  AgentTool,
-  AgentConfig,
-  AgentThinkingConfig,
-} from './agents/types.js';
+import type { AgentTool, AgentConfig, AgentThinkingConfig } from './agents/types.js';
 import type {
   WeaveConfig,
   GenerateOptions,
@@ -89,9 +85,7 @@ export class Weave {
    * Create an agent instance with optional UI-aware tools
    */
   public createAgent(options: CreateAgentOptions): Agent {
-    const normalizedTools = options.tools.map((tool) =>
-      this.normalizeAgentTool(tool)
-    );
+    const normalizedTools = options.tools.map((tool) => this.normalizeAgentTool(tool));
 
     const agentConfig: AgentConfig = {
       name: options.name ?? this.agentDefaults.name,
@@ -118,7 +112,8 @@ export class Weave {
           name: 'generate',
           description: 'Generate text using the current provider',
           execute: async (input: unknown) => {
-            const { prompt, options } = (input as { prompt?: string; options?: GenerateOptions }) ?? {};
+            const { prompt, options } =
+              (input as { prompt?: string; options?: GenerateOptions }) ?? {};
             if (!prompt || typeof prompt !== 'string') {
               throw new Error('Generate tool requires a "prompt" string');
             }

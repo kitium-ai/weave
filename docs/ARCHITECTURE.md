@@ -1,6 +1,7 @@
 # Weave Framework: Architecture & Design Document
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Design Principles](#design-principles)
 3. [Monorepo Structure](#monorepo-structure)
@@ -21,6 +22,7 @@
 **Weave** is a language-agnostic AI integration framework that makes AI feel native to any web or mobile framework (React, Vue, Svelte, Angular, Flutter, SwiftUI, etc.).
 
 ### Key Architecture Goals
+
 - **Framework-Agnostic**: Core logic independent of framework
 - **Production-Ready**: Enterprise-grade quality from day one
 - **Type-Safe**: Full TypeScript support everywhere
@@ -29,6 +31,7 @@
 - **Extensible**: Plugin architecture for community
 
 ### Vision
+
 ```
 Simple Weave + Framework = Native AI Integration
 ```
@@ -38,6 +41,7 @@ Simple Weave + Framework = Native AI Integration
 ## Design Principles
 
 ### 1. Separation of Concerns
+
 - **Core Layer**: Framework-agnostic AI logic
 - **Binding Layer**: Framework-specific hooks/components
 - **Provider Layer**: Model & service abstraction
@@ -46,41 +50,49 @@ Simple Weave + Framework = Native AI Integration
 ### 2. SOLID Principles
 
 **Single Responsibility**
+
 - Each module has one reason to change
 - AI operations separated from state management
 - Providers isolated from core logic
 
 **Open/Closed**
+
 - Open for extension via plugins
 - Closed for modification via stable interfaces
 - New providers without changing core
 
 **Liskov Substitution**
+
 - All providers implement consistent interface
 - Swappable without changing consumer code
 - Type-safe provider switching
 
 **Interface Segregation**
+
 - Small, focused interfaces
 - No fat client interfaces
 - Framework-specific APIs tailored to idioms
 
 **Dependency Inversion**
+
 - Depend on abstractions, not concretions
 - Inject configuration, not hardcode
 - Plugin system for extensibility
 
 ### 3. DRY (Don't Repeat Yourself)
+
 - Shared logic in `@weaveai/core`
 - Framework integrations only differ by idiom
 - Common patterns extracted to utilities
 
 ### 4. Progressive Enhancement
+
 - Simple use cases: Zero config
 - Complex use cases: Full control
 - Advanced features: Optional, opt-in
 
 ### 5. Zero Surprises
+
 - Explicit over implicit
 - Transparent operation tracing
 - Clear error messages
@@ -103,19 +115,20 @@ Simple Weave + Framework = Native AI Integration
 ```yaml
 # package.json at root
 {
-  "private": true,
-  "workspaces": [
-    "packages/core",
-    "packages/react",
-    "packages/vue",
-    "packages/svelte",
-    "packages/angular",
-    "packages/flutter",
-    "packages/swift",
-    "packages/shared",
-    "packages/integrations/*",
-    "examples/*"
-  ]
+  'private': true,
+  'workspaces':
+    [
+      'packages/core',
+      'packages/react',
+      'packages/vue',
+      'packages/svelte',
+      'packages/angular',
+      'packages/flutter',
+      'packages/swift',
+      'packages/shared',
+      'packages/integrations/*',
+      'examples/*',
+    ],
 }
 ```
 
@@ -251,6 +264,7 @@ weave/
 ### Core Layer: @weaveai/core
 
 **Responsibilities**:
+
 1. AI operation execution (generate, classify, extract, etc.)
 2. Provider abstraction and management
 3. Tool management and execution
@@ -261,6 +275,7 @@ weave/
 **Key Components**:
 
 #### 1. Operations Layer
+
 ```
 operations/
 ├── base.ts          # Abstract operation class
@@ -277,6 +292,7 @@ operations/
 **Design Pattern**: Each operation implements `IOperation<Input, Output>`
 
 #### 2. Provider Layer
+
 ```
 providers/
 ├── interfaces/      # IProvider, ILanguageModel
@@ -292,6 +308,7 @@ providers/
 **Design Pattern**: Strategy pattern for swappable providers
 
 #### 3. Tools Layer
+
 ```
 tools/
 ├── interfaces/      # ITool interface
@@ -301,6 +318,7 @@ tools/
 ```
 
 #### 4. Types Layer
+
 ```
 types/
 ├── ai.types.ts          # AI operation types
@@ -313,6 +331,7 @@ types/
 ### Framework Binding Layer
 
 Each framework gets a minimal binding that:
+
 1. Wraps core operations in framework idioms
 2. Manages loading/error/success states
 3. Handles framework-specific cleanup
@@ -320,12 +339,13 @@ Each framework gets a minimal binding that:
 5. Integrates with framework state management
 
 **React Example**:
+
 ```typescript
 // Hook wraps core operation with React state
 export function useAI<T>(
   fn: () => Promise<T>,
   deps: DependencyList
-): { loading: boolean; data: T | null; error: Error | null }
+): { loading: boolean; data: T | null; error: Error | null };
 ```
 
 ---
@@ -354,6 +374,7 @@ User Applications
 ### Package Exports Strategy
 
 **@weaveai/core** exports:
+
 ```typescript
 // Main API
 export { WeaveAI } from './core';
@@ -374,6 +395,7 @@ export { createWeaveConfig, validateConfig } from './utils';
 ```
 
 **@weaveai/react** exports:
+
 ```typescript
 // Hooks
 export { useAI } from './hooks/useAI';
@@ -415,23 +437,22 @@ Each package is designed for optimal tree-shaking:
 ### Core API Example
 
 **Generation**:
+
 ```typescript
 interface GenerateOptions {
-  model?: string;           // Defaults to configured model
-  temperature?: number;     // 0-1, default 0.7
+  model?: string; // Defaults to configured model
+  temperature?: number; // 0-1, default 0.7
   maxTokens?: number;
   streaming?: boolean;
   onChunk?: (chunk: string) => void;
   cache?: boolean;
 }
 
-async function generate(
-  prompt: string,
-  options?: GenerateOptions
-): Promise<string>
+async function generate(prompt: string, options?: GenerateOptions): Promise<string>;
 ```
 
 **Classification**:
+
 ```typescript
 interface ClassificationResult {
   label: string;
@@ -443,20 +464,18 @@ async function classify(
   text: string,
   labels: string[],
   options?: ClassifyOptions
-): Promise<ClassificationResult>
+): Promise<ClassificationResult>;
 ```
 
 **Extraction**:
+
 ```typescript
 interface ExtractionOptions {
   schema: ZodSchema | JSONSchema;
-  strict?: boolean;  // Validate against schema
+  strict?: boolean; // Validate against schema
 }
 
-async function extract<T>(
-  text: string,
-  options: ExtractionOptions
-): Promise<T>
+async function extract<T>(text: string, options: ExtractionOptions): Promise<T>;
 ```
 
 ### React Hook API Example
@@ -465,7 +484,7 @@ async function extract<T>(
 interface UseAIOptions<T> {
   onSuccess?: (data: T) => void;
   onError?: (error: Error) => void;
-  cache?: boolean | number;  // ms
+  cache?: boolean | number; // ms
   revalidateOnFocus?: boolean;
 }
 
@@ -480,7 +499,7 @@ function useAI<T>(
   fn: () => Promise<T>,
   deps: DependencyList,
   options?: UseAIOptions<T>
-): UseAIResult<T>
+): UseAIResult<T>;
 ```
 
 ---
@@ -490,6 +509,7 @@ function useAI<T>(
 ### Code Quality
 
 **TypeScript Configuration**:
+
 ```json
 {
   "compilerOptions": {
@@ -513,6 +533,7 @@ function useAI<T>(
 ```
 
 **Linting**: ESLint with strict rules
+
 ```json
 {
   "extends": ["eslint:recommended", "prettier"],
@@ -526,6 +547,7 @@ function useAI<T>(
 ```
 
 **Formatting**: Prettier with consistent config
+
 ```json
 {
   "semi": true,
@@ -539,11 +561,13 @@ function useAI<T>(
 ### Testing Standards
 
 **Coverage Goals**:
+
 - Core functionality: >95%
 - Integration tests: >80%
 - Framework bindings: >90%
 
 **Testing Pyramid**:
+
 ```
          UI Tests (5%)
           /        \
@@ -553,6 +577,7 @@ function useAI<T>(
 ```
 
 **Testing Tools**:
+
 - **Unit**: Vitest (fast, esbuild-based)
 - **Integration**: Vitest + Testing Library
 - **E2E**: Playwright (framework examples)
@@ -561,12 +586,14 @@ function useAI<T>(
 ### Naming Conventions
 
 **Files**:
+
 - Source: `.ts` or `.tsx`
 - Tests: `.test.ts`, `.spec.ts`
 - Types: `.types.ts`
 - Index files: `index.ts` (barrel exports)
 
 **Code**:
+
 ```typescript
 // Classes: PascalCase
 class WeaveAI {}
@@ -588,7 +615,8 @@ type GenerateOptions = {};
 ### Documentation Standards
 
 **JSDoc Comments**:
-```typescript
+
+````typescript
 /**
  * Generates text based on a prompt.
  *
@@ -603,11 +631,8 @@ type GenerateOptions = {};
  *
  * @throws {WeaveError} If generation fails
  */
-async function generate(
-  prompt: string,
-  options?: GenerateOptions
-): Promise<string>
-```
+async function generate(prompt: string, options?: GenerateOptions): Promise<string>;
+````
 
 ---
 
@@ -652,25 +677,26 @@ async function generate(
 
 ```typescript
 interface WeaveConfig {
-  apiKey: string;           // Loaded from env variables
-  provider: string;         // 'openai' | 'anthropic' | etc.
+  apiKey: string; // Loaded from env variables
+  provider: string; // 'openai' | 'anthropic' | etc.
   baseURL?: string;
   timeout?: number;
   retries?: number;
-  logging?: LogLevel;      // 'debug' | 'info' | 'error'
+  logging?: LogLevel; // 'debug' | 'info' | 'error'
   tracing?: TracingConfig;
 }
 
 // Never hardcode secrets
 const config = {
   apiKey: process.env.WEAVE_API_KEY,
-  provider: process.env.WEAVE_PROVIDER || 'openai'
+  provider: process.env.WEAVE_PROVIDER || 'openai',
 };
 ```
 
 ### Error Handling
 
 Custom error hierarchy:
+
 ```typescript
 class WeaveError extends Error {
   constructor(
@@ -703,6 +729,7 @@ class AuthenticationError extends WeaveError {}
 ### Unit Testing
 
 **Structure**:
+
 ```
 packages/core/tests/
 ├── operations/
@@ -717,6 +744,7 @@ packages/core/tests/
 ```
 
 **Pattern**:
+
 ```typescript
 describe('generate operation', () => {
   describe('basic generation', () => {
@@ -787,16 +815,21 @@ expectType<Promise<string>>(result);
 Brief description
 
 ## Installation
+
 ## Quick Start
+
 ## API Reference
+
 ## Examples
+
 ## Contributing
+
 ## License
 ```
 
 ### API Documentation
 
-```markdown
+````markdown
 ## API Reference
 
 ### generate(prompt, options?)
@@ -804,20 +837,25 @@ Brief description
 Description with purpose
 
 **Parameters:**
+
 - `prompt` (string): The input prompt
 - `options` (GenerateOptions): Optional configuration
 
 **Returns:** Promise<string>
 
 **Example:**
+
 ```typescript
 const text = await weave.generate('Write a poem');
 ```
+````
 
 **Errors:**
+
 - Throws `ProviderError` if provider fails
 - Throws `ValidationError` if validation fails
-```
+
+````
 
 ### Architecture Decision Records (ADRs)
 
@@ -837,7 +875,7 @@ Use Yarn workspaces for monorepo management.
 - Easier code sharing (positive)
 - Single versioning for all packages (positive)
 - More complex build process (minor negative)
-```
+````
 
 ---
 
@@ -846,6 +884,7 @@ Use Yarn workspaces for monorepo management.
 ### Licensing
 
 **Dual License Model**:
+
 1. **Open Source**: Apache 2.0 (or MIT)
    - Free for community use
    - Open-source projects can use freely
@@ -870,6 +909,7 @@ All examples: MIT
 ### Contribution Guidelines
 
 **Workflow**:
+
 1. Fork repository
 2. Create feature branch (`feature/my-feature`)
 3. Commit with conventional commits
@@ -879,6 +919,7 @@ All examples: MIT
 7. Merge and release
 
 **Commit Message Format**:
+
 ```
 type(scope): subject
 
@@ -894,6 +935,7 @@ Examples:
 ```
 
 **Code Review Checklist**:
+
 - ✅ Tests included and passing
 - ✅ TypeScript strict mode passes
 - ✅ Linting passes (ESLint, Prettier)
@@ -904,15 +946,18 @@ Examples:
 ### Decision Making
 
 **For Small Changes**:
+
 - Maintainer review + approval
 - Can merge once approved
 
 **For Features**:
+
 - RFC (Request for Comments) process
 - Community discussion (1-2 weeks)
 - Implementation after consensus
 
 **For Major Changes**:
+
 - Steering committee vote
 - Extended community discussion
 - Documented decision
@@ -935,6 +980,7 @@ yarn dev
 ```
 
 **Build Output**:
+
 ```
 dist/
 ├── esm/        # ES modules (main)
@@ -946,11 +992,13 @@ dist/
 ### Versioning
 
 **Semantic Versioning** (SemVer):
+
 - MAJOR: Breaking changes
 - MINOR: New features (backward compatible)
 - PATCH: Bug fixes
 
 **Release Process**:
+
 1. Update version in package.json
 2. Update CHANGELOG.md
 3. Tag commit with version
@@ -960,6 +1008,7 @@ dist/
 ### CI/CD Pipeline
 
 **GitHub Actions**:
+
 ```yaml
 on: [push, pull_request]
 
@@ -983,17 +1032,20 @@ jobs:
 ## Success Metrics
 
 ### Code Health
+
 - ✅ Zero `any` types
 - ✅ 95%+ test coverage
 - ✅ 0 critical security issues
 - ✅ <2% failing tests in CI
 
 ### Performance
+
 - ✅ <50KB core bundle (gzipped)
 - ✅ <2s operation latency (p95)
 - ✅ <10MB memory per instance
 
 ### Community
+
 - ✅ 5,000+ GitHub stars (year 1)
 - ✅ 1,000+ active users
 - ✅ 50+ community extensions

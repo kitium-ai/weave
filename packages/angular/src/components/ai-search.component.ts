@@ -33,7 +33,7 @@ export interface SearchResult {
         <div
           *ngFor="let result of results"
           class="weave-search__result-item"
-          (click)="selectResult(result)"
+          (click)="emitSelectResult(result)"
         >
           <div class="weave-search__result-title">{{ result.title }}</div>
           <p class="weave-search__result-description">{{ result.description }}</p>
@@ -160,7 +160,7 @@ export class AISearchComponent {
     }
   }
 
-  selectResult(result: SearchResult): void {
+  emitSelectResult(result: SearchResult): void {
     this.selectResult.emit(result);
   }
 }

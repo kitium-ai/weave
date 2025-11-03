@@ -89,12 +89,7 @@ function SupportAssistant() {
 ## Caching & Provider Routing
 
 ```tsx
-import {
-  useCache,
-  useProviderRouting,
-  ProviderSwitch,
-  ProviderEventFeed,
-} from '@weaveai/react';
+import { useCache, useProviderRouting, ProviderSwitch, ProviderEventFeed } from '@weaveai/react';
 import { CacheConfig } from '@weaveai/core';
 import { createUIRouter } from './router-factory';
 
@@ -162,4 +157,4 @@ behavior stays consistent with Vue, Angular, Svelte, and React Native bindings.
 - [Core package](../core) for provider configuration and low-level APIs.
 - [Shared package](../shared) for the reusable controllers that power the React
   bindings.
-- [Examples workspace](../../examples) for full framework demos.*** End Patch
+- [Examples workspace](../../examples) for full framework demos.\*\*\* End Patch

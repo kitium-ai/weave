@@ -71,11 +71,16 @@ export class ClassifyOperation extends BaseOperation {
         recoverable: false,
       };
 
-      return this.buildResult(metadata, fallbackData, {
-        displayAs: 'json',
-        canStream: false,
-        estimatedSize: 'small',
-      }, errorDetails);
+      return this.buildResult(
+        metadata,
+        fallbackData,
+        {
+          displayAs: 'json',
+          canStream: false,
+          estimatedSize: 'small',
+        },
+        errorDetails
+      );
     }
   }
 }

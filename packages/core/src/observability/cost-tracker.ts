@@ -138,7 +138,11 @@ export class CostTracker {
    */
   public trackUsage(modelKey: string, inputTokens: number, outputTokens: number): void {
     const cost = this.estimateCost(modelKey, inputTokens, outputTokens);
-    const existing = this.usageByModel.get(modelKey) || { inputTokens: 0, outputTokens: 0, cost: 0 };
+    const existing = this.usageByModel.get(modelKey) || {
+      inputTokens: 0,
+      outputTokens: 0,
+      cost: 0,
+    };
 
     this.usageByModel.set(modelKey, {
       inputTokens: existing.inputTokens + inputTokens,

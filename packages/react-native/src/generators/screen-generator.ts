@@ -136,7 +136,9 @@ const styles = StyleSheet.create({
 
     if (spec.hasNavigation) {
       imports.push("import { useNavigation, useRoute } from '@react-navigation/native';");
-      imports.push("import type { NativeStackNavigationProp, RouteProp } from '@react-navigation/native-stack';");
+      imports.push(
+        "import type { NativeStackNavigationProp, RouteProp } from '@react-navigation/native-stack';"
+      );
     }
 
     if (spec.features.includes('flatlist')) {
@@ -148,7 +150,9 @@ const styles = StyleSheet.create({
     }
 
     if (spec.features.includes('gestures')) {
-      imports.push("import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';");
+      imports.push(
+        "import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';"
+      );
     }
 
     if (spec.features.includes('async-storage')) {
@@ -185,12 +189,16 @@ describe('${screenName} Screen', () => {
     await expect(screen.findByText(/Error:/)).toBeTruthy();
   });
 
-  ${spec.inputs.map((input) => `it('accepts ${input.name} prop', () => {
+  ${spec.inputs
+    .map(
+      (input) => `it('accepts ${input.name} prop', () => {
     const { getByText } = render(
       <${screenName} ${input.name}=${this.getExampleValue(input.type)} />
     );
     expect(getByText('${spec.name}')).toBeTruthy();
-  });`).join('\n\n  ')}
+  });`
+    )
+    .join('\n\n  ')}
 });`;
   }
 

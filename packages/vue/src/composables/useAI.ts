@@ -133,9 +133,7 @@ export function useClassifyAI(options?: UseAIOptions<ClassificationResult>) {
 /**
  * Vue composable for data extraction.
  */
-export function useExtractAI<T = unknown>(
-  options?: UseAIOptions<ExtractResult<T>>
-) {
+export function useExtractAI<T = unknown>(options?: UseAIOptions<ExtractResult<T>>) {
   const weave = inject<Weave>('weave');
   const ai = useAI<ExtractResult<T>>({ ...(options ?? {}), operation: 'extract' });
 

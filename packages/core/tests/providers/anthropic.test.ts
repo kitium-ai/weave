@@ -5,7 +5,11 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AnthropicProvider } from '../../src/providers/anthropic.js';
-import type { GenerateOptions, ClassifyOptions, ExtractOptions } from '../../src/providers/interfaces.js';
+import type {
+  GenerateOptions,
+  ClassifyOptions,
+  ExtractOptions,
+} from '../../src/providers/interfaces.js';
 
 // Mock fetch for API calls
 global.fetch = vi.fn();

@@ -106,9 +106,7 @@ export class UIAwareProviderRouter {
 
     // Initialize routes with weights
     for (const weighted of weightedProviders) {
-      const provider = providers.find((p) =>
-        p.config.type.includes(weighted.provider)
-      );
+      const provider = providers.find((p) => p.config.type.includes(weighted.provider));
       if (provider) {
         const breaker = this.circuitBreakerManager.getBreaker(weighted.provider);
         const metrics = breaker.getMetrics();
@@ -121,9 +119,10 @@ export class UIAwareProviderRouter {
           priority: weighted.priority ?? 999,
           isHealthy: !breaker.isOpen(),
           metrics: {
-            successRate: metrics.totalRequests > 0
-              ? ((metrics.totalRequests - metrics.failedRequests) / metrics.totalRequests) * 100
-              : 100,
+            successRate:
+              metrics.totalRequests > 0
+                ? ((metrics.totalRequests - metrics.failedRequests) / metrics.totalRequests) * 100
+                : 100,
             totalRequests: metrics.totalRequests,
             failedRequests: metrics.failedRequests,
             avgLatency: this.estimateLatency(weighted.provider),
@@ -166,9 +165,8 @@ export class UIAwareProviderRouter {
         metadata: { operationName },
       });
 
-      const result = await this.circuitBreakerManager.execute(
-        selectedRoute.name,
-        () => fn(selectedRoute.provider)
+      const result = await this.circuitBreakerManager.execute(selectedRoute.name, () =>
+        fn(selectedRoute.provider)
       );
 
       await this.emitRoutingEvent({
@@ -219,10 +217,7 @@ export class UIAwareProviderRouter {
 
       case 'first-success':
       default:
-        return (
-          healthyRoutes.sort((a, b) => a.priority - b.priority)[0] ||
-          healthyRoutes[0]
-        );
+        return healthyRoutes.sort((a, b) => a.priority - b.priority)[0] || healthyRoutes[0];
     }
   }
 
@@ -297,11 +292,7 @@ export class UIAwareProviderRouter {
   /**
    * Emit provider change event
    */
-  private async emitProviderChange(
-    from: string,
-    to: string,
-    reason?: string
-  ): Promise<void> {
+  private async emitProviderChange(from: string, to: string, reason?: string): Promise<void> {
     try {
       await this.ui?.onProviderChange?.(from, to, reason);
     } catch (error) {

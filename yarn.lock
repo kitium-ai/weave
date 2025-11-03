@@ -39,6 +39,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/forms@npm:^18.0.0":
+  version: 18.2.14
+  resolution: "@angular/forms@npm:18.2.14"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/common": 18.2.14
+    "@angular/core": 18.2.14
+    "@angular/platform-browser": 18.2.14
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 10/8c1ec79b2a66fd24414bda35942280accf99be7a13087eb3e1cf86e1d82dbc907335f53a8aa9cc3c649264673ace8422d93b5ff0ffed0d58e03a9a793bd6b6f7
+  languageName: node
+  linkType: hard
+
 "@asamuzakjp/css-color@npm:^4.0.3":
   version: 4.0.5
   resolution: "@asamuzakjp/css-color@npm:4.0.5"
@@ -2474,6 +2488,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prompts@npm:^2.4.4":
+  version: 2.4.9
+  resolution: "@types/prompts@npm:2.4.9"
+  dependencies:
+    "@types/node": "npm:*"
+    kleur: "npm:^3.0.3"
+  checksum: 10/69b8372f4c790b45fea16a46ff8d1bcc71b14579481776b67bd6263637118a7ecb1f12e1311506c29fadc81bf618dc64f1a91f903cfd5be67a0455a227b3e462
+  languageName: node
+  linkType: hard
+
 "@types/prop-types@npm:*":
   version: 15.7.15
   resolution: "@types/prop-types@npm:15.7.15"
@@ -2893,6 +2917,7 @@ __metadata:
   dependencies:
     "@angular/common": "npm:^18.0.0"
     "@angular/core": "npm:^18.0.0"
+    "@angular/forms": "npm:^18.0.0"
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
     "@weaveai/core": "npm:1.1.0"
@@ -4147,6 +4172,7 @@ __metadata:
   dependencies:
     "@types/fs-extra": "npm:^11.0.0"
     "@types/node": "npm:^20.0.0"
+    "@types/prompts": "npm:^2.4.4"
     chalk: "npm:^5.3.0"
     fs-extra: "npm:^11.2.0"
     ora: "npm:^8.0.1"

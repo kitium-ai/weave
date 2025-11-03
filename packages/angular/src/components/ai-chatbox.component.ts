@@ -267,7 +267,7 @@ export class AIChatboxComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  private formatTime(date: Date): string {
+  formatTime(date: Date): string {
     return new Intl.DateTimeFormat('en-US', {
       hour: '2-digit',
       minute: '2-digit',

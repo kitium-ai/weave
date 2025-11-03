@@ -207,7 +207,11 @@ describe('Error Converter', () => {
     });
 
     it('should handle normalization failures gracefully', () => {
-      const error = { get message() { throw new Error('Getter error'); } };
+      const error = {
+        get message() {
+          throw new Error('Getter error');
+        },
+      };
       const normalized = safeNormalizeError(error);
       expect(normalized).toBeInstanceOf(WeaveError);
     });
@@ -382,12 +386,7 @@ describe('Error Converter', () => {
 
   describe('Error Detection', () => {
     it('should detect rate limit by message variations', () => {
-      const messages = [
-        'Rate limit exceeded',
-        'Too many requests',
-        'rate limited',
-        'Rate limit',
-      ];
+      const messages = ['Rate limit exceeded', 'Too many requests', 'rate limited', 'Rate limit'];
 
       messages.forEach((msg) => {
         const error = normalizeError(new Error(msg));
@@ -411,12 +410,7 @@ describe('Error Converter', () => {
     });
 
     it('should detect timeout by message variations', () => {
-      const messages = [
-        'Request timeout',
-        'Timed out',
-        'Connection timeout',
-        'Took too long',
-      ];
+      const messages = ['Request timeout', 'Timed out', 'Connection timeout', 'Took too long'];
 
       messages.forEach((msg) => {
         const error = normalizeError(new Error(msg));
@@ -425,12 +419,7 @@ describe('Error Converter', () => {
     });
 
     it('should detect validation by message variations', () => {
-      const messages = [
-        'Validation error',
-        'Invalid request',
-        'Bad request',
-        'Malformed request',
-      ];
+      const messages = ['Validation error', 'Invalid request', 'Bad request', 'Malformed request'];
 
       messages.forEach((msg) => {
         const error = normalizeError(new Error(msg));

@@ -3,11 +3,7 @@
  */
 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import type {
-  UIAwareProviderRouter,
-  ProviderStatus,
-  ProviderRoutingEvent,
-} from '@weaveai/core';
+import type { UIAwareProviderRouter, ProviderStatus, ProviderRoutingEvent } from '@weaveai/core';
 import {
   ProviderRoutingController,
   type ProviderRoutingControllerOptions,
@@ -15,7 +11,10 @@ import {
 } from '@weaveai/shared';
 
 export interface UseProviderRoutingOptions
-  extends Omit<ProviderRoutingControllerOptions, 'onProviderChange' | 'onRoutingEvent' | 'onStatusChange'> {
+  extends Omit<
+    ProviderRoutingControllerOptions,
+    'onProviderChange' | 'onRoutingEvent' | 'onStatusChange'
+  > {
   onProviderChange?: (from: string, to: string, reason?: string) => void;
   onRoutingEvent?: (event: ProviderRoutingEvent) => void;
   onStatusChange?: (status: ProviderStatus[]) => void;

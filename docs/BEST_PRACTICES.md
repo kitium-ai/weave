@@ -46,12 +46,7 @@ function createWeaveWithValidation() {
 ### Handle Specific Errors
 
 ```typescript
-import {
-  RateLimitError,
-  AuthenticationError,
-  ValidationError,
-  WeaveError,
-} from '@weaveai/core';
+import { RateLimitError, AuthenticationError, ValidationError, WeaveError } from '@weaveai/core';
 
 try {
   const result = await weave.generate(prompt);
@@ -117,10 +112,7 @@ class CachedWeave {
   }
 
   private hash(str: string): string {
-    return require('crypto')
-      .createHash('sha256')
-      .update(str)
-      .digest('hex');
+    return require('crypto').createHash('sha256').update(str).digest('hex');
   }
 }
 ```
@@ -130,9 +122,7 @@ class CachedWeave {
 ```typescript
 // ✅ Good - batch requests
 async function classifyMany(texts: string[], labels: string[]) {
-  const results = await Promise.all(
-    texts.map(text => weave.classify(text, labels))
-  );
+  const results = await Promise.all(texts.map((text) => weave.classify(text, labels)));
   return results;
 }
 
@@ -188,10 +178,7 @@ function LargeGenerationComponent() {
 import { z } from 'zod';
 
 const GenerateSchema = z.object({
-  prompt: z
-    .string()
-    .min(1, 'Prompt cannot be empty')
-    .max(4000, 'Prompt too long'),
+  prompt: z.string().min(1, 'Prompt cannot be empty').max(4000, 'Prompt too long'),
   temperature: z.number().min(0).max(2).optional(),
 });
 
@@ -410,7 +397,7 @@ class RateLimitedWeave {
 
   private checkRateLimit() {
     const now = Date.now();
-    this.requestTimes = this.requestTimes.filter(t => now - t < this.windowMs);
+    this.requestTimes = this.requestTimes.filter((t) => now - t < this.windowMs);
 
     if (this.requestTimes.length >= this.maxRequests) {
       throw new RateLimitError(

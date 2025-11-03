@@ -11,16 +11,7 @@ import { CacheFeedback, CacheBadge } from '../components/CacheFeedback';
 import { usePromptTemplate } from '../hooks/use-prompt-template';
 import { useProviderRouting } from '../hooks/useProviderRouting';
 import { useCache } from '../hooks/useCache';
-import {
-  KtButton,
-  KtCard,
-  KtLayout,
-  KtPanel,
-  KtTabs,
-  KtBadge,
-  KtAlert,
-  KtInput,
-} from '@kitium/ui';
+import { KtButton, KtCard, KtLayout, KtPanel, KtTabs, KtBadge, KtAlert, KtInput } from '@kitium/ui';
 
 /**
  * Main Application Dashboard
@@ -105,12 +96,18 @@ export function WeaveKitiumDashboard() {
     <KtPanel>
       <KtLayout direction="vertical" gap="lg">
         {/* Header */}
-        <KtLayout direction="horizontal" gap="md" justifyContent="space-between" alignItems="center">
+        <KtLayout
+          direction="horizontal"
+          gap="md"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <h1>Weave AI Dashboard</h1>
           <KtLayout direction="horizontal" gap="sm">
             <KtBadge variant="info">Provider: {currentProvider?.name || 'None'}</KtBadge>
             <KtBadge variant="success">
-              Cache Hit Rate: {((statistics.hits / (statistics.hits + statistics.misses)) * 100).toFixed(1)}%
+              Cache Hit Rate:{' '}
+              {((statistics.hits / (statistics.hits + statistics.misses)) * 100).toFixed(1)}%
             </KtBadge>
           </KtLayout>
         </KtLayout>
@@ -121,7 +118,23 @@ export function WeaveKitiumDashboard() {
             {
               id: 'compose',
               label: '✍️ Compose',
-              content: <ComposeTab {...{ topicInput, styleInput, setTopicInput, setStyleInput, handleGenerate, isGenerating, generatedContent, promptTemplate, currentProvider, selectProvider, providers }} />,
+              content: (
+                <ComposeTab
+                  {...{
+                    topicInput,
+                    styleInput,
+                    setTopicInput,
+                    setStyleInput,
+                    handleGenerate,
+                    isGenerating,
+                    generatedContent,
+                    promptTemplate,
+                    currentProvider,
+                    selectProvider,
+                    providers,
+                  }}
+                />
+              ),
             },
             {
               id: 'history',
@@ -131,7 +144,9 @@ export function WeaveKitiumDashboard() {
             {
               id: 'settings',
               label: '⚙️ Settings',
-              content: <SettingsTab {...{ providers, currentProvider, selectProvider, statistics }} />,
+              content: (
+                <SettingsTab {...{ providers, currentProvider, selectProvider, statistics }} />
+              ),
             },
           ]}
           activeTab={activeTab}
@@ -147,9 +162,7 @@ export function WeaveKitiumDashboard() {
             </div>
             <div>
               <div className="stat-label">Cached Requests</div>
-              <div className="stat-value">
-                {history.filter((h) => h.cached).length}
-              </div>
+              <div className="stat-value">{history.filter((h) => h.cached).length}</div>
             </div>
             <div>
               <div className="stat-label">Avg Generation Time</div>
@@ -157,9 +170,7 @@ export function WeaveKitiumDashboard() {
             </div>
             <div>
               <div className="stat-label">Cost Savings</div>
-              <div className="stat-value">
-                ${statistics.totalSavings?.toFixed(2) ?? '0.00'}
-              </div>
+              <div className="stat-value">${statistics.totalSavings?.toFixed(2) ?? '0.00'}</div>
             </div>
           </KtLayout>
         </KtCard>
@@ -218,9 +229,7 @@ function ComposeTab({
               <KtLayout direction="vertical" gap="sm">
                 <KtLayout direction="horizontal" gap="sm" justifyContent="space-between">
                   <strong>{provider.name}</strong>
-                  {currentProvider?.id === provider.id && (
-                    <KtBadge variant="success">✓</KtBadge>
-                  )}
+                  {currentProvider?.id === provider.id && <KtBadge variant="success">✓</KtBadge>}
                 </KtLayout>
                 <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>
                   {provider.status === 'healthy' ? '🟢 Healthy' : '🔴 Offline'}
@@ -317,12 +326,8 @@ function ComposeTab({
             >
               📋 Copy
             </KtButton>
-            <KtButton variant="secondary">
-              ↓ Download
-            </KtButton>
-            <KtButton variant="secondary">
-              🔄 Regenerate
-            </KtButton>
+            <KtButton variant="secondary">↓ Download</KtButton>
+            <KtButton variant="secondary">🔄 Regenerate</KtButton>
           </KtLayout>
         </KtCard>
       )}
@@ -439,23 +444,17 @@ function SettingsTab({ providers, currentProvider, selectProvider, statistics }:
 
           <div className="setting-group">
             <div className="setting-label">Total Requests</div>
-            <div className="setting-value">
-              {statistics.hits + statistics.misses}
-            </div>
+            <div className="setting-value">{statistics.hits + statistics.misses}</div>
           </div>
 
           <div className="setting-group">
             <div className="setting-label">Cost Savings</div>
-            <div className="setting-value">
-              ${statistics.totalSavings?.toFixed(2) ?? '0.00'}
-            </div>
+            <div className="setting-value">${statistics.totalSavings?.toFixed(2) ?? '0.00'}</div>
           </div>
 
           <div className="setting-group">
             <div className="setting-label">Time Saved</div>
-            <div className="setting-value">
-              {statistics.timeSaved?.toFixed(1) ?? 0}s
-            </div>
+            <div className="setting-value">{statistics.timeSaved?.toFixed(1) ?? 0}s</div>
           </div>
         </KtLayout>
       </KtCard>

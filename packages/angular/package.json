@@ -22,9 +22,11 @@
   "scripts": {
     "build": "tsup src/index.ts src/services/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --watch --format esm",
-    "test": "vitest"
+    "test": "vitest",
+    "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
+    "@angular/forms": "^18.0.0",
     "@weaveai/core": "1.1.0",
     "@weaveai/shared": "1.1.0"
   },

@@ -13,8 +13,7 @@ export function ProviderHub({ router }: { router: UIAwareProviderRouter }) {
           style={{
             padding: 12,
             borderWidth: 1,
-            borderColor:
-              provider.name === routing.currentProvider ? '#2563eb' : '#e5e7eb',
+            borderColor: provider.name === routing.currentProvider ? '#2563eb' : '#e5e7eb',
             borderRadius: 12,
             gap: 4,
           }}

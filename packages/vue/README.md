@@ -91,9 +91,7 @@ const send = (message: string) => chat.sendMessage(message);
       </li>
     </ul>
 
-    <form
-      @submit.prevent="send($event.target.elements.message.value)"
-    >
+    <form @submit.prevent="send($event.target.elements.message.value)">
       <input name="message" placeholder="Ask the concierge…" />
       <button type="submit" :disabled="chat.isLoading">Send</button>
     </form>
@@ -132,9 +130,7 @@ export function useCachedPrompt(prompt: string) {
 
 export function useRoutingPanel(router: UIAwareProviderRouter) {
   const routing = useProviderRouting({ router, autoRefresh: true });
-  const healthyProviders = computed(() =>
-    routing.providers.filter((provider) => provider.healthy)
-  );
+  const healthyProviders = computed(() => routing.providers.filter((provider) => provider.healthy));
 
   return { routing, healthyProviders };
 }

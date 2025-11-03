@@ -113,7 +113,9 @@ export abstract class BaseOperation {
     ui: WeaveOperationUiMetadata,
     errorDetails?: WeaveOperationError
   ): WeaveOperationResult<T> {
-    const duration = metadata.duration ?? (metadata.endTime?.getTime() ?? Date.now()) - metadata.startTime.getTime();
+    const duration =
+      metadata.duration ??
+      (metadata.endTime?.getTime() ?? Date.now()) - metadata.startTime.getTime();
     const timestamp = metadata.endTime ?? new Date();
     const provider = metadata.provider ?? this.model.getProviderInfo().provider;
     const model = metadata.model ?? this.model.getProviderInfo().model;
@@ -147,8 +149,11 @@ export abstract class BaseOperation {
       cacheKey: metadata.cacheKey,
     };
 
-    const status: WeaveOperationResult<T>['status'] =
-      errorDetails ? 'error' : metadata.status === 'pending' ? 'pending' : metadata.status;
+    const status: WeaveOperationResult<T>['status'] = errorDetails
+      ? 'error'
+      : metadata.status === 'pending'
+        ? 'pending'
+        : metadata.status;
 
     return {
       status,

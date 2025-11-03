@@ -12,7 +12,4 @@ export { useCache } from './useCache.js';
 export type { UseCacheOptions, UseCacheReturn } from './useCache.js';
 
 export { useProviderRouting } from './useProviderRouting.js';
-export type {
-  UseProviderRoutingOptions,
-  UseProviderRoutingReturn,
-} from './useProviderRouting.js';
+export type { UseProviderRoutingOptions, UseProviderRoutingReturn } from './useProviderRouting.js';

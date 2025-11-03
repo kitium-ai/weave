@@ -73,15 +73,11 @@ export const CacheFeedback: React.FC<CacheFeedbackProps> = ({
           <p className="cache-feedback__message">{event.message}</p>
           {event.savings && (
             <div className="cache-feedback__savings">
-              <span className="cache-feedback__saving">
-                💰 ${event.savings.cost.toFixed(4)}
-              </span>
+              <span className="cache-feedback__saving">💰 ${event.savings.cost.toFixed(4)}</span>
               <span className="cache-feedback__saving">
                 ⚡ {event.savings.latency.toFixed(0)}ms
               </span>
-              <span className="cache-feedback__saving">
-                🎯 {event.savings.tokens} tokens
-              </span>
+              <span className="cache-feedback__saving">🎯 {event.savings.tokens} tokens</span>
             </div>
           )}
         </div>
@@ -133,16 +129,11 @@ export const CacheFeedbackHistory: React.FC<CacheFeedbackHistoryProps> = ({
           <p className="cache-history__empty">No cache events yet</p>
         ) : (
           displayedEvents.map((event, index) => (
-            <div
-              key={index}
-              className={`cache-history__item cache-history__item--${event.type}`}
-            >
+            <div key={index} className={`cache-history__item cache-history__item--${event.type}`}>
               <div className="cache-history__item-header">
                 <span className="cache-history__icon">{icons[event.type]}</span>
                 <span className="cache-history__type">{getTypeLabel(event.type)}</span>
-                <span className="cache-history__time">
-                  {event.timestamp.toLocaleTimeString()}
-                </span>
+                <span className="cache-history__time">{event.timestamp.toLocaleTimeString()}</span>
               </div>
               <p className="cache-history__message">{event.message}</p>
               {event.savings && (

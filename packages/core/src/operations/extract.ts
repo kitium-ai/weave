@@ -38,15 +38,11 @@ export class ExtractOperation extends BaseOperation {
         duration: metadata.duration,
       });
 
-      return this.buildResult<T>(
-        metadata,
-        data,
-        {
-          displayAs: 'json',
-          canStream: false,
-          estimatedSize: 'medium',
-        }
-      );
+      return this.buildResult<T>(metadata, data, {
+        displayAs: 'json',
+        canStream: false,
+        estimatedSize: 'medium',
+      });
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.markError(metadata, err);

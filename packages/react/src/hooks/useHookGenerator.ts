@@ -16,7 +16,11 @@ export interface UseHookGeneratorReturn {
   hook: GeneratedHook | null;
   loading: boolean;
   error: Error | null;
-  generate: ( hookName: string, description: string, _options ?: GenerateOptions) => Promise<GeneratedHook | null>;
+  generate: (
+    hookName: string,
+    description: string,
+    _options?: GenerateOptions
+  ) => Promise<GeneratedHook | null>;
 }
 
 /**
@@ -39,7 +43,11 @@ export function useHookGenerator(): UseHookGeneratorReturn {
   const [error, setError] = useState<Error | null>(null);
 
   const generate = useCallback(
-    async ( hookName: string, description: string, _options ?: GenerateOptions): Promise<GeneratedHook | null> => {
+    async (
+      hookName: string,
+      description: string,
+      _options?: GenerateOptions
+    ): Promise<GeneratedHook | null> => {
       if (!weave) {
         const err = new Error('Weave instance not available');
         setError(err);

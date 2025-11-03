@@ -87,10 +87,7 @@ export function createAIStore<T = unknown>(options?: AIExecutionOptions<T>): Use
 /**
  * Create a generate store
  */
-export function createGenerateStore(
-  weave: Weave,
-  options?: AIExecutionOptions<GenerateResult>
-) {
+export function createGenerateStore(weave: Weave, options?: AIExecutionOptions<GenerateResult>) {
   const ai = createAIStore<GenerateResult>({ ...(options ?? {}), operation: 'generate' });
 
   const generate = async (

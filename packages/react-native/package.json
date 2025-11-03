@@ -22,7 +22,8 @@
   "scripts": {
     "build": "tsup src/index.ts src/hooks/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --watch --format esm",
-    "test": "vitest"
+    "test": "vitest",
+    "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
     "@weaveai/core": "1.1.0",

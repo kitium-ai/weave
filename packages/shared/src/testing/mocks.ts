@@ -231,7 +231,9 @@ export class MockAssertions {
    */
   static assertCallCount(fn: Mock, count: number): void {
     if (fn.mock.calls.length !== count) {
-      throw new Error(`Expected function to be called ${count} times, but was called ${fn.mock.calls.length} times`);
+      throw new Error(
+        `Expected function to be called ${count} times, but was called ${fn.mock.calls.length} times`
+      );
     }
   }
 

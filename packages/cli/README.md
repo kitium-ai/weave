@@ -5,11 +5,13 @@ Interactive scaffolding tool for creating new Weave AI applications in seconds.
 ## Features
 
 ✨ **Zero Configuration Setup**
+
 - Interactive prompts guide you through framework and provider selection
 - Automatic environment variable configuration
 - Pre-configured project structure
 
 🎯 **Framework Support**
+
 - React (Vite)
 - React (Next.js)
 - Vue 3
@@ -17,11 +19,13 @@ Interactive scaffolding tool for creating new Weave AI applications in seconds.
 - Angular
 
 🔌 **Provider Integration**
+
 - OpenAI (GPT-4, GPT-3.5)
 - Anthropic (Claude 3)
 - Google (Gemini)
 
 🚀 **Production Ready**
+
 - TypeScript strict mode enabled
 - Pre-configured best practices
 - Example application included
@@ -46,6 +50,7 @@ Once complete, follow the on-screen instructions to start developing.
 ## Usage Examples
 
 ### Create React Vite App
+
 ```bash
 npx create-weave-app
 # Select: React + Vite
@@ -54,6 +59,7 @@ npx create-weave-app
 ```
 
 ### Create Next.js App
+
 ```bash
 npx create-weave-app
 # Select: React + Next.js
@@ -62,6 +68,7 @@ npx create-weave-app
 ```
 
 ### Create Vue App
+
 ```bash
 npx create-weave-app
 # Select: Vue 3
@@ -154,6 +161,7 @@ npm run dev
 The CLI performs pre-flight checks to ensure your environment is ready:
 
 ✅ **Checks Performed**
+
 - Node.js version (18+)
 - npm or yarn availability
 - Git installation (optional)
@@ -164,25 +172,32 @@ The CLI performs pre-flight checks to ensure your environment is ready:
 ## Troubleshooting
 
 ### "Node.js 18+ required"
+
 Update Node.js to version 18 or newer:
+
 ```bash
 node --version  # Check current version
 # Visit https://nodejs.org for updates
 ```
 
 ### "Project directory already exists"
+
 Either choose a different project name or remove the existing directory:
+
 ```bash
 rm -rf my-weave-app
 npx create-weave-app  # Try again
 ```
 
 ### "npm/yarn not found"
+
 Install Node.js from https://nodejs.org (includes npm)
 Or install yarn: `npm install -g yarn`
 
 ### "Invalid API key format"
+
 Check your API key:
+
 - **OpenAI**: Should start with `sk-`
 - **Anthropic**: Should start with `sk-ant-`
 - **Google**: Should be at least 20 characters
@@ -233,6 +248,7 @@ Never commit your `.env.local` file to version control:
 ### Updating Your Key Later
 
 Edit `.env.local` at any time:
+
 ```env
 VITE_WEAVE_API_KEY=new-key-here
 ```

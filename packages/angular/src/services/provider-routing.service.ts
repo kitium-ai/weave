@@ -4,11 +4,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import type {
-  UIAwareProviderRouter,
-  ProviderRoutingEvent,
-  ProviderStatus,
-} from '@weaveai/core';
+import type { UIAwareProviderRouter, ProviderRoutingEvent, ProviderStatus } from '@weaveai/core';
 import {
   ProviderRoutingController,
   type ProviderRoutingControllerOptions,
@@ -45,10 +41,7 @@ export class ProviderRoutingService {
   /**
    * Initialise the routing controller with the current router instance.
    */
-  initialise(
-    router: UIAwareProviderRouter,
-    options: ProviderRoutingControllerOptions = {}
-  ): void {
+  initialise(router: UIAwareProviderRouter, options: ProviderRoutingControllerOptions = {}): void {
     this.attachController(router, options);
   }
 

@@ -220,9 +220,7 @@ export const ${hookName} = (${this.generateParams(spec)}) => {`;
    * Generate imports
    */
   private generateImports(spec: ReactNativeHookSpec): string {
-    const imports = [
-      "import React from 'react';",
-    ];
+    const imports = ["import React from 'react';"];
 
     if (spec.hookType === 'animation') {
       imports.push("import { Animated } from 'react-native';");
@@ -230,7 +228,9 @@ export const ${hookName} = (${this.generateParams(spec)}) => {`;
 
     if (spec.hookType === 'navigation') {
       imports.push("import { useNavigation } from '@react-navigation/native';");
-      imports.push("import type { NativeStackNavigationProp } from '@react-navigation/native-stack';");
+      imports.push(
+        "import type { NativeStackNavigationProp } from '@react-navigation/native-stack';"
+      );
     }
 
     if (spec.features.includes('async-storage')) {
@@ -248,9 +248,7 @@ export const ${hookName} = (${this.generateParams(spec)}) => {`;
       return '';
     }
 
-    return spec.params
-      .map((param) => `${param.name}: ${param.type}`)
-      .join(', ');
+    return spec.params.map((param) => `${param.name}: ${param.type}`).join(', ');
   }
 
   /**
@@ -277,7 +275,9 @@ describe('${hookName}', () => {
     expect(result.current).toMatchObject({});
   });
 
-  ${spec.hookType === 'data' ? `it('should fetch data', async () => {
+  ${
+    spec.hookType === 'data'
+      ? `it('should fetch data', async () => {
     const { result } = renderHook(() => ${hookName}());
     expect(result.current.loading).toBe(true);
 
@@ -287,9 +287,13 @@ describe('${hookName}', () => {
     });
 
     expect(result.current.loading).toBe(false);
-  });` : ''}
+  });`
+      : ''
+  }
 
-  ${spec.hookType === 'async' ? `it('should execute async operation', async () => {
+  ${
+    spec.hookType === 'async'
+      ? `it('should execute async operation', async () => {
     const { result } = renderHook(() => ${hookName}());
 
     await act(async () => {
@@ -297,7 +301,9 @@ describe('${hookName}', () => {
     });
 
     expect(result.current.loading).toBe(false);
-  });` : ''}
+  });`
+      : ''
+  }
 });`;
   }
 
@@ -315,9 +321,7 @@ import { ${hookName} } from './hooks/${spec.name}';
 
 function MyComponent() {
   const ${this.toCamelCase(spec.name)} = ${hookName}(${
-    spec.params.length > 0
-      ? spec.params.map((p) => `${p.name}`).join(', ')
-      : ''
+    spec.params.length > 0 ? spec.params.map((p) => `${p.name}`).join(', ') : ''
   });
 
   // Use the hook:

@@ -103,11 +103,11 @@ export interface AIControllerEventMap {
   'operation-start': { operationId: string; timestamp: Date };
   'operation-end': { operationId: string; timestamp: Date; duration: number };
   'provider-switched': { from: string; to: string };
-  'error': { error: Error; operationId: string };
+  error: { error: Error; operationId: string };
 }
 
 export type AIControllerListener<K extends keyof AIControllerEventMap> = (
-  event: AIControllerEventMap[K],
+  event: AIControllerEventMap[K]
 ) => void;
 
 /**
@@ -133,7 +133,7 @@ export abstract class AIController {
    */
   on<K extends keyof AIControllerEventMap>(
     event: K,
-    listener: AIControllerListener<K>,
+    listener: AIControllerListener<K>
   ): () => void {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());
@@ -151,7 +151,7 @@ export abstract class AIController {
    */
   protected emit<K extends keyof AIControllerEventMap>(
     event: K,
-    data: AIControllerEventMap[K],
+    data: AIControllerEventMap[K]
   ): void {
     const listeners = this.listeners.get(event);
     if (listeners) {
@@ -187,7 +187,7 @@ export abstract class AIController {
    */
   protected async executeWithRetry<T>(
     operation: () => Promise<T>,
-    operationId: string,
+    operationId: string
   ): Promise<T> {
     const maxAttempts = this.options.retries?.maxAttempts ?? 3;
     const baseDelay = this.options.retries?.delayMs ?? 1000;
@@ -206,10 +206,7 @@ export abstract class AIController {
         const result = await Promise.race([
           operation(),
           new Promise<T>((_, reject) =>
-            setTimeout(
-              () => reject(new Error('Operation timeout')),
-              this.options.timeout ?? 30000,
-            ),
+            setTimeout(() => reject(new Error('Operation timeout')), this.options.timeout ?? 30000)
           ),
         ]);
 
@@ -250,7 +247,7 @@ export function calculateCost(
   inputTokens: number,
   outputTokens: number,
   costPerInputToken: number,
-  costPerOutputToken: number,
+  costPerOutputToken: number
 ): number {
   return inputTokens * costPerInputToken + outputTokens * costPerOutputToken;
 }

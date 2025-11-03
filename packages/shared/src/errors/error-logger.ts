@@ -165,7 +165,11 @@ export class ErrorLogger {
   /**
    * Log timeout error
    */
-  public logTimeoutError(error: unknown, duration?: number, context?: Record<string, unknown>): void {
+  public logTimeoutError(
+    error: unknown,
+    duration?: number,
+    context?: Record<string, unknown>
+  ): void {
     if (!this.shouldLog(ErrorLogLevel.WARN)) {
       return;
     }
@@ -333,21 +337,33 @@ export const globalErrorLogger = new ErrorLogger();
 /**
  * Log error using global logger
  */
-export function logError(error: unknown, level?: ErrorLogLevel, context?: Record<string, unknown>): void {
+export function logError(
+  error: unknown,
+  level?: ErrorLogLevel,
+  context?: Record<string, unknown>
+): void {
   globalErrorLogger.logError(error, level, context);
 }
 
 /**
  * Log WeaveError using global logger
  */
-export function logWeaveError(error: WeaveError, level?: ErrorLogLevel, context?: Record<string, unknown>): void {
+export function logWeaveError(
+  error: WeaveError,
+  level?: ErrorLogLevel,
+  context?: Record<string, unknown>
+): void {
   globalErrorLogger.logWeaveError(error, level, context);
 }
 
 /**
  * Log rate limit error
  */
-export function logRateLimitError(error: unknown, retryAfter?: number, context?: Record<string, unknown>): void {
+export function logRateLimitError(
+  error: unknown,
+  retryAfter?: number,
+  context?: Record<string, unknown>
+): void {
   globalErrorLogger.logRateLimitError(error, retryAfter, context);
 }
 
@@ -361,6 +377,10 @@ export function logAuthenticationError(error: unknown, context?: Record<string, 
 /**
  * Log timeout error
  */
-export function logTimeoutError(error: unknown, duration?: number, context?: Record<string, unknown>): void {
+export function logTimeoutError(
+  error: unknown,
+  duration?: number,
+  context?: Record<string, unknown>
+): void {
   globalErrorLogger.logTimeoutError(error, duration, context);
 }

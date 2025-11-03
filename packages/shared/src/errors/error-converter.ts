@@ -167,12 +167,7 @@ export function normalizeError(
   // Check for specific error types
   if (isRateLimitError(error)) {
     const retryAfter = getRetryAfter(error);
-    return new RateLimitError(
-      message,
-      providerName || 'unknown',
-      retryAfter,
-      errorContext
-    );
+    return new RateLimitError(message, providerName || 'unknown', retryAfter, errorContext);
   }
 
   if (isAuthenticationError(error)) {
@@ -189,13 +184,7 @@ export function normalizeError(
 
   // Generic provider error if provider name given
   if (providerName) {
-    return new ProviderError(
-      message,
-      providerName,
-      'PROVIDER_ERROR',
-      status,
-      errorContext
-    );
+    return new ProviderError(message, providerName, 'PROVIDER_ERROR', status, errorContext);
   }
 
   // Default to generic WeaveError
@@ -230,12 +219,9 @@ export function safeNormalizeError(
     return normalizeError(error, context, providerName);
   } catch {
     // If normalization fails, create basic error
-    return new WeaveErrorClass(
-      'Failed to normalize error',
-      'ERROR_NORMALIZATION_FAILED',
-      500,
-      { originalError: error }
-    );
+    return new WeaveErrorClass('Failed to normalize error', 'ERROR_NORMALIZATION_FAILED', 500, {
+      originalError: error,
+    });
   }
 }
 

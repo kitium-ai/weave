@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { usePromptTemplate, PromptEditor } from '@weaveai/react';
 
 export const PromptEditorBasicExample = () => {
-  const {
-    currentTemplate,
-    setTemplate,
-    testRender,
-  } = usePromptTemplate({
+  const { currentTemplate, setTemplate, testRender } = usePromptTemplate({
     name: 'content-writer',
     template: 'Write about {{topic}} in {{tone}} style for {{audience}}.',
     variables: [
@@ -53,15 +49,9 @@ export const PromptEditorBasicExample = () => {
 };
 
 export const PromptEditorWithMetricsExample = () => {
-  const {
-    currentTemplate,
-    metrics,
-    setTemplate,
-    testRender,
-  } = usePromptTemplate({
+  const { currentTemplate, metrics, setTemplate, testRender } = usePromptTemplate({
     name: 'code-generator',
-    template:
-      'Generate {{language}} code to {{task}} with error handling and comments.',
+    template: 'Generate {{language}} code to {{task}} with error handling and comments.',
     variables: [
       {
         name: 'language',
@@ -102,12 +92,8 @@ export const PromptEditorWithMetricsExample = () => {
           <h4>Performance Metrics</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
-              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                Total Runs
-              </p>
-              <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>
-                {metrics.totalRuns}
-              </p>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Total Runs</p>
+              <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>{metrics.totalRuns}</p>
             </div>
             <div>
               <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
@@ -126,9 +112,7 @@ export const PromptEditorWithMetricsExample = () => {
               </p>
             </div>
             <div>
-              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>
-                Errors
-              </p>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#6b7280' }}>Errors</p>
               <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>
                 {metrics.errors || 0}
               </p>
@@ -151,8 +135,7 @@ export const PromptEditorWithVariantsExample = () => {
     compareVariants,
   } = usePromptTemplate({
     name: 'email-campaign',
-    template:
-      'Create an email subject line for {{product}} targeting {{segment}}.',
+    template: 'Create an email subject line for {{product}} targeting {{segment}}.',
     variants: [
       {
         id: 'v1-urgent',
@@ -163,14 +146,12 @@ export const PromptEditorWithVariantsExample = () => {
       {
         id: 'v2-benefit',
         name: '⭐ Benefit-focused',
-        template:
-          'Create an email subject highlighting benefits of {{product}} for {{segment}}.',
+        template: 'Create an email subject highlighting benefits of {{product}} for {{segment}}.',
       },
       {
         id: 'v3-curiosity',
         name: '❓ Curiosity',
-        template:
-          'Create a curious/intriguing email subject about {{product}} for {{segment}}.',
+        template: 'Create a curious/intriguing email subject about {{product}} for {{segment}}.',
       },
     ],
     trackMetrics: true,
@@ -193,8 +174,7 @@ export const PromptEditorWithVariantsExample = () => {
               onClick={() => handleSelectVariant(variant.id)}
               style={{
                 padding: '10px 16px',
-                backgroundColor:
-                  currentVariant?.id === variant.id ? '#3b82f6' : '#e5e7eb',
+                backgroundColor: currentVariant?.id === variant.id ? '#3b82f6' : '#e5e7eb',
                 color: currentVariant?.id === variant.id ? 'white' : 'black',
                 border: 'none',
                 borderRadius: '6px',
@@ -242,15 +222,9 @@ export const PromptEditorWithVariantsExample = () => {
 export const PromptEditorWithSaveExample = () => {
   const [saveStatus, setSaveStatus] = useState<string>('');
 
-  const {
-    currentTemplate,
-    setTemplate,
-    testRender,
-    save,
-  } = usePromptTemplate({
+  const { currentTemplate, setTemplate, testRender, save } = usePromptTemplate({
     name: 'documentation-generator',
-    template:
-      'Generate documentation for {{component}} component with {{detailLevel}} detail.',
+    template: 'Generate documentation for {{component}} component with {{detailLevel}} detail.',
     variables: [
       {
         name: 'component',
@@ -295,8 +269,7 @@ export const PromptEditorWithSaveExample = () => {
           style={{
             marginTop: '12px',
             padding: '8px 12px',
-            backgroundColor:
-              saveStatus.includes('✅') ? '#d1fae5' : '#fee2e2',
+            backgroundColor: saveStatus.includes('✅') ? '#d1fae5' : '#fee2e2',
             color: saveStatus.includes('✅') ? '#065f46' : '#991b1b',
             borderRadius: '4px',
             fontSize: '14px',
@@ -310,57 +283,48 @@ export const PromptEditorWithSaveExample = () => {
 };
 
 export const PromptEditorComplexFlowExample = () => {
-  const [activeTab, setActiveTab] = useState<'edit' | 'test' | 'results'>(
-    'edit'
-  );
+  const [activeTab, setActiveTab] = useState<'edit' | 'test' | 'results'>('edit');
 
-  const {
-    currentTemplate,
-    variants,
-    metrics,
-    setTemplate,
-    setVariant,
-    testRender,
-  } = usePromptTemplate({
-    name: 'social-media-post',
-    template:
-      'Create a {{platform}} post about {{topic}} that emphasizes {{angle}}.',
-    variables: [
-      {
-        name: 'platform',
-        type: 'string',
-        required: true,
-        placeholder: 'LinkedIn',
-      },
-      {
-        name: 'topic',
-        type: 'string',
-        required: true,
-        placeholder: 'Web Development',
-      },
-      {
-        name: 'angle',
-        type: 'string',
-        required: true,
-        placeholder: 'Best Practices',
-      },
-    ],
-    variants: [
-      {
-        id: 'engaging',
-        name: 'Engaging',
-        template:
-          'Create an ENGAGING {{platform}} post about {{topic}} with {{angle}} - make it viral.',
-      },
-      {
-        id: 'professional',
-        name: 'Professional',
-        template:
-          'Create a professional {{platform}} post about {{topic}} highlighting {{angle}}.',
-      },
-    ],
-    trackMetrics: true,
-  });
+  const { currentTemplate, variants, metrics, setTemplate, setVariant, testRender } =
+    usePromptTemplate({
+      name: 'social-media-post',
+      template: 'Create a {{platform}} post about {{topic}} that emphasizes {{angle}}.',
+      variables: [
+        {
+          name: 'platform',
+          type: 'string',
+          required: true,
+          placeholder: 'LinkedIn',
+        },
+        {
+          name: 'topic',
+          type: 'string',
+          required: true,
+          placeholder: 'Web Development',
+        },
+        {
+          name: 'angle',
+          type: 'string',
+          required: true,
+          placeholder: 'Best Practices',
+        },
+      ],
+      variants: [
+        {
+          id: 'engaging',
+          name: 'Engaging',
+          template:
+            'Create an ENGAGING {{platform}} post about {{topic}} with {{angle}} - make it viral.',
+        },
+        {
+          id: 'professional',
+          name: 'Professional',
+          template:
+            'Create a professional {{platform}} post about {{topic}} highlighting {{angle}}.',
+        },
+      ],
+      trackMetrics: true,
+    });
 
   return (
     <div>
@@ -427,12 +391,8 @@ export const PromptEditorComplexFlowExample = () => {
             }}
           >
             <div>
-              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
-                Total Runs
-              </p>
-              <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>
-                {metrics.totalRuns}
-              </p>
+              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>Total Runs</p>
+              <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>{metrics.totalRuns}</p>
             </div>
             <div>
               <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
@@ -443,17 +403,13 @@ export const PromptEditorComplexFlowExample = () => {
               </p>
             </div>
             <div>
-              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
-                Avg Time
-              </p>
+              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>Avg Time</p>
               <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>
                 {(metrics.avgResponseTime || 0).toFixed(0)}ms
               </p>
             </div>
             <div>
-              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
-                Errors
-              </p>
+              <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>Errors</p>
               <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold' }}>
                 {metrics.errors || 0}
               </p>

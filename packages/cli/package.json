@@ -18,7 +18,8 @@
     "dev": "tsup src/index.ts --watch --format esm",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "keywords": [
     "weave",
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.0",
     "@types/node": "^20.0.0",
+    "@types/prompts": "^2.4.4",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0",
     "vitest": "^1.0.0"

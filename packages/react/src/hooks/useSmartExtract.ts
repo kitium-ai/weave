@@ -2,7 +2,9 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import type { ExtractOptions } from '@weaveai/core';
 import { useWeaveContext } from '../context/WeaveContext.js';
 
-export interface UseSmartExtractOptions<TOutput extends Record<string, unknown> = Record<string, unknown>> {
+export interface UseSmartExtractOptions<
+  TOutput extends Record<string, unknown> = Record<string, unknown>,
+> {
   initialData?: Partial<TOutput>;
   targetSchema: unknown;
   fuzzyMatch?: boolean;
@@ -13,7 +15,7 @@ export interface UseSmartExtractOptions<TOutput extends Record<string, unknown> 
 }
 
 export type UseSmartExtractRunOptions<
-  TOutput extends Record<string, unknown> = Record<string, unknown>
+  TOutput extends Record<string, unknown> = Record<string, unknown>,
 > = Partial<UseSmartExtractOptions<TOutput>> & {
   overrideConfidence?: number;
 };
@@ -24,7 +26,9 @@ export interface SmartExtractResult<TOutput extends Record<string, unknown>> {
   missingFields: string[];
 }
 
-export interface UseSmartExtractReturn<TOutput extends Record<string, unknown> = Record<string, unknown>> {
+export interface UseSmartExtractReturn<
+  TOutput extends Record<string, unknown> = Record<string, unknown>,
+> {
   extract: (
     input: string,
     options?: UseSmartExtractRunOptions<TOutput>
@@ -75,7 +79,9 @@ function buildExtractionPrompt(
   lines.push(JSON.stringify(schema, null, 2));
   lines.push('Source Input:');
   lines.push(input);
-  lines.push('Return a JSON object that matches the schema keys exactly. Use `null` when no value is found.');
+  lines.push(
+    'Return a JSON object that matches the schema keys exactly. Use `null` when no value is found.'
+  );
 
   if (suffix) {
     lines.push(suffix.trim());
@@ -138,8 +144,7 @@ export function useSmartExtract<TOutput extends Record<string, unknown> = Record
         ...(runOptions ?? {}),
       };
 
-      const confidenceThreshold =
-        runOptions?.overrideConfidence ?? mergedOptions.confidence ?? 0.7;
+      const confidenceThreshold = runOptions?.overrideConfidence ?? mergedOptions.confidence ?? 0.7;
 
       const prompt = buildExtractionPrompt(
         input,

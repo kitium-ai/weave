@@ -249,14 +249,18 @@ export class ConfigurationManager {
    * Get rate limit for specific provider
    */
   public getProviderRateLimit(provider: string): number {
-    return this.config.rateLimit.providers[provider.toLowerCase()] ||
-      this.config.rateLimit.defaultRPS;
+    return (
+      this.config.rateLimit.providers[provider.toLowerCase()] || this.config.rateLimit.defaultRPS
+    );
   }
 
   /**
    * Get pricing for model
    */
-  public getModelPricing(provider: string, model: string): { input: number; output: number } | null {
+  public getModelPricing(
+    provider: string,
+    model: string
+  ): { input: number; output: number } | null {
     const providerPricing = this.config.costTracker.pricing[provider.toLowerCase()];
     if (!providerPricing) {
       return null;

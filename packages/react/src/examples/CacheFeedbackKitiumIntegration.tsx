@@ -62,9 +62,7 @@ export function CacheFeedbackBasicIntegration() {
           </KtLayout>
 
           {/* Result */}
-          {result && (
-            <KtAlert variant="info">{result}</KtAlert>
-          )}
+          {result && <KtAlert variant="info">{result}</KtAlert>}
 
           {/* Statistics */}
           <KtCard variant="outlined" header="Cache Statistics">
@@ -85,19 +83,13 @@ export function CacheFeedbackBasicIntegration() {
               </div>
               <div>
                 <div className="stat-label">Total Savings</div>
-                <div className="stat-value">
-                  ${statistics.totalSavings?.toFixed(2) ?? '0.00'}
-                </div>
+                <div className="stat-value">${statistics.totalSavings?.toFixed(2) ?? '0.00'}</div>
               </div>
             </KtLayout>
           </KtCard>
 
           {/* Feedback Component */}
-          <CacheFeedback
-            event={statistics.lastEvent}
-            position="top-right"
-            autoHide={true}
-          />
+          <CacheFeedback event={statistics.lastEvent} position="top-right" autoHide={true} />
         </KtLayout>
       </KtCard>
 
@@ -137,9 +129,7 @@ export function CacheFeedbackDashboard() {
             variant="elevated"
             style={{ flex: '1 1 calc(25% - 12px)', minWidth: '150px' }}
           >
-            <div className="kpi-value">
-              {statistics.hits + statistics.misses}
-            </div>
+            <div className="kpi-value">{statistics.hits + statistics.misses}</div>
           </KtCard>
 
           <KtCard
@@ -157,9 +147,7 @@ export function CacheFeedbackDashboard() {
             variant="elevated"
             style={{ flex: '1 1 calc(25% - 12px)', minWidth: '150px' }}
           >
-            <div className="kpi-value">
-              ${statistics.totalSavings?.toFixed(2) ?? '0.00'}
-            </div>
+            <div className="kpi-value">${statistics.totalSavings?.toFixed(2) ?? '0.00'}</div>
           </KtCard>
 
           <KtCard
@@ -167,9 +155,7 @@ export function CacheFeedbackDashboard() {
             variant="elevated"
             style={{ flex: '1 1 calc(25% - 12px)', minWidth: '150px' }}
           >
-            <div className="kpi-value">
-              {(statistics.timeSaved?.toFixed(1) ?? 0)}s
-            </div>
+            <div className="kpi-value">{statistics.timeSaved?.toFixed(1) ?? 0}s</div>
           </KtCard>
         </KtLayout>
 
@@ -209,9 +195,7 @@ export function CacheFeedbackDashboard() {
                 </div>
                 <div>
                   <div className="metric-label">Total Time Saved</div>
-                  <div className="metric-value">
-                    {statistics.timeSaved?.toFixed(2) ?? 0}s
-                  </div>
+                  <div className="metric-value">{statistics.timeSaved?.toFixed(2) ?? 0}s</div>
                 </div>
               </KtLayout>
             </div>
@@ -245,11 +229,7 @@ export function CacheFeedbackDashboard() {
                 <KtAlert
                   key={idx}
                   variant={
-                    event.type === 'hit'
-                      ? 'success'
-                      : event.type === 'miss'
-                        ? 'warning'
-                        : 'info'
+                    event.type === 'hit' ? 'success' : event.type === 'miss' ? 'warning' : 'info'
                   }
                 >
                   <KtLayout direction="horizontal" gap="md" justifyContent="space-between">
@@ -324,11 +304,7 @@ export function CacheFeedbackBadges() {
             <KtCard key={q.id} variant="outlined">
               <KtLayout direction="horizontal" gap="md" justifyContent="space-between">
                 <div>{q.text}</div>
-                <CacheBadge
-                  cached={q.cached}
-                  size="medium"
-                  showTooltip
-                />
+                <CacheBadge cached={q.cached} size="medium" showTooltip />
               </KtLayout>
             </KtCard>
           ))}
@@ -454,9 +430,7 @@ export function CacheFeedbackMultiQuery() {
                 >
                   <div>
                     <strong>{q.type}</strong>: {q.query}
-                    <div style={{ fontSize: '0.875rem', opacity: 0.7 }}>
-                      {q.result}
-                    </div>
+                    <div style={{ fontSize: '0.875rem', opacity: 0.7 }}>{q.result}</div>
                   </div>
                   <CacheBadge cached={q.cached} size="small" />
                 </KtLayout>
@@ -472,9 +446,7 @@ export function CacheFeedbackMultiQuery() {
           <KtLayout direction="horizontal" gap="lg">
             <div>
               <div className="stat-label">Total Queries</div>
-              <div className="stat-value">
-                {statistics.hits + statistics.misses}
-              </div>
+              <div className="stat-value">{statistics.hits + statistics.misses}</div>
             </div>
             <div>
               <div className="stat-label">Cached Results</div>
@@ -529,9 +501,7 @@ export function CacheFeedbackCompleteIntegration() {
       ...prev,
       {
         id: toastId,
-        message: isHit
-          ? `✓ Cached: ${query}`
-          : `⚡ Fresh query: ${query}`,
+        message: isHit ? `✓ Cached: ${query}` : `⚡ Fresh query: ${query}`,
       },
     ]);
 
@@ -555,22 +525,13 @@ export function CacheFeedbackCompleteIntegration() {
         <KtCard header="Execute Queries" variant="elevated">
           <KtLayout direction="vertical" gap="md">
             <KtLayout direction="horizontal" gap="sm">
-              <button
-                onClick={() => handleQuery('Weather in NYC')}
-                className="demo-button"
-              >
+              <button onClick={() => handleQuery('Weather in NYC')} className="demo-button">
                 Weather Query
               </button>
-              <button
-                onClick={() => handleQuery('Stock prices')}
-                className="demo-button"
-              >
+              <button onClick={() => handleQuery('Stock prices')} className="demo-button">
                 Stock Query
               </button>
-              <button
-                onClick={() => handleQuery('News articles')}
-                className="demo-button"
-              >
+              <button onClick={() => handleQuery('News articles')} className="demo-button">
                 News Query
               </button>
               <button
@@ -591,12 +552,10 @@ export function CacheFeedbackCompleteIntegration() {
           {feedbackHistory.length > 0 ? (
             <KtLayout direction="vertical" gap="sm">
               {feedbackHistory.slice(-10).map((event, idx) => (
-                <KtAlert
-                  key={idx}
-                  variant={event.type === 'hit' ? 'success' : 'warning'}
-                >
+                <KtAlert key={idx} variant={event.type === 'hit' ? 'success' : 'warning'}>
                   <strong>{event.type === 'hit' ? '💾 Cache Hit' : '⚡ Cache Miss'}</strong>
-                  {' - '}{event.query}
+                  {' - '}
+                  {event.query}
                 </KtAlert>
               ))}
             </KtLayout>

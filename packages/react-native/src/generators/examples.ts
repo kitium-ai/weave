@@ -234,7 +234,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) => {
       }}
     >
       <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{product.name}</Text>
-      <Text style={{ fontSize: 14, color: '#666' }}>\\${product.price}</Text>
+      <Text style={{ fontSize: 14, color: '#666' }}>{{product.price}}</Text>
     </Pressable>
   );
 };

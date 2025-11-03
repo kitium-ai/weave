@@ -105,7 +105,6 @@ export class CacheManager {
   private storage: ICacheStorage;
   private config: CacheConfig;
   private matcher: SemanticMatcher;
-  private operationStats = new Map<string, { timestamp: number; cost: number }>();
 
   constructor(config: CacheConfig, storage?: ICacheStorage, matcher?: SemanticMatcher) {
     this.config = config;

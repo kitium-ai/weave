@@ -5,8 +5,4 @@
 
 export { NextJSApiRouteBuilder } from './api-route-generator.js';
 export { NextJSPageBuilder } from './page-generator.js';
-export type {
-  NextJSApiRouteSpec,
-  NextJSPageSpec,
-  NextJSMiddlewareSpec,
-} from './types.js';
+export type { NextJSApiRouteSpec, NextJSPageSpec, NextJSMiddlewareSpec } from './types.js';

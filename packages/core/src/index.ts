@@ -11,11 +11,7 @@ export * from './agents/index.js';
 export * from './rag/index.js';
 export * from './evaluation/index.js';
 export * from './tools/index.js';
-export {
-  PromptManager,
-  promptManager,
-  BUILT_IN_TEMPLATES,
-} from './prompts/index.js';
+export { PromptManager, promptManager, BUILT_IN_TEMPLATES } from './prompts/index.js';
 export type {
   PromptTemplate,
   VariableSchema,

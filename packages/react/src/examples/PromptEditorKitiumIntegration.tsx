@@ -6,27 +6,14 @@
 import React, { useState } from 'react';
 import { PromptEditor } from '../components/PromptEditor';
 import { usePromptTemplate } from '../hooks/use-prompt-template';
-import {
-  KtButton,
-  KtCard,
-  KtInput,
-  KtTabs,
-  KtAlert,
-  KtLayout,
-  KtPanel,
-} from '@kitium/ui';
+import { KtButton, KtCard, KtInput, KtTabs, KtAlert, KtLayout, KtPanel } from '@kitium/ui';
 
 /**
  * Example 1: Basic Integration with KtButton and KtCard
  * Shows PromptEditor wrapped in kitium-ui components
  */
 export function PromptEditorBasicIntegration() {
-  const {
-    templates,
-    currentTemplate,
-    render,
-    setTemplate,
-  } = usePromptTemplate({
+  const { templates, currentTemplate, render, setTemplate } = usePromptTemplate({
     name: 'article-writer',
     editable: true,
     variants: [
@@ -41,7 +28,7 @@ export function PromptEditorBasicIntegration() {
     setIsSaving(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log('Template saved:', currentTemplate);
     } finally {
       setIsSaving(false);
@@ -54,19 +41,13 @@ export function PromptEditorBasicIntegration() {
         <KtLayout direction="vertical" gap="md">
           <PromptEditor
             template={currentTemplate}
-            variables={[
-              { name: 'topic', required: true, description: 'Article topic' },
-            ]}
+            variables={[{ name: 'topic', required: true, description: 'Article topic' }]}
             onChange={setTemplate}
             onTest={(result) => console.log('Test result:', result)}
           />
 
           <KtLayout direction="horizontal" gap="sm">
-            <KtButton
-              variant="primary"
-              onClick={handleSave}
-              disabled={isSaving}
-            >
+            <KtButton variant="primary" onClick={handleSave} disabled={isSaving}>
               {isSaving ? 'Saving...' : 'Save Template'}
             </KtButton>
             <KtButton variant="secondary">Cancel</KtButton>
@@ -213,11 +194,7 @@ export function PromptEditorFormIntegration() {
           {/* Template Text Textarea (using PromptEditor) */}
           <div>
             <label className="form-label">Template Text</label>
-            <PromptEditor
-              template={currentTemplate}
-              variables={variables}
-              onChange={setTemplate}
-            />
+            <PromptEditor template={currentTemplate} variables={variables} onChange={setTemplate} />
           </div>
 
           {/* Variables Section */}
@@ -309,11 +286,7 @@ export function PromptEditorTemplateLibrary() {
 
         <KtLayout direction="horizontal" gap="md">
           {/* Template List */}
-          <KtLayout
-            direction="vertical"
-            gap="sm"
-            style={{ flex: '0 0 300px' }}
-          >
+          <KtLayout direction="vertical" gap="sm" style={{ flex: '0 0 300px' }}>
             {templates.map((template) => (
               <KtCard
                 key={template.id}
@@ -323,9 +296,7 @@ export function PromptEditorTemplateLibrary() {
               >
                 <KtLayout direction="vertical" gap="xs">
                   <h3>{template.name}</h3>
-                  <p style={{ fontSize: '0.875rem', opacity: 0.7 }}>
-                    {template.description}
-                  </p>
+                  <p style={{ fontSize: '0.875rem', opacity: 0.7 }}>{template.description}</p>
                   <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>
                     {template.variables.join(', ')}
                   </div>
@@ -380,11 +351,7 @@ export function PromptEditorDashboard() {
   ];
 
   const selected = templates.find((t) => t.id === selectedId);
-  const {
-    currentTemplate,
-    setTemplate,
-    exportTemplate,
-  } = usePromptTemplate({
+  const { currentTemplate, setTemplate, exportTemplate } = usePromptTemplate({
     name: selected?.name || 'new-template',
   });
 
@@ -470,11 +437,7 @@ export function PromptEditorDashboard() {
         {activeTab === 'create' && (
           <KtCard header="Create New Template">
             <KtLayout direction="vertical" gap="md">
-              <KtInput
-                label="Template Name"
-                placeholder="e.g., My New Template"
-                type="text"
-              />
+              <KtInput label="Template Name" placeholder="e.g., My New Template" type="text" />
 
               <PromptEditor
                 template=""
@@ -483,10 +446,7 @@ export function PromptEditorDashboard() {
               />
 
               <KtLayout direction="horizontal" gap="sm">
-                <KtButton
-                  variant="secondary"
-                  onClick={() => setActiveTab('list')}
-                >
+                <KtButton variant="secondary" onClick={() => setActiveTab('list')}>
                   Cancel
                 </KtButton>
                 <KtButton variant="primary">Create Template</KtButton>

@@ -3,4 +3,9 @@
  * Type-safe testing helpers for all packages
  */
 
-export { MockWeaveFactory, MockRequestFactory, MockConfigFactory, MockAssertions } from './mocks.js';
+export {
+  MockWeaveFactory,
+  MockRequestFactory,
+  MockConfigFactory,
+  MockAssertions,
+} from './mocks.js';

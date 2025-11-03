@@ -82,8 +82,9 @@ export class StreamingTextComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
+    const interval = this.intervalId;
+    if (interval !== null) {
+      clearInterval(interval);
     }
   }
 
@@ -107,7 +108,10 @@ export class StreamingTextComponent implements OnInit, OnDestroy {
         this.displayedText += this.text[charIndex];
         charIndex++;
       } else {
-        clearInterval(this.intervalId);
+        const interval = this.intervalId;
+        if (interval !== null) {
+          clearInterval(interval);
+        }
         this.isComplete = true;
         this.complete.emit();
       }

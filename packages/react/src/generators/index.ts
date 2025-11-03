@@ -32,4 +32,9 @@ export { QueryBuilder } from './query-builder.js';
 export type { QuerySpec, QueryOption, GeneratedQuery } from './query-builder.js';
 
 // Parsers
-export { HookSpecParser, TypeSpecParser, UtilSpecParser, QuerySpecParser } from './generator-parsers.js';
+export {
+  HookSpecParser,
+  TypeSpecParser,
+  UtilSpecParser,
+  QuerySpecParser,
+} from './generator-parsers.js';

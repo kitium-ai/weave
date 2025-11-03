@@ -126,7 +126,10 @@ export class MetricsCollector {
   /**
    * Record custom metric
    */
-  public record(name: string, metric: { type: MetricType; value: number; tags?: Record<string, string> }): void {
+  public record(
+    name: string,
+    metric: { type: MetricType; value: number; tags?: Record<string, string> }
+  ): void {
     const key = this.getMetricKey(name, metric.tags);
 
     // For record method, treat all non-gauge types as overwrite (like gauges)
@@ -235,7 +238,11 @@ export class MetricsCollector {
   /**
    * Calculate aggregation for values
    */
-  private calculateAggregation(name: string, type: MetricType, values: number[]): MetricAggregation {
+  private calculateAggregation(
+    name: string,
+    type: MetricType,
+    values: number[]
+  ): MetricAggregation {
     if (values.length === 0) {
       return {
         name,

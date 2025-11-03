@@ -64,6 +64,7 @@ const weave = createWeave({
 ### 2. Use in Your Framework
 
 #### React
+
 ```jsx
 import { useGenerateAI } from '@weaveai/react';
 
@@ -80,13 +81,14 @@ function MyComponent() {
         {loading ? 'Generating...' : 'Generate'}
       </button>
       {data && <p>{data}</p>}
-      {error && <p style={{color: 'red'}}>{error.message}</p>}
+      {error && <p style={{ color: 'red' }}>{error.message}</p>}
     </div>
   );
 }
 ```
 
 #### Vue 3
+
 ```vue
 <template>
   <div>
@@ -106,6 +108,7 @@ const { data, loading, error, generate } = useGenerateAI(weave);
 ```
 
 #### Svelte
+
 ```svelte
 <script>
   import { createGenerateStore } from '@weaveai/svelte';
@@ -130,6 +133,7 @@ const { data, loading, error, generate } = useGenerateAI(weave);
 ```
 
 #### Angular
+
 ```typescript
 import { Component } from '@angular/core';
 import { GenerateService } from '@weaveai/angular';
@@ -140,9 +144,9 @@ import { GenerateService } from '@weaveai/angular';
 })
 export class GenerateComponent {
   state$ = this.generateService.state$;
-  loading$ = this.state$.pipe(map(s => s.loading));
-  data$ = this.state$.pipe(map(s => s.data));
-  error$ = this.state$.pipe(map(s => s.error));
+  loading$ = this.state$.pipe(map((s) => s.loading));
+  data$ = this.state$.pipe(map((s) => s.data));
+  error$ = this.state$.pipe(map((s) => s.error));
 
   constructor(private generateService: GenerateService) {}
 
@@ -153,6 +157,7 @@ export class GenerateComponent {
 ```
 
 #### Node.js/Express
+
 ```typescript
 import express from 'express';
 import { setupWeaveRoutes } from '@weaveai/nodejs';
@@ -169,6 +174,7 @@ app.listen(3000, () => {
 ```
 
 #### Next.js
+
 ```typescript
 import { createGenerateHandler } from '@weaveai/nextjs';
 
@@ -179,6 +185,7 @@ import { useGenerateAI } from '@weaveai/nextjs';
 ```
 
 #### NestJS
+
 ```typescript
 import { Module } from '@nestjs/common';
 import { WeaveModule } from '@weaveai/nestjs';
@@ -190,6 +197,7 @@ export class AppModule {}
 ```
 
 #### React Native
+
 ```jsx
 import { useGenerateAI } from '@weaveai/react-native';
 
@@ -209,6 +217,7 @@ function MyComponent() {
 ```
 
 #### Flutter
+
 ```dart
 class MyWidget extends StatefulWidget {
   @override

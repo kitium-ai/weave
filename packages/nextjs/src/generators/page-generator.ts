@@ -69,7 +69,7 @@ export default function ${pageName}() {
   private generateImports(spec: NextJSPageSpec): string {
     const imports = [
       "'use client';",
-      "",
+      '',
       "import { Metadata } from 'next';",
       "import { useState, useEffect } from 'react';",
     ];

@@ -194,7 +194,9 @@ ${examples}
       .slice(0, 2)
       .map((p) => {
         if (p.defaultValue !== undefined) {
-          return typeof p.defaultValue === 'string' ? `'${p.defaultValue}'` : String(p.defaultValue);
+          return typeof p.defaultValue === 'string'
+            ? `'${p.defaultValue}'`
+            : String(p.defaultValue);
         }
         if (p.type.includes('string')) return `'example'`;
         if (p.type.includes('number')) return `0`;
@@ -209,6 +211,9 @@ ${examples}
    * Convert to camelCase
    */
   private static toLowerCamelCase(str: string): string {
-    return str.charAt(0).toLowerCase() + str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+    return (
+      str.charAt(0).toLowerCase() +
+      str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+    );
   }
 }

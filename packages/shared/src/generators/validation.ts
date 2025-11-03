@@ -32,11 +32,7 @@ export abstract class BaseSpecValidator<T extends BaseSpec> {
   /**
    * Validate required string field
    */
-  protected validateRequired(
-    spec: T,
-    field: keyof T,
-    fieldName: string = String(field)
-  ): void {
+  protected validateRequired(spec: T, field: keyof T, fieldName: string = String(field)): void {
     const value = spec[field];
     if (!value || (typeof value === 'string' && value.trim().length === 0)) {
       throw new ValidationError(fieldName, 'Field is required');
@@ -57,11 +53,7 @@ export abstract class BaseSpecValidator<T extends BaseSpec> {
       throw new ValidationError(fieldName, 'Field must be an array');
     }
     if (value.length < minLength) {
-      throw new ValidationError(
-        fieldName,
-        `Array must have at least ${minLength} items`,
-        value
-      );
+      throw new ValidationError(fieldName, `Array must have at least ${minLength} items`, value);
     }
   }
 
@@ -119,21 +111,14 @@ export abstract class BaseSpecValidator<T extends BaseSpec> {
     };
 
     if (!patterns[format].test(name)) {
-      throw new ValidationError(
-        fieldName,
-        `Name must be in ${format} format`,
-        name
-      );
+      throw new ValidationError(fieldName, `Name must be in ${format} format`, name);
     }
   }
 
   /**
    * Validate HTTP method
    */
-  protected validateHttpMethod(
-    method: string,
-    fieldName: string = 'method'
-  ): void {
+  protected validateHttpMethod(method: string, fieldName: string = 'method'): void {
     const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
     if (!validMethods.includes(method.toUpperCase())) {
       throw new ValidationError(
@@ -147,23 +132,12 @@ export abstract class BaseSpecValidator<T extends BaseSpec> {
   /**
    * Validate endpoint path
    */
-  protected validateEndpoint(
-    endpoint: string,
-    fieldName: string = 'endpoint'
-  ): void {
+  protected validateEndpoint(endpoint: string, fieldName: string = 'endpoint'): void {
     if (!endpoint.startsWith('/')) {
-      throw new ValidationError(
-        fieldName,
-        'Endpoint must start with /',
-        endpoint
-      );
+      throw new ValidationError(fieldName, 'Endpoint must start with /', endpoint);
     }
     if (endpoint.includes('//')) {
-      throw new ValidationError(
-        fieldName,
-        'Endpoint cannot contain consecutive slashes',
-        endpoint
-      );
+      throw new ValidationError(fieldName, 'Endpoint cannot contain consecutive slashes', endpoint);
     }
   }
 
@@ -175,10 +149,7 @@ export abstract class BaseSpecValidator<T extends BaseSpec> {
     fieldName: string = 'object'
   ): void {
     if (!obj || Object.keys(obj).length === 0) {
-      throw new ValidationError(
-        fieldName,
-        'Object cannot be empty'
-      );
+      throw new ValidationError(fieldName, 'Object cannot be empty');
     }
   }
 

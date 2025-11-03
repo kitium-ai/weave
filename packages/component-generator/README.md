@@ -36,12 +36,12 @@ console.log(result.code);
 
 ### `new ComponentGenerator(options)`
 
-| Option       | Type                                                        | Description                                            |
-| ------------ | ----------------------------------------------------------- | ------------------------------------------------------ |
-| `provider`   | `ILanguageModel`                                            | Weave language model provider used for generation.     |
-| `framework`  | `'react' \| 'vue' \| 'angular' \| 'react-native' \| 'svelte' \| 'vanilla'` | Target UI framework.                                   |
-| `styledWith` | `'tailwind' \| 'css-modules' \| 'styled-components' \| 'emotion' \| 'vanilla'` | Styling guidance for the model (optional).             |
-| `language`   | `'typescript' \| 'javascript'`                              | Output language preference (default `typescript`).     |
+| Option       | Type                                                                           | Description                                        |
+| ------------ | ------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `provider`   | `ILanguageModel`                                                               | Weave language model provider used for generation. |
+| `framework`  | `'react' \| 'vue' \| 'angular' \| 'react-native' \| 'svelte' \| 'vanilla'`     | Target UI framework.                               |
+| `styledWith` | `'tailwind' \| 'css-modules' \| 'styled-components' \| 'emotion' \| 'vanilla'` | Styling guidance for the model (optional).         |
+| `language`   | `'typescript' \| 'javascript'`                                                 | Output language preference (default `typescript`). |
 
 ### `createComponent(spec, options?)`
 
@@ -49,10 +49,10 @@ Generates a component based on the specification.
 
 `spec` fields:
 
-- `description` *(string, required)* – Plain-language component description.
-- `props` *(Record<string, string \| ComponentPropSpec>)* – Prop names and type annotations.
-- `requirements` *(string[])* – Additional requirements or constraints.
-- `events` *(string[])* – Event handlers that should be exposed (optional).
-- `dataSources` *(string[])* – External data dependencies to note (optional).
-  
+- `description` _(string, required)_ – Plain-language component description.
+- `props` _(Record<string, string \| ComponentPropSpec>)_ – Prop names and type annotations.
+- `requirements` _(string[])_ – Additional requirements or constraints.
+- `events` _(string[])_ – Event handlers that should be exposed (optional).
+- `dataSources` _(string[])_ – External data dependencies to note (optional).
+
 Returns a structured result with `code`, `types`, `styles`, `example`, `imports`, and optional `metadata`.

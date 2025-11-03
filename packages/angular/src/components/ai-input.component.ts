@@ -29,7 +29,7 @@ import { FormsModule } from '@angular/forms';
       >
         <li
           *ngFor="let suggestion of filteredSuggestions; let i = index"
-          (click)="selectSuggestion(suggestion)"
+          (click)="emitSelectSuggestion(suggestion)"
           class="weave-ai-input__suggestion-item"
           role="option"
           [attr.aria-selected]="i === selectedIndex"
@@ -130,7 +130,7 @@ export class AIInputComponent {
     this.filteredSuggestions = this.suggestions.filter((s) => s.toLowerCase().includes(lowerValue));
   }
 
-  selectSuggestion(suggestion: string): void {
+  emitSelectSuggestion(suggestion: string): void {
     this.value = suggestion;
     this.valueChange.emit(this.value);
     this.onSelectSuggestion?.(suggestion);

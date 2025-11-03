@@ -24,7 +24,9 @@ import { useQueryGenerator } from '../hooks/useQueryGenerator';
  * Main integration example app
  */
 export function GeneratorsIntegration() {
-  const [activeTab, setActiveTab] = useState<'component' | 'hook' | 'type' | 'util' | 'query'>('component');
+  const [activeTab, setActiveTab] = useState<'component' | 'hook' | 'type' | 'util' | 'query'>(
+    'component'
+  );
 
   const tabs: Array<{ id: typeof activeTab; label: string; icon: string }> = [
     { id: 'component', label: 'Components', icon: '🎨' },
@@ -40,7 +42,9 @@ export function GeneratorsIntegration() {
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-8 shadow-lg">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold mb-2">⚡ Weave Code Generators</h1>
-          <p className="text-blue-100 text-lg">Generate production-ready code from natural language descriptions</p>
+          <p className="text-blue-100 text-lg">
+            Generate production-ready code from natural language descriptions
+          </p>
         </div>
       </div>
 

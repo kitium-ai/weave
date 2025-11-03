@@ -64,6 +64,7 @@ type(scope): subject
 ```
 
 **Types**:
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation only
@@ -74,6 +75,7 @@ type(scope): subject
 - `ci`: Changes to CI configuration files and scripts
 
 **Examples**:
+
 ```
 feat(core): add streaming support for generation
 fix(react): handle component unmount properly
@@ -88,6 +90,7 @@ git push origin feature/your-feature-name
 ```
 
 Then create a Pull Request on GitHub with:
+
 - Clear description of changes
 - Reference to related issues
 - Screenshots if UI-related
@@ -163,7 +166,7 @@ packages/example/
 
 Document all public APIs:
 
-```typescript
+````typescript
 /**
  * Generates text based on a prompt.
  *
@@ -180,13 +183,10 @@ Document all public APIs:
  *
  * @see {@link GenerateOptions}
  */
-export async function generate(
-  prompt: string,
-  options?: GenerateOptions
-): Promise<string> {
+export async function generate(prompt: string, options?: GenerateOptions): Promise<string> {
   // implementation
 }
-```
+````
 
 ## Testing
 
@@ -242,6 +242,7 @@ yarn test:coverage
 ### README Requirements
 
 Each package should have a README with:
+
 - Description
 - Installation instructions
 - Quick start example
@@ -311,6 +312,7 @@ Apache 2.0 - See [LICENSE](../../LICENSE)
 ### Bug Reports
 
 Include:
+
 - Clear description of the bug
 - Steps to reproduce
 - Expected vs actual behavior
@@ -320,6 +322,7 @@ Include:
 ### Feature Requests
 
 Include:
+
 - Clear description of requested feature
 - Use cases and examples
 - Proposed API (if applicable)
@@ -359,6 +362,7 @@ yarn version:patch    # For bug fixes
 ```
 
 This automatically:
+
 1. Updates version in package.json
 2. Updates CHANGELOG.md
 3. Creates git tag
@@ -374,6 +378,7 @@ This automatically:
 ## Recognition
 
 Contributors will be:
+
 - Added to CONTRIBUTORS.md
 - Credited in release notes
 - Recognized in monthly community call

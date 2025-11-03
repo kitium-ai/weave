@@ -38,9 +38,7 @@ interface LocalValidationResult<TData> {
 }
 
 interface ZodLikeSchema<TData> {
-  safeParse: (
-    input: unknown
-  ) =>
+  safeParse: (input: unknown) =>
     | {
         success: true;
         data: TData;
@@ -57,7 +55,9 @@ interface ZodLikeSchema<TData> {
 }
 
 function isZodLikeSchema<TData>(schema: unknown): schema is ZodLikeSchema<TData> {
-  return Boolean(schema && typeof schema === 'object' && 'safeParse' in (schema as Record<string, unknown>));
+  return Boolean(
+    schema && typeof schema === 'object' && 'safeParse' in (schema as Record<string, unknown>)
+  );
 }
 
 function runLocalValidation<TData extends Record<string, unknown>>(
@@ -229,7 +229,12 @@ export function useFormValidator<TData extends Record<string, unknown>>(
         const prompt =
           typeof options.transformInput === 'function'
             ? options.transformInput(data)
-            : buildValidationPrompt(data, options.schema, localResult.issues, options.contextAwareness ?? false);
+            : buildValidationPrompt(
+                data,
+                options.schema,
+                localResult.issues,
+                options.contextAwareness ?? false
+              );
 
         const schemaForOptions =
           (options.schema as ExtractOptions['schema']) ??
@@ -276,7 +281,10 @@ export function useFormValidator<TData extends Record<string, unknown>>(
           ...correctedData,
         };
 
-        const sanitizedValidation = runLocalValidation<TData>(options.schema, sanitizedData as TData);
+        const sanitizedValidation = runLocalValidation<TData>(
+          options.schema,
+          sanitizedData as TData
+        );
 
         if (!sanitizedValidation.valid) {
           const sanitizedErrorMap = toErrorMap(sanitizedValidation.issues);

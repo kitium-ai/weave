@@ -229,7 +229,10 @@ ${indent}throw error;
     code = code.replace(/\s*\/\*\*\s*TODO:.*?\*\/\n/gs, '\n');
 
     // Remove "// TODO: Implement logic" and similar
-    code = code.replace(/const result = \{\};\n/g, 'const result = { /* data from implementation */ };\n');
+    code = code.replace(
+      /const result = \{\};\n/g,
+      'const result = { /* data from implementation */ };\n'
+    );
 
     // Clean up multiple blank lines
     code = code.replace(/\n\n\n+/g, '\n\n');

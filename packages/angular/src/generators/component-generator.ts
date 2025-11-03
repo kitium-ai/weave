@@ -71,7 +71,10 @@ export class ${this.toPascalCase(spec.name)}Component {
     const propsType = `${componentName}Props`;
 
     const props = spec.inputs
-      .map((input) => `  /** ${input.description} */\n  ${input.name}${input.optional ? '?' : ''}: ${input.type};`)
+      .map(
+        (input) =>
+          `  /** ${input.description} */\n  ${input.name}${input.optional ? '?' : ''}: ${input.type};`
+      )
       .join('\n');
 
     return `export interface ${propsType} {
@@ -92,7 +95,9 @@ ${props}
     }
 
     if (spec.features.includes('form')) {
-      imports.push("import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';");
+      imports.push(
+        "import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';"
+      );
     }
 
     if (spec.features.includes('http')) {

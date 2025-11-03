@@ -3,7 +3,7 @@
  * UI for selecting and monitoring AI providers with fallback routing
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { ProviderStatus, ProviderRoutingEvent } from '@weaveai/core';
 import './ProviderSwitch.css';
 
@@ -42,8 +42,12 @@ export const ProviderSwitch: React.FC<ProviderSwitchProps> = ({
   };
 
   const getSuccessColor = (successRate: number) => {
-    if (successRate >= 95) return '#10b981';
-    if (successRate >= 80) return '#f59e0b';
+    if (successRate >= 95) {
+      return '#10b981';
+    }
+    if (successRate >= 80) {
+      return '#f59e0b';
+    }
     return '#ef4444';
   };
 
@@ -55,9 +59,7 @@ export const ProviderSwitch: React.FC<ProviderSwitchProps> = ({
           <div
             key={provider.name}
             className={`provider-switch__item ${
-              currentProvider === provider.name
-                ? 'provider-switch__item--active'
-                : ''
+              currentProvider === provider.name ? 'provider-switch__item--active' : ''
             } ${provider.healthy ? '' : 'provider-switch__item--offline'}`}
             onClick={() => onProviderSelect?.(provider.name)}
           >
@@ -85,16 +87,12 @@ export const ProviderSwitch: React.FC<ProviderSwitchProps> = ({
                       }}
                     />
                   </div>
-                  <span className="provider-switch__value">
-                    {provider.successRate.toFixed(1)}%
-                  </span>
+                  <span className="provider-switch__value">{provider.successRate.toFixed(1)}%</span>
                 </div>
 
                 <div className="provider-switch__metric">
                   <span className="provider-switch__label">Latency</span>
-                  <span className="provider-switch__value">
-                    {provider.latency.toFixed(0)}ms
-                  </span>
+                  <span className="provider-switch__value">{provider.latency.toFixed(0)}ms</span>
                 </div>
 
                 <div className="provider-switch__metric">
@@ -129,9 +127,7 @@ export const ProviderStatusIndicator: React.FC<ProviderStatusIndicatorProps> = (
   return (
     <button
       onClick={() => onSelect?.(status.name)}
-      className={`provider-status-indicator ${
-        isActive ? 'provider-status-indicator--active' : ''
-      }`}
+      className={`provider-status-indicator ${isActive ? 'provider-status-indicator--active' : ''}`}
       style={{
         backgroundColor: getStatusBgColor(status.healthy),
       }}
@@ -211,9 +207,7 @@ export const ProviderEventFeed: React.FC<ProviderEventFeedProps> = ({
                 event.type
               )}`}
             >
-              <span className="provider-event-feed__icon">
-                {getEventIcon(event.type)}
-              </span>
+              <span className="provider-event-feed__icon">{getEventIcon(event.type)}</span>
               <div className="provider-event-feed__content">
                 <div className="provider-event-feed__header">
                   <span className="provider-event-feed__type">
@@ -224,18 +218,12 @@ export const ProviderEventFeed: React.FC<ProviderEventFeedProps> = ({
                       {event.from} → {event.to}
                     </span>
                   )}
-                  {!event.from && (
-                    <span className="provider-event-feed__provider">
-                      {event.to}
-                    </span>
-                  )}
+                  {!event.from && <span className="provider-event-feed__provider">{event.to}</span>}
                   <span className="provider-event-feed__time">
                     {event.timestamp.toLocaleTimeString()}
                   </span>
                 </div>
-                {event.reason && (
-                  <p className="provider-event-feed__reason">{event.reason}</p>
-                )}
+                {event.reason && <p className="provider-event-feed__reason">{event.reason}</p>}
               </div>
             </div>
           ))
@@ -275,13 +263,8 @@ export const ProviderSelector: React.FC<ProviderSelectorProps> = ({
         className || ''
       }`}
     >
-      <button
-        onClick={() => setOpen(!open)}
-        className="provider-selector__trigger"
-      >
-        <span className="provider-selector__current">
-          {current?.name || 'Select Provider'}
-        </span>
+      <button onClick={() => setOpen(!open)} className="provider-selector__trigger">
+        <span className="provider-selector__current">{current?.name || 'Select Provider'}</span>
         <span className="provider-selector__arrow">▼</span>
       </button>
 
@@ -295,17 +278,13 @@ export const ProviderSelector: React.FC<ProviderSelectorProps> = ({
                 setOpen(false);
               }}
               className={`provider-selector__option ${
-                provider.name === currentProvider
-                  ? 'provider-selector__option--active'
-                  : ''
+                provider.name === currentProvider ? 'provider-selector__option--active' : ''
               } ${provider.healthy ? '' : 'provider-selector__option--disabled'}`}
               disabled={!provider.healthy}
             >
               <span className="provider-selector__dot" />
               <span className="provider-selector__label">{provider.name}</span>
-              <span className="provider-selector__status">
-                {provider.healthy ? '✓' : '✕'}
-              </span>
+              <span className="provider-selector__status">{provider.healthy ? '✓' : '✕'}</span>
             </button>
           ))}
         </div>

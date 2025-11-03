@@ -207,7 +207,8 @@ const validated = ${specs[0]?.name}Schema.parse(${this.toLowerCamelCase(specs[0]
     if (cleanType.includes('boolean')) return 'z.boolean()';
     if (cleanType.includes('Date')) return 'z.date()';
     if (cleanType.includes('[]')) return `z.array(z.unknown())`;
-    if (cleanType.includes('Record') || cleanType.includes('object')) return 'z.record(z.unknown())';
+    if (cleanType.includes('Record') || cleanType.includes('object'))
+      return 'z.record(z.unknown())';
     return 'z.unknown()';
   }
 
@@ -215,6 +216,9 @@ const validated = ${specs[0]?.name}Schema.parse(${this.toLowerCamelCase(specs[0]
    * Convert to camelCase
    */
   private static toLowerCamelCase(str: string): string {
-    return str.charAt(0).toLowerCase() + str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase());
+    return (
+      str.charAt(0).toLowerCase() +
+      str.slice(1).replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+    );
   }
 }
