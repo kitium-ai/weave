@@ -51,12 +51,13 @@ export async function exampleSemanticCaching() {
     enabled: true,
     strategy: 'semantic',
     ttl: 3600,
-    onCacheHit: async ({ savings, _entry }) => {
+    onCacheHit: async ({ savings, entry }) => {
       // UI feedback
       console.log('✅ Cache hit!');
       console.log(`💰 Saved: $${savings.cost.toFixed(4)}`);
       console.log(`⚡ Latency saved: ${savings.latency.toFixed(0)}ms`);
       console.log(`🎯 Tokens saved: ${savings.tokens}`);
+      console.log(`📝 Entry key: ${entry.key}`);
     },
   };
 
@@ -281,21 +282,29 @@ export async function exampleIntegrationWithGenerate(
   const cache = new CacheManager(cacheConfig);
   const prompt = 'Write a product description';
 
+  interface CachedResult {
+    text: string;
+    cost: number;
+    latency: number;
+    tokenCount: { input: number; output: number };
+  }
+
   // Check cache first
-  const cached = await cache.query<unknown>(prompt);
+  const cached = await cache.query<CachedResult>(prompt);
   if (cached.hit) {
+    const data = cached.data as CachedResult;
     return {
-      text: cached.data.text,
-      cost: cached.data.cost,
-      latency: cached.data.latency,
-      tokenCount: cached.data.tokenCount,
+      text: data.text,
+      cost: data.cost,
+      latency: data.latency,
+      tokenCount: data.tokenCount,
       cached: true,
     };
   }
 
   // Generate fresh result
   const start = performance.now();
-  const result = await generateFn(prompt);
+  const result = await generateFn(prompt) as CachedResult;
   const latency = performance.now() - start;
 
   // Store in cache

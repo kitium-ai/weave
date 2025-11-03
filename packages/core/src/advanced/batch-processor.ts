@@ -44,7 +44,8 @@ export class BatchProcessor {
   private activeJobs: number = 0;
   private maxConcurrent: number = 3;
   private rateLimiter: RateLimiter;
-  private currentProcessor: ((item: unknown, retries: number) => Promise<unknown>) | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private currentProcessor: ((item: any, retries: number) => Promise<any>) | null = null;
   private cleanupInterval: NodeJS.Timeout | null = null;
   private maxJobHistory: number;
   private jobTTL: number;
@@ -125,7 +126,7 @@ export class BatchProcessor {
    */
   async submitBatch<T>(
     items: T[],
-    processor: (item: T, retries: number) => Promise<any>
+    processor: (item: T, retries: number) => Promise<unknown>
   ): Promise<BatchJob> {
     const jobId = generateBatchJobId();
 

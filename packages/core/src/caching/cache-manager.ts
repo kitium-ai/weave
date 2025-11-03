@@ -13,6 +13,7 @@ import type {
   SemanticMatcher,
   ICacheStorage,
   CostSavings,
+  CacheEntryMetadata,
 } from './types.js';
 import { SimpleCache } from './cache-storage.js';
 

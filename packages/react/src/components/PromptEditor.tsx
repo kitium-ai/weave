@@ -55,7 +55,7 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
     typeof template === 'string' ? template : template.template
   );
 
-  const [testInput, setTestInput] = useState<Record<string, string>>(testData);
+  const [testInput, setTestInput] = useState<Record<string, unknown>>(testData || {});
   const [testResult, setTestResult] = useState<PromptTestResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
@@ -219,7 +219,7 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
                 <input
                   id={`var-${variable.name}`}
                   type="text"
-                  value={testInput[variable.name] || ''}
+                  value={String(testInput[variable.name] || '')}
                   onChange={(e) => handleVariableChange(variable.name, e.target.value)}
                   placeholder={variable.placeholder || `Enter ${variable.name}`}
                   className="prompt-editor__var-input"

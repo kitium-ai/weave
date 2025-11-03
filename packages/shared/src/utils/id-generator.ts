@@ -23,7 +23,7 @@ function getCryptoModule(): unknown {
  * Generate a cryptographically secure UUID
  */
 export function generateUUID(): string {
-  return getCryptoModule().randomUUID();
+  return (getCryptoModule() as unknown as { randomUUID: () => string }).randomUUID();
 }
 
 /**
@@ -31,7 +31,9 @@ export function generateUUID(): string {
  */
 export function generateOperationId(): string {
   const timestamp = Date.now();
-  const uuid = getCryptoModule().randomUUID().split('-')[0]; // Use first part of UUID for brevity
+  const uuid = (getCryptoModule() as unknown as { randomUUID: () => string })
+    .randomUUID()
+    .split('-')[0]; // Use first part of UUID for brevity
   return `op-${timestamp}-${uuid}`;
 }
 
@@ -40,7 +42,9 @@ export function generateOperationId(): string {
  */
 export function generateBatchJobId(): string {
   const timestamp = Date.now();
-  const uuid = getCryptoModule().randomUUID().split('-')[0];
+  const uuid = (getCryptoModule() as unknown as { randomUUID: () => string })
+    .randomUUID()
+    .split('-')[0];
   return `job-${timestamp}-${uuid}`;
 }
 
@@ -48,14 +52,14 @@ export function generateBatchJobId(): string {
  * Generate a trace ID for distributed tracing
  */
 export function generateTraceId(): string {
-  return `trace-${getCryptoModule().randomUUID()}`;
+  return `trace-${(getCryptoModule() as unknown as { randomUUID: () => string }).randomUUID()}`;
 }
 
 /**
  * Generate a request ID for logging
  */
 export function generateRequestId(): string {
-  return `req-${getCryptoModule().randomUUID().split('-')[0]}`;
+  return `req-${(getCryptoModule() as unknown as { randomUUID: () => string }).randomUUID().split('-')[0]}`;
 }
 
 /**
@@ -80,7 +84,7 @@ export function isValidOperationId(str: string): boolean {
  * @returns Generated ID
  */
 export function generateId(prefix?: string, separator: string = '-'): string {
-  const id = getCryptoModule().randomUUID();
+  const id = (getCryptoModule() as unknown as { randomUUID: () => string }).randomUUID();
   if (prefix) {
     return `${prefix}${separator}${id}`;
   }

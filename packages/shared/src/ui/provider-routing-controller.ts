@@ -133,7 +133,7 @@ export class ProviderRoutingController {
   }
 
   private attachRouterCallbacks(): void {
-    const routerAny = this.router as Record<string, unknown>;
+    const routerAny = this.router as unknown as Record<string, unknown>;
     const existingUi = (routerAny.ui ?? {}) as {
       onProviderChange?: (from: string, to: string, reason?: string) => unknown;
       onRoutingEvent?: (event: ProviderRoutingEvent) => unknown;
