@@ -255,9 +255,9 @@ export class ChatController {
     // Best effort to trigger download in browser context
     if (typeof globalThis !== 'undefined' && 'document' in globalThis && 'URL' in globalThis) {
       try {
-        const doc = (globalThis as any).document;
-        const URLClass = (globalThis as any).URL;
-        const BlobClass = (globalThis as any).Blob;
+        const doc = (globalThis as Record<string, unknown>).document;
+        const URLClass = (globalThis as Record<string, unknown>).URL;
+        const BlobClass = (globalThis as Record<string, unknown>).Blob;
 
         const blob = new BlobClass([payload], { type: 'application/json' });
         const url = URLClass.createObjectURL(blob);

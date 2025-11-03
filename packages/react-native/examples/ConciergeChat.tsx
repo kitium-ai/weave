@@ -12,7 +12,9 @@ export function ConciergeChat({ weave }: { weave: Weave }) {
   const [input, setInput] = useState('');
 
   const send = async () => {
-    if (!input.trim()) return;
+    if (!input.trim()) {
+      return;
+    }
     await chat.sendMessage(input);
     setInput('');
   };

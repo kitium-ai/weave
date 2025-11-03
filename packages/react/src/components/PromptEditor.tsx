@@ -70,7 +70,7 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
     if (typeof variablesProp === 'object' && variablesProp !== null) {
       return Object.entries(variablesProp).map(([name, value]) => ({
         name,
-        type: typeof value as any,
+        type: typeof value as 'string' | 'number' | 'boolean' | 'object',
       }));
     }
     return [];
@@ -96,7 +96,9 @@ export const PromptEditor: React.FC<PromptEditorProps> = ({
 
   // Run test
   const handleTest = useCallback(async () => {
-    if (!onTest) return;
+    if (!onTest) {
+      return;
+    }
 
     setIsLoading(true);
     try {

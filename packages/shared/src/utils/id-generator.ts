@@ -4,15 +4,16 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let crypto: any = null;
+let crypto: unknown = null;
 
 /**
  * Get crypto module (lazy loaded)
  */
-function getCryptoModule(): any {
+function getCryptoModule(): unknown {
   if (!crypto) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-implied-eval, @typescript-eslint/ban-ts-comment
     // @ts-ignore - require is only available in Node.js, not in browser/mobile environments
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     crypto = require('crypto');
   }
   return crypto;

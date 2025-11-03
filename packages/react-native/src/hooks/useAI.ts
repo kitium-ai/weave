@@ -32,11 +32,11 @@ export interface UseAIReturn<T = unknown> {
   resetCost: () => void;
 }
 
-const INITIAL_STATE: AIExecutionState<any> = {
+const INITIAL_STATE = {
   data: null,
   loading: false,
   error: null,
-  status: 'idle',
+  status: 'idle' as const,
   cost: null,
   budgetExceeded: false,
 };
@@ -46,7 +46,7 @@ const INITIAL_STATE: AIExecutionState<any> = {
  */
 export function useAI<T = unknown>(_weave: Weave, options?: UseAIOptions<T>): UseAIReturn<T> {
   const controllerRef = useRef(new AIExecutionController<T>(options));
-  const [state, setState] = useState<AIExecutionState<T>>(INITIAL_STATE);
+  const [state, setState] = useState<AIExecutionState<T>>(INITIAL_STATE as AIExecutionState<T>);
 
   useEffect(() => {
     const unsubscribe = controllerRef.current.subscribe((next) => {

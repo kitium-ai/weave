@@ -11,7 +11,9 @@ export const cacheStore = createCacheStore({ cacheConfig });
 
 export async function ensureCached(prompt: string): Promise<void> {
   const hit = await cacheStore.queryCache(prompt);
-  if (hit) return;
+  if (hit) {
+    return;
+  }
 
   await cacheStore.storeInCache(
     prompt,

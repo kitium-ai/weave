@@ -4,9 +4,9 @@
  */
 
 import React, { useState } from 'react';
-import { ProviderSwitch, ProviderStatusIndicator } from '../components/ProviderSwitch';
+import { ProviderStatusIndicator } from '../components/ProviderSwitch';
 import { useProviderRouting } from '../hooks/useProviderRouting';
-import { KtButton, KtCard, KtLayout, KtBadge, KtAlert, KtPanel, KtTabs, KtToast } from '@kitium/ui';
+import { KtButton, KtCard, KtLayout, KtBadge, KtAlert, KtPanel, KtTabs } from '@kitium/ui';
 
 /**
  * Example 1: Basic Provider Selection with KtCard Layout
@@ -304,10 +304,13 @@ export function ProviderSwitchConfigurationTabs() {
  * Full-featured provider management with all kitium-ui components
  */
 export function ProviderSwitchCompleteDashboard() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { providers, currentProvider, selectProvider, eventHistory, getProviderStatus } =
     useProviderRouting();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showDetails, setShowDetails] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showHistory, setShowHistory] = useState(true);
 
   return (

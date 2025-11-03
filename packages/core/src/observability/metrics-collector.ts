@@ -199,8 +199,10 @@ export class MetricsCollector {
         if (!baseMetrics.has(name)) {
           baseMetrics.set(name, { type: metric.type, allValues: [] });
         }
-        const base = baseMetrics.get(name)!;
-        base.allValues.push(...metric.values);
+        const base = baseMetrics.get(name);
+        if (base) {
+          base.allValues.push(...metric.values);
+        }
       }
     }
 

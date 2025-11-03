@@ -198,10 +198,18 @@ ${examples}
             ? `'${p.defaultValue}'`
             : String(p.defaultValue);
         }
-        if (p.type.includes('string')) return `'example'`;
-        if (p.type.includes('number')) return `0`;
-        if (p.type.includes('boolean')) return `true`;
-        if (p.type.includes('[]')) return `[]`;
+        if (p.type.includes('string')) {
+          return `'example'`;
+        }
+        if (p.type.includes('number')) {
+          return `0`;
+        }
+        if (p.type.includes('boolean')) {
+          return `true`;
+        }
+        if (p.type.includes('[]')) {
+          return `[]`;
+        }
         return `{}`;
       })
       .join(', ');

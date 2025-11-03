@@ -64,12 +64,21 @@ export class HookSpecParser {
   private static detectReturnType(description: string): string {
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('boolean')) return 'boolean';
-    if (lowerDesc.includes('string')) return 'string';
-    if (lowerDesc.includes('number')) return 'number';
-    if (lowerDesc.includes('array')) return 'unknown[]';
-    if (lowerDesc.includes('object') || lowerDesc.includes('state'))
+    if (lowerDesc.includes('boolean')) {
+      return 'boolean';
+    }
+    if (lowerDesc.includes('string')) {
+      return 'string';
+    }
+    if (lowerDesc.includes('number')) {
+      return 'number';
+    }
+    if (lowerDesc.includes('array')) {
+      return 'unknown[]';
+    }
+    if (lowerDesc.includes('object') || lowerDesc.includes('state')) {
       return 'Record<string, unknown>';
+    }
 
     return 'unknown';
   }
@@ -78,12 +87,21 @@ export class HookSpecParser {
     const deps: string[] = [];
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('react')) deps.push('react');
-    if (lowerDesc.includes('router')) deps.push('react-router-dom');
-    if (lowerDesc.includes('form') || lowerDesc.includes('input')) deps.push('react-hook-form');
-    if (lowerDesc.includes('query') || lowerDesc.includes('fetch'))
+    if (lowerDesc.includes('react')) {
+      deps.push('react');
+    }
+    if (lowerDesc.includes('router')) {
+      deps.push('react-router-dom');
+    }
+    if (lowerDesc.includes('form') || lowerDesc.includes('input')) {
+      deps.push('react-hook-form');
+    }
+    if (lowerDesc.includes('query') || lowerDesc.includes('fetch')) {
       deps.push('@tanstack/react-query');
-    if (lowerDesc.includes('state') && lowerDesc.includes('manage')) deps.push('zustand');
+    }
+    if (lowerDesc.includes('state') && lowerDesc.includes('manage')) {
+      deps.push('zustand');
+    }
 
     return deps;
   }
@@ -137,9 +155,15 @@ export class TypeSpecParser {
   private static detectKind(description: string): 'interface' | 'type' | 'enum' | 'class' {
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('enum')) return 'enum';
-    if (lowerDesc.includes('class')) return 'class';
-    if (lowerDesc.includes('type alias') || lowerDesc.includes('union')) return 'type';
+    if (lowerDesc.includes('enum')) {
+      return 'enum';
+    }
+    if (lowerDesc.includes('class')) {
+      return 'class';
+    }
+    if (lowerDesc.includes('type alias') || lowerDesc.includes('union')) {
+      return 'type';
+    }
     return 'interface';
   }
 
@@ -188,10 +212,15 @@ export class TypeSpecParser {
     const lowerDesc = description.toLowerCase();
     const features: string[] = [];
 
-    if (lowerDesc.includes('readonly')) features.push('immutable');
-    if (lowerDesc.includes('generic')) features.push('generic');
-    if (lowerDesc.includes('discriminate') || lowerDesc.includes('union'))
+    if (lowerDesc.includes('readonly')) {
+      features.push('immutable');
+    }
+    if (lowerDesc.includes('generic')) {
+      features.push('generic');
+    }
+    if (lowerDesc.includes('discriminate') || lowerDesc.includes('union')) {
       features.push('discriminated union');
+    }
 
     return features;
   }
@@ -276,11 +305,21 @@ export class UtilSpecParser {
   private static detectReturnType(description: string): string {
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('string')) return 'string';
-    if (lowerDesc.includes('number')) return 'number';
-    if (lowerDesc.includes('boolean')) return 'boolean';
-    if (lowerDesc.includes('array') || lowerDesc.includes('list')) return 'unknown[]';
-    if (lowerDesc.includes('date')) return 'Date';
+    if (lowerDesc.includes('string')) {
+      return 'string';
+    }
+    if (lowerDesc.includes('number')) {
+      return 'number';
+    }
+    if (lowerDesc.includes('boolean')) {
+      return 'boolean';
+    }
+    if (lowerDesc.includes('array') || lowerDesc.includes('list')) {
+      return 'unknown[]';
+    }
+    if (lowerDesc.includes('date')) {
+      return 'Date';
+    }
 
     return 'unknown';
   }
@@ -288,11 +327,21 @@ export class UtilSpecParser {
   private static detectCategory(description: string): string {
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('date') || lowerDesc.includes('time')) return 'date';
-    if (lowerDesc.includes('string')) return 'string';
-    if (lowerDesc.includes('number') || lowerDesc.includes('math')) return 'number';
-    if (lowerDesc.includes('array') || lowerDesc.includes('list')) return 'array';
-    if (lowerDesc.includes('object') || lowerDesc.includes('key')) return 'object';
+    if (lowerDesc.includes('date') || lowerDesc.includes('time')) {
+      return 'date';
+    }
+    if (lowerDesc.includes('string')) {
+      return 'string';
+    }
+    if (lowerDesc.includes('number') || lowerDesc.includes('math')) {
+      return 'number';
+    }
+    if (lowerDesc.includes('array') || lowerDesc.includes('list')) {
+      return 'array';
+    }
+    if (lowerDesc.includes('object') || lowerDesc.includes('key')) {
+      return 'object';
+    }
 
     return 'general';
   }
@@ -333,10 +382,19 @@ export class QuerySpecParser {
   private static detectMethod(description: string): 'GET' | 'POST' | 'PUT' | 'DELETE' {
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('delete')) return 'DELETE';
-    if (lowerDesc.includes('update') || lowerDesc.includes('put')) return 'PUT';
-    if (lowerDesc.includes('create') || lowerDesc.includes('post') || lowerDesc.includes('submit'))
+    if (lowerDesc.includes('delete')) {
+      return 'DELETE';
+    }
+    if (lowerDesc.includes('update') || lowerDesc.includes('put')) {
+      return 'PUT';
+    }
+    if (
+      lowerDesc.includes('create') ||
+      lowerDesc.includes('post') ||
+      lowerDesc.includes('submit')
+    ) {
       return 'POST';
+    }
     return 'GET';
   }
 
@@ -357,11 +415,21 @@ export class QuerySpecParser {
     const features: string[] = [];
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('pagination')) features.push('pagination');
-    if (lowerDesc.includes('cache')) features.push('caching');
-    if (lowerDesc.includes('retry')) features.push('retry');
-    if (lowerDesc.includes('error')) features.push('error handling');
-    if (lowerDesc.includes('loading')) features.push('loading states');
+    if (lowerDesc.includes('pagination')) {
+      features.push('pagination');
+    }
+    if (lowerDesc.includes('cache')) {
+      features.push('caching');
+    }
+    if (lowerDesc.includes('retry')) {
+      features.push('retry');
+    }
+    if (lowerDesc.includes('error')) {
+      features.push('error handling');
+    }
+    if (lowerDesc.includes('loading')) {
+      features.push('loading states');
+    }
 
     return features;
   }

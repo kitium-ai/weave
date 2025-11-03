@@ -365,7 +365,7 @@ interface GeneratorTemplateProps {
   setInput: (value: string) => void;
   loading: boolean;
   error: Error | null;
-  output: any;
+  output: unknown;
   onGenerate: () => void;
   examples: Array<{ name: string; desc: string; multiple?: boolean }>;
   onExampleClick: (example: { name: string; desc: string; multiple?: boolean }) => void;

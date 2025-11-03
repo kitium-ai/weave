@@ -166,7 +166,9 @@ export class StreamHandler<T = string> {
     const uiPromises: Array<Promise<void>> = [];
 
     for (const observer of this.observers) {
-      if (!observer.onChunk) continue;
+      if (!observer.onChunk) {
+        continue;
+      }
       try {
         const result = observer.onChunk(chunk);
         if (result instanceof Promise) {
@@ -178,7 +180,9 @@ export class StreamHandler<T = string> {
         for (const obs of this.observers) {
           if (obs.onError) {
             const res = obs.onError({ id: this.id, error: error as Error, recoverable: true });
-            if (res instanceof Promise) promisesErr.push(res);
+            if (res instanceof Promise) {
+              promisesErr.push(res);
+            }
           }
         }
         try {

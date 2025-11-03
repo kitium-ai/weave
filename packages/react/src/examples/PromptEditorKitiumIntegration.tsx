@@ -13,6 +13,7 @@ import { KtButton, KtCard, KtInput, KtTabs, KtAlert, KtLayout, KtPanel } from '@
  * Shows PromptEditor wrapped in kitium-ui components
  */
 export function PromptEditorBasicIntegration() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { templates, currentTemplate, render, setTemplate } = usePromptTemplate({
     name: 'article-writer',
     editable: true,
@@ -165,6 +166,7 @@ export function PromptEditorAdvancedLayout() {
  */
 export function PromptEditorFormIntegration() {
   const [templateName, setTemplateName] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [templateText, setTemplateText] = useState('');
   const [variables, setVariables] = useState<Array<{ name: string; required: boolean }>>([]);
 
@@ -174,7 +176,9 @@ export function PromptEditorFormIntegration() {
   });
 
   const handleAddVariable = (varName: string) => {
-    if (!varName.trim()) return;
+    if (!varName.trim()) {
+      return;
+    }
     setVariables([...variables, { name: varName, required: false }]);
   };
 
@@ -274,6 +278,7 @@ export function PromptEditorTemplateLibrary() {
   ];
 
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { currentTemplate, setTemplate } = usePromptTemplate({
     name: selectedTemplate.name,
     editable: true,

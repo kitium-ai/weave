@@ -20,7 +20,9 @@ import { SimpleCache } from './cache-storage.js';
  * Simple cosine similarity implementation
  */
 function cosineSimilarity(vec1: number[], vec2: number[]): number {
-  if (vec1.length !== vec2.length) return 0;
+  if (vec1.length !== vec2.length) {
+    return 0;
+  }
 
   let dotProduct = 0;
   let mag1 = 0;
@@ -43,7 +45,9 @@ function stringSimilarity(str1: string, str2: string): number {
   const longer = str1.length > str2.length ? str1 : str2;
   const shorter = str1.length > str2.length ? str2 : str1;
 
-  if (longer.length === 0) return 1;
+  if (longer.length === 0) {
+    return 1;
+  }
 
   const editDistance = levenshteinDistance(longer, shorter);
   return (longer.length - editDistance) / longer.length;
@@ -69,7 +73,9 @@ function levenshteinDistance(s1: string, s2: string): number {
         lastValue = newValue;
       }
     }
-    if (i > 0) costs[s2.length] = lastValue;
+    if (i > 0) {
+      costs[s2.length] = lastValue;
+    }
   }
 
   return costs[s2.length];
@@ -115,7 +121,7 @@ export class CacheManager {
   /**
    * Query cache
    */
-  async query<T = any>(
+  async query<T = unknown>(
     prompt: string,
     options: CacheQueryOptions = { similarity: 0.85 }
   ): Promise<CacheQueryResult<T>> {
@@ -143,7 +149,7 @@ export class CacheManager {
   /**
    * Store in cache
    */
-  async store<T = any>(
+  async store<T = unknown>(
     prompt: string,
     data: T,
     metadata: {
@@ -152,7 +158,9 @@ export class CacheManager {
       tokenCount: { input: number; output: number };
     }
   ): Promise<void> {
-    if (!this.config.enabled) return;
+    if (!this.config.enabled) {
+      return;
+    }
 
     const key = await this.getKey(prompt);
     const entry: CacheEntry<T> = {
@@ -193,7 +201,7 @@ export class CacheManager {
   /**
    * Query with exact matching
    */
-  private async queryExact<T = any>(prompt: string): Promise<CacheQueryResult<T>> {
+  private async queryExact<T = unknown>(prompt: string): Promise<CacheQueryResult<T>> {
     const key = await this.getKey(prompt);
     const entry = await this.storage.get<T>(key);
 
@@ -215,7 +223,7 @@ export class CacheManager {
   /**
    * Query with semantic matching
    */
-  private async querySemantic<T = any>(
+  private async querySemantic<T = unknown>(
     prompt: string,
     similarity: number
   ): Promise<CacheQueryResult<T>> {
@@ -226,7 +234,9 @@ export class CacheManager {
 
     for (const key of keys) {
       const entry = await this.storage.get<T>(key);
-      if (!entry?.embedding) continue;
+      if (!entry?.embedding) {
+        continue;
+      }
 
       const sim = this.matcher.similarity(promptEmbedding, entry.embedding);
       if (sim >= similarity && (!bestMatch || sim > bestMatch.similarity)) {
@@ -255,7 +265,7 @@ export class CacheManager {
   /**
    * Query with fuzzy matching
    */
-  private async queryFuzzy<T = any>(
+  private async queryFuzzy<T = unknown>(
     prompt: string,
     similarity: number
   ): Promise<CacheQueryResult<T>> {
@@ -265,7 +275,9 @@ export class CacheManager {
 
     for (const key of keys) {
       const entry = await this.storage.get<T>(key);
-      if (!entry) continue;
+      if (!entry) {
+        continue;
+      }
 
       // Extract prompt from key if possible, otherwise use string comparison
       const sim = stringSimilarity(prompt, entry.metadata.key);
@@ -295,7 +307,7 @@ export class CacheManager {
   /**
    * Calculate cost savings
    */
-  private async calculateSavings(cached: any): Promise<CostSavings> {
+  private async calculateSavings(cached: CacheEntryMetadata): Promise<CostSavings> {
     if (this.config.estimatedSavings) {
       const fresh = {
         ...cached,

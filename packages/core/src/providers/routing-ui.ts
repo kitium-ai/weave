@@ -17,7 +17,7 @@ export interface ProviderRoutingEvent {
   to: string;
   reason?: string;
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**

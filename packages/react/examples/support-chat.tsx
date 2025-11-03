@@ -1,7 +1,9 @@
 import { WeaveProvider, useAIChat, AIChat } from '@weaveai/react';
 import { Weave } from '@weaveai/core';
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const weave = await Weave.createAsync({
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   provider: { type: 'openai', apiKey: process.env.OPENAI_API_KEY! },
 });
 

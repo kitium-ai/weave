@@ -331,11 +331,21 @@ ${spec.parameters
       return typeof defaultValue === 'string' ? `'${defaultValue}'` : String(defaultValue);
     }
 
-    if (type.includes('string')) return `''`;
-    if (type.includes('number')) return `0`;
-    if (type.includes('boolean')) return `false`;
-    if (type.includes('[]')) return `[]`;
-    if (type.includes('Record') || type.includes('object')) return `{}`;
+    if (type.includes('string')) {
+      return `''`;
+    }
+    if (type.includes('number')) {
+      return `0`;
+    }
+    if (type.includes('boolean')) {
+      return `false`;
+    }
+    if (type.includes('[]')) {
+      return `[]`;
+    }
+    if (type.includes('Record') || type.includes('object')) {
+      return `{}`;
+    }
     return `undefined`;
   }
 

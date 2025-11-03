@@ -28,7 +28,7 @@ export interface CacheEntryMetadata {
 /**
  * Cache entry
  */
-export interface CacheEntry<T = any> {
+export interface CacheEntry<T = unknown> {
   data: T;
   metadata: CacheEntryMetadata;
   embedding?: number[];
@@ -37,7 +37,7 @@ export interface CacheEntry<T = any> {
 /**
  * Cache hit result
  */
-export interface CacheHitResult<T = any> {
+export interface CacheHitResult<T = unknown> {
   hit: true;
   data: T;
   metadata: CacheEntryMetadata;
@@ -53,7 +53,7 @@ export interface CacheMissResult {
   metadata: null;
 }
 
-export type CacheQueryResult<T = any> = CacheHitResult<T> | CacheMissResult;
+export type CacheQueryResult<T = unknown> = CacheHitResult<T> | CacheMissResult;
 
 /**
  * Cost savings from cache hit
@@ -134,12 +134,12 @@ export interface ICacheStorage {
   /**
    * Get entry by key
    */
-  get<T = any>(key: string): Promise<CacheEntry<T> | null>;
+  get<T = unknown>(key: string): Promise<CacheEntry<T> | null>;
 
   /**
    * Set entry
    */
-  set<T = any>(key: string, entry: CacheEntry<T>): Promise<void>;
+  set<T = unknown>(key: string, entry: CacheEntry<T>): Promise<void>;
 
   /**
    * Check if key exists

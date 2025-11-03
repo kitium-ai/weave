@@ -38,7 +38,7 @@ function extractVariablesFromTemplate(template: string): string[] {
  */
 function renderTemplate(
   template: string,
-  variables: Record<string, any>,
+  variables: Record<string, unknown>,
   options: PromptRenderOptions = {}
 ): string {
   let rendered = template;
@@ -90,7 +90,7 @@ function validateTemplate(template: string): { valid: boolean; errors: string[] 
  * Validate variables against their definitions
  */
 function validateVariables(
-  variables: Record<string, any>,
+  variables: Record<string, unknown>,
   definitions: PromptVariable[]
 ): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
@@ -146,7 +146,7 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
     public: false,
   });
 
-  const [currentVariables, setCurrentVariables] = useState<Record<string, any>>({});
+  const [currentVariables, setCurrentVariables] = useState<Record<string, unknown>>({});
   const [variants, setVariants] = useState<PromptVariant[]>(options.variants || []);
   const [currentVariantId, setCurrentVariantId] = useState<string | null>(
     options.variants?.[0]?.id || null
@@ -214,7 +214,9 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
   // Track metrics
   const updateMetrics = useCallback(
     (success: boolean, duration: number, isError: boolean = false) => {
-      if (!options.trackMetrics || !metrics) return;
+      if (!options.trackMetrics || !metrics) {
+        return;
+      }
 
       const updated = {
         ...metrics,
@@ -255,14 +257,14 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
     [currentTemplate, options]
   );
 
-  const handleUpdateVariable = useCallback((name: string, value: any) => {
+  const handleUpdateVariable = useCallback((name: string, value: unknown) => {
     setCurrentVariables((prev) => ({
       ...prev,
       [name]: value,
     }));
   }, []);
 
-  const handleSetVariables = useCallback((variables: Record<string, any>) => {
+  const handleSetVariables = useCallback((variables: Record<string, unknown>) => {
     setCurrentVariables(variables);
   }, []);
 
@@ -272,7 +274,7 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
 
   // Rendering
   const handleRender = useCallback(
-    (variables?: Record<string, any>, options?: PromptRenderOptions): string => {
+    (variables?: Record<string, unknown>, options?: PromptRenderOptions): string => {
       const vars = variables || currentVariables;
       return renderTemplate(currentTemplate.template, vars, options);
     },
@@ -284,7 +286,7 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
   }, [currentTemplate.template]);
 
   const handleValidateVariables = useCallback(
-    (variables?: Record<string, any>) => {
+    (variables?: Record<string, unknown>) => {
       const vars = variables || currentVariables;
       return validateVariables(vars, currentTemplate.variables);
     },
@@ -292,7 +294,7 @@ export function usePromptTemplate(options: UsePromptTemplateOptions): UsePromptT
   );
 
   const handleTestRender = useCallback(
-    async (variables?: Record<string, any>): Promise<PromptTestResult> => {
+    async (variables?: Record<string, unknown>): Promise<PromptTestResult> => {
       setIsLoading(true);
       const startTime = performance.now();
 

@@ -14,6 +14,7 @@ export function ComponentGeneratorExample() {
   const [componentName, setComponentName] = useState('');
   const [description, setDescription] = useState('');
   const [generatedComponent, setGeneratedComponent] = useState<GeneratedComponent | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { component, loading, error, generate } = useComponentGenerator({
     onSuccess: (comp) => {
       console.log('Component generated:', comp.componentName);

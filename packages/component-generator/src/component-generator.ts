@@ -141,7 +141,7 @@ export class ComponentGenerator {
     }
 
     const metadata: GeneratedComponentMetadata = {
-      ...component.metadata!,
+      ...(component.metadata || {}),
       warnings: warnings.length > 0 ? warnings : undefined,
     };
 

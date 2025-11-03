@@ -108,6 +108,7 @@ export const CacheWithMetricsExample = () => {
     enabled: true,
     strategy: 'exact',
     ttl: 3600,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     estimatedSavings: (cached: any, fresh: any) => ({
       cost: fresh.cost - cached.cost,
       latency: fresh.latency - cached.latency,
@@ -115,6 +116,7 @@ export const CacheWithMetricsExample = () => {
     }),
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { queryCache, storeInCache, lastFeedback, stats, refreshStats } = useCache({
     cacheConfig,
     showNotification: true,
@@ -185,6 +187,7 @@ export const CacheStrategiesComparisonExample = () => {
     ttl: 3600,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { queryCache, storeInCache, lastFeedback, clearCache } = useCache({
     cacheConfig,
     showNotification: true,
@@ -254,6 +257,7 @@ export const CacheWithCostBreakdownExample = () => {
     enabled: true,
     strategy: 'semantic',
     ttl: 3600,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onCacheHit: async ({ savings }: any) => {
       setTotalSavings((prev) => ({
         cost: prev.cost + savings.cost,

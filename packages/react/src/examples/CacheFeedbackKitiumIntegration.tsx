@@ -12,8 +12,11 @@ import {
   KtLayout,
   KtAlert,
   KtPanel,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   KtToast,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   KtToastStack,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   KtBadge,
 } from '@kitium/ui';
 
@@ -288,6 +291,7 @@ export function CacheFeedbackDashboard() {
  * Shows cache status inline with other content
  */
 export function CacheFeedbackBadges() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { queryCache, storeInCache } = useCache();
 
   const queries = [

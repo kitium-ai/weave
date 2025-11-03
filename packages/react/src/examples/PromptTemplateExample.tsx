@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePromptTemplate, PromptEditor } from '@weaveai/react';
 
 export const BasicPromptTemplateExample = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { currentTemplate, render, testRender, setTemplate, updateVariable, getVariables } =
     usePromptTemplate({
       name: 'article-writer',
@@ -33,7 +34,7 @@ export const BasicPromptTemplateExample = () => {
       trackMetrics: true,
     });
 
-  const handleTest = async (variables: Record<string, any>) => {
+  const handleTest = async (variables: Record<string, unknown>) => {
     return testRender(variables);
   };
 
@@ -57,6 +58,7 @@ export const BasicPromptTemplateExample = () => {
 };
 
 export const PromptTemplateWithVariantsExample = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { currentTemplate, currentVariant, variants, setVariant, testRender, compareVariants } =
     usePromptTemplate({
       name: 'email-generator',
@@ -158,8 +160,10 @@ export const PromptTemplatePersistenceExample = () => {
   const {
     currentTemplate,
     setTemplate,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     testRender,
     save,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     load,
     export: exportTemplate,
     import: importTemplate,
@@ -284,6 +288,7 @@ export const PromptTemplatePersistenceExample = () => {
 };
 
 export const PromptTemplateValidationExample = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { currentTemplate, testRender, validateTemplate, validateVariables } = usePromptTemplate({
     name: 'form-generator',
     template: 'Generate a {{type}} form with {{fieldCount}} fields.',
@@ -292,7 +297,7 @@ export const PromptTemplateValidationExample = () => {
         name: 'type',
         type: 'string',
         required: true,
-        validation: (value) => {
+        validation: (value: unknown) => {
           const valid = ['contact', 'registration', 'survey'].includes(value);
           return valid || 'Must be: contact, registration, or survey';
         },

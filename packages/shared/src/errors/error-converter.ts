@@ -24,7 +24,7 @@ export function getErrorMessage(error: unknown): string {
     return error;
   }
   if (typeof error === 'object' && error !== null && 'message' in error) {
-    return String((error as any).message);
+    return String((error as Record<string, unknown>).message);
   }
   return String(error);
 }
@@ -37,7 +37,8 @@ export function getErrorStatus(error: unknown): number | undefined {
     return error.statusCode;
   }
   if (typeof error === 'object' && error !== null) {
-    const status = (error as any).status || (error as any).statusCode || (error as any).code;
+    const errorObj = error as Record<string, unknown>;
+    const status = errorObj.status || errorObj.statusCode || errorObj.code;
     if (typeof status === 'number') {
       return status;
     }
@@ -129,7 +130,8 @@ export function getRetryAfter(error: unknown): number | undefined {
     return error.retryAfter;
   }
   if (typeof error === 'object' && error !== null) {
-    const retryAfter = (error as any)['retry-after'] || (error as any).retryAfter;
+    const errorObj = error as Record<string, unknown>;
+    const retryAfter = errorObj['retry-after'] || errorObj.retryAfter;
     if (typeof retryAfter === 'number') {
       return retryAfter * 1000; // Convert to milliseconds if in seconds
     }

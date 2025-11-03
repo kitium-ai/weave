@@ -40,10 +40,10 @@ export interface UseCacheOptions {
  */
 export interface UseCacheReturn {
   // Query cache
-  queryCache: <T = any>(prompt: string) => Promise<T | null>;
+  queryCache: <T = unknown>(prompt: string) => Promise<T | null>;
 
   // Store in cache
-  storeInCache: <T = any>(
+  storeInCache: <T = unknown>(
     prompt: string,
     data: T,
     metadata: { cost: number; latency: number; tokenCount: { input: number; output: number } }
@@ -73,6 +73,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
   // Initialize cache manager if not provided
   useEffect(() => {
     if (!cacheManager.current && options.cacheConfig) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { CacheManager: CM } = require('@weaveai/core');
       cacheManager.current = new CM(options.cacheConfig);
     }
@@ -96,7 +97,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
 
   // Query cache
   const queryCache = useCallback(
-    async <T = any>(prompt: string): Promise<T | null> => {
+    async <T = unknown>(prompt: string): Promise<T | null> => {
       if (!cacheManager.current) {
         emitFeedback({
           type: 'miss',
@@ -140,12 +141,14 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
 
   // Store in cache
   const storeInCache = useCallback(
-    async <T = any>(
+    async <T = unknown>(
       prompt: string,
       data: T,
       metadata: { cost: number; latency: number; tokenCount: { input: number; output: number } }
     ): Promise<void> => {
-      if (!cacheManager.current) return;
+      if (!cacheManager.current) {
+        return;
+      }
 
       try {
         await cacheManager.current.store(prompt, data, metadata);
@@ -167,7 +170,9 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
 
   // Refresh stats
   const refreshStats = useCallback(async () => {
-    if (!cacheManager.current) return;
+    if (!cacheManager.current) {
+      return;
+    }
 
     try {
       const newStats = await cacheManager.current.getStats();
@@ -179,7 +184,9 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
 
   // Clear cache
   const clearCache = useCallback(async () => {
-    if (!cacheManager.current) return;
+    if (!cacheManager.current) {
+      return;
+    }
 
     try {
       await cacheManager.current.clear();

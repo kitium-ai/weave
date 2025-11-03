@@ -243,7 +243,7 @@ export function Example() {
     },
   });
 
-  const handleSubmit = async (formData: any) => {
+  const handleSubmit = async (formData: unknown) => {
     await mutation.mutateAsync(formData);
   };
 

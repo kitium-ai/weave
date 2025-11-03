@@ -274,7 +274,9 @@ export class DocumentStore {
       .split(/\s+/)
       .filter((w) => w.length > 0);
     const embedding = new Array(128).fill(0);
-    if (words.length === 0) return embedding;
+    if (words.length === 0) {
+      return embedding;
+    }
     for (const word of words) {
       for (let i = 0; i < word.length; i++) {
         const index = (word.charCodeAt(i) + i) % 128;

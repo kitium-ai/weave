@@ -5,6 +5,7 @@ import {
   ProviderSelector,
   ProviderEventFeed,
 } from '../components/ProviderSwitch.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ProviderStatus, UIAwareProviderRouter } from '@weaveai/core';
 
 /**

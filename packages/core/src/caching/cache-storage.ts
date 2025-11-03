@@ -16,7 +16,7 @@ export class CacheStorage implements ICacheStorage {
     private maxSize: number = 100 * 1024 * 1024 // 100MB default
   ) {}
 
-  async get<T = any>(key: string): Promise<CacheEntry<T> | null> {
+  async get<T = unknown>(key: string): Promise<CacheEntry<T> | null> {
     const metaInfo = this.metadata.get(key);
 
     // Check if expired
@@ -35,7 +35,7 @@ export class CacheStorage implements ICacheStorage {
     return entry || null;
   }
 
-  async set<T = any>(key: string, entry: CacheEntry<T>): Promise<void> {
+  async set<T = unknown>(key: string, entry: CacheEntry<T>): Promise<void> {
     const entrySize = this.estimateSize(entry);
 
     // Check max entries
@@ -176,10 +176,12 @@ export class SimpleCache implements ICacheStorage {
 
   constructor(private maxEntries: number = 1000) {}
 
-  async get<T = any>(key: string): Promise<CacheEntry<T> | null> {
+  async get<T = unknown>(key: string): Promise<CacheEntry<T> | null> {
     const item = this.storage.get(key);
 
-    if (!item) return null;
+    if (!item) {
+      return null;
+    }
 
     if (item.expiresAt < Date.now()) {
       this.storage.delete(key);
@@ -192,7 +194,7 @@ export class SimpleCache implements ICacheStorage {
     return item.entry as CacheEntry<T>;
   }
 
-  async set<T = any>(key: string, entry: CacheEntry<T>): Promise<void> {
+  async set<T = unknown>(key: string, entry: CacheEntry<T>): Promise<void> {
     if (this.storage.size >= this.maxEntries && !this.storage.has(key)) {
       const firstKey = this.storage.keys().next().value as string | undefined;
       if (firstKey) {
@@ -208,7 +210,9 @@ export class SimpleCache implements ICacheStorage {
 
   async has(key: string): Promise<boolean> {
     const item = this.storage.get(key);
-    if (!item) return false;
+    if (!item) {
+      return false;
+    }
 
     if (item.expiresAt < Date.now()) {
       this.storage.delete(key);

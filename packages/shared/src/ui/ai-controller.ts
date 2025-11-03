@@ -98,7 +98,7 @@ export interface AIControllerState<T = unknown> {
  */
 export interface AIControllerEventMap {
   'cost-updated': CostSummary;
-  'cache-hit': { key: string; result: any };
+  'cache-hit': { key: string; result: unknown };
   'cache-miss': { key: string };
   'operation-start': { operationId: string; timestamp: Date };
   'operation-end': { operationId: string; timestamp: Date; duration: number };
@@ -115,7 +115,7 @@ export type AIControllerListener<K extends keyof AIControllerEventMap> = (
  */
 export abstract class AIController {
   protected options: AIControllerOptions;
-  protected listeners: Map<string, Set<Function>> = new Map();
+  protected listeners: Map<string, Set<(...args: unknown[]) => void>> = new Map();
   protected costSummary: CostSummary | null = null;
 
   constructor(options: AIControllerOptions = {}) {
@@ -138,11 +138,11 @@ export abstract class AIController {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());
     }
-    this.listeners.get(event)!.add(listener);
+    this.listeners.get(event)?.add(listener as (...args: unknown[]) => void);
 
     // Return unsubscribe function
     return () => {
-      this.listeners.get(event)?.delete(listener);
+      this.listeners.get(event)?.delete(listener as (...args: unknown[]) => void);
     };
   }
 
@@ -157,7 +157,7 @@ export abstract class AIController {
     if (listeners) {
       listeners.forEach((listener) => {
         try {
-          (listener as Function)(data);
+          (listener as (...args: unknown[]) => void)(data);
         } catch (error) {
           console.error(`Error in ${event} listener:`, error);
         }

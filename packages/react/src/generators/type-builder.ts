@@ -187,12 +187,24 @@ const validated = ${specs[0]?.name}Schema.parse(${this.toLowerCamelCase(specs[0]
       return typeof defaultValue === 'string' ? `'${defaultValue}'` : String(defaultValue);
     }
 
-    if (type.includes('string')) return `'example'`;
-    if (type.includes('number')) return `0`;
-    if (type.includes('boolean')) return `true`;
-    if (type.includes('Date')) return `new Date()`;
-    if (type.includes('[]')) return `[]`;
-    if (type.includes('Record') || type.includes('object')) return `{}`;
+    if (type.includes('string')) {
+      return `'example'`;
+    }
+    if (type.includes('number')) {
+      return `0`;
+    }
+    if (type.includes('boolean')) {
+      return `true`;
+    }
+    if (type.includes('Date')) {
+      return `new Date()`;
+    }
+    if (type.includes('[]')) {
+      return `[]`;
+    }
+    if (type.includes('Record') || type.includes('object')) {
+      return `{}`;
+    }
     return `undefined`;
   }
 
@@ -202,13 +214,24 @@ const validated = ${specs[0]?.name}Schema.parse(${this.toLowerCamelCase(specs[0]
   private static toZodType(type: string): string {
     const cleanType = type.replace(/\?$/, '').trim();
 
-    if (cleanType.includes('string')) return 'z.string()';
-    if (cleanType.includes('number')) return 'z.number()';
-    if (cleanType.includes('boolean')) return 'z.boolean()';
-    if (cleanType.includes('Date')) return 'z.date()';
-    if (cleanType.includes('[]')) return `z.array(z.unknown())`;
-    if (cleanType.includes('Record') || cleanType.includes('object'))
+    if (cleanType.includes('string')) {
+      return 'z.string()';
+    }
+    if (cleanType.includes('number')) {
+      return 'z.number()';
+    }
+    if (cleanType.includes('boolean')) {
+      return 'z.boolean()';
+    }
+    if (cleanType.includes('Date')) {
+      return 'z.date()';
+    }
+    if (cleanType.includes('[]')) {
+      return `z.array(z.unknown())`;
+    }
+    if (cleanType.includes('Record') || cleanType.includes('object')) {
       return 'z.record(z.unknown())';
+    }
     return 'z.unknown()';
   }
 

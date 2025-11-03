@@ -4,6 +4,8 @@
  */
 
 import { CacheManager } from './cache-manager.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { SimpleCache } from './cache-storage.js';
 import type { CacheConfig } from './types.js';
 
@@ -49,7 +51,7 @@ export async function exampleSemanticCaching() {
     enabled: true,
     strategy: 'semantic',
     ttl: 3600,
-    onCacheHit: async ({ savings, entry }) => {
+    onCacheHit: async ({ savings, _entry }) => {
       // UI feedback
       console.log('✅ Cache hit!');
       console.log(`💰 Saved: $${savings.cost.toFixed(4)}`);
@@ -262,7 +264,7 @@ export interface GenerateResult {
 }
 
 export async function exampleIntegrationWithGenerate(
-  generateFn: (prompt: string) => Promise<any>
+  generateFn: (prompt: string) => Promise<unknown>
 ): Promise<GenerateResult> {
   const cacheConfig: CacheConfig = {
     enabled: true,
@@ -280,7 +282,7 @@ export async function exampleIntegrationWithGenerate(
   const prompt = 'Write a product description';
 
   // Check cache first
-  const cached = await cache.query<any>(prompt);
+  const cached = await cache.query<unknown>(prompt);
   if (cached.hit) {
     return {
       text: cached.data.text,

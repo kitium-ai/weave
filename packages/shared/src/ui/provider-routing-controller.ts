@@ -133,7 +133,7 @@ export class ProviderRoutingController {
   }
 
   private attachRouterCallbacks(): void {
-    const routerAny = this.router as any;
+    const routerAny = this.router as Record<string, unknown>;
     const existingUi = (routerAny.ui ?? {}) as {
       onProviderChange?: (from: string, to: string, reason?: string) => unknown;
       onRoutingEvent?: (event: ProviderRoutingEvent) => unknown;
@@ -144,6 +144,7 @@ export class ProviderRoutingController {
     const wrapRoutingEvent = existingUi.onRoutingEvent?.bind(this.router);
     const wrapStatusChange = existingUi.onStatusChange?.bind(this.router);
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const controller = this;
 
     const patchedUi = {

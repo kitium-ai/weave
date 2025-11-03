@@ -44,7 +44,7 @@ export class BatchProcessor {
   private activeJobs: number = 0;
   private maxConcurrent: number = 3;
   private rateLimiter: RateLimiter;
-  private currentProcessor: ((item: any, retries: number) => Promise<any>) | null = null;
+  private currentProcessor: ((item: unknown, retries: number) => Promise<unknown>) | null = null;
   private cleanupInterval: NodeJS.Timeout | null = null;
   private maxJobHistory: number;
   private jobTTL: number;

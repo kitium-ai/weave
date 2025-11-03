@@ -10,7 +10,7 @@ export interface PromptVariable {
   required?: boolean;
   default?: string | number | boolean;
   placeholder?: string;
-  validation?: (value: any) => boolean | string;
+  validation?: (value: unknown) => boolean | string;
 }
 
 export interface PromptVariant {
@@ -53,7 +53,7 @@ export interface PromptTemplate {
 export interface PromptTestResult {
   success: boolean;
   renderedPrompt: string;
-  variables: Record<string, any>;
+  variables: Record<string, unknown>;
   duration: number;
   error?: string;
 }
@@ -92,9 +92,9 @@ export interface UsePromptTemplateReturn {
 
   // Template Management
   setTemplate: (template: string | PromptTemplate) => void;
-  updateVariable: (name: string, value: any) => void;
-  setVariables: (variables: Record<string, any>) => void;
-  getVariables: () => Record<string, any>;
+  updateVariable: (name: string, value: unknown) => void;
+  setVariables: (variables: Record<string, unknown>) => void;
+  getVariables: () => Record<string, unknown>;
   clearVariables: () => void;
 
   // Variant Management
@@ -104,10 +104,10 @@ export interface UsePromptTemplateReturn {
   updateVariant: (variantId: string, updates: Partial<PromptVariant>) => void;
 
   // Rendering
-  render: (variables?: Record<string, any>, options?: PromptRenderOptions) => string;
-  testRender: (variables?: Record<string, any>) => Promise<PromptTestResult>;
+  render: (variables?: Record<string, unknown>, options?: PromptRenderOptions) => string;
+  testRender: (variables?: Record<string, unknown>) => Promise<PromptTestResult>;
   validateTemplate: () => { valid: boolean; errors: string[] };
-  validateVariables: (variables?: Record<string, any>) => { valid: boolean; errors: string[] };
+  validateVariables: (variables?: Record<string, unknown>) => { valid: boolean; errors: string[] };
 
   // A/B Testing
   getVariantMetrics: (variantId: string) => PromptMetrics | null;
@@ -134,9 +134,9 @@ export interface PromptMetricsComparison {
 
 export interface PromptEditorProps {
   template: PromptTemplate | string;
-  variables?: PromptVariable[] | Record<string, any>;
+  variables?: PromptVariable[] | Record<string, unknown>;
   onChange?: (template: string) => void;
-  onTest?: (variables: Record<string, any>) => Promise<PromptTestResult>;
+  onTest?: (variables: Record<string, unknown>) => Promise<PromptTestResult>;
   onSave?: (template: string) => void;
   editable?: boolean;
   showVariables?: boolean;
@@ -145,14 +145,14 @@ export interface PromptEditorProps {
   variants?: PromptVariant[];
   onVariantChange?: (variantId: string) => void;
   className?: string;
-  testData?: Record<string, any>;
+  testData?: Record<string, unknown>;
 }
 
 export interface PromptHistoryEntry {
   id: string;
   template: string;
   timestamp: Date;
-  variables?: Record<string, any>;
+  variables?: Record<string, unknown>;
   result?: string;
   metrics?: {
     quality?: number;
@@ -162,7 +162,7 @@ export interface PromptHistoryEntry {
 
 export interface PromptVariableValue {
   name: string;
-  value: any;
+  value: unknown;
   validated: boolean;
   error?: string;
 }

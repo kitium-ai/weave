@@ -265,38 +265,38 @@ describe('Agent Framework', () => {
   });
 });
 
-describe(''Weave agent factory'', () => {
-  it(''should create an agent with built-in tools'', () => {
-    const weave = new Weave({ provider: { type: ''mock'' } as any });
-    const agent = weave.createAgent({ tools: [''generate'', ''classify''], goal: ''Classify data'' });
+describe('Weave agent factory', () => {
+  it('should create an agent with built-in tools', () => {
+    const weave = new Weave({ provider: { type: 'mock' } as any });
+    const agent = weave.createAgent({ tools: ['generate', 'classify'], goal: 'Classify data' });
 
     const toolNames = agent.getTools().map((tool) => tool.name);
-    expect(toolNames).toContain(''generate'');
-    expect(toolNames).toContain(''classify'');
+    expect(toolNames).toContain('generate');
+    expect(toolNames).toContain('classify');
   });
 
-  it(''should keep custom ui-aware tools'', async () => {
-    const weave = new Weave({ provider: { type: ''mock'' } as any });
+  it('should keep custom ui-aware tools', async () => {
+    const weave = new Weave({ provider: { type: 'mock' } as any });
     const displayTool: AgentTool = {
-      name: ''display-result'',
-      description: ''Display data in UI'',
+      name: 'display-result',
+      description: 'Display data in UI',
       uiContext: {
-        displayElement: ''#analysis-panel'',
-        displayAs: ''markdown'',
+        displayElement: '#analysis-panel',
+        displayAs: 'markdown',
       },
       execute: vi.fn().mockResolvedValue({ success: true, displayed: true }),
     };
 
     const agent = weave.createAgent({
-      tools: [''generate'', displayTool],
-      goal: ''Show answer'',
+      tools: ['generate', displayTool],
+      goal: 'Show answer',
       thinking: {
         updateUI: true,
         onStep: vi.fn(),
       },
     });
 
-    const uiTool = agent.getTools().find((tool) => tool.name === ''display-result'');
-    expect(uiTool?.uiContext?.displayElement).toBe(''#analysis-panel'');
+    const uiTool = agent.getTools().find((tool) => tool.name === 'display-result');
+    expect(uiTool?.uiContext?.displayElement).toBe('#analysis-panel');
   });
 });

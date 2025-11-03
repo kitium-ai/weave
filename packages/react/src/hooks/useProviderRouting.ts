@@ -147,7 +147,7 @@ export function useProviderRouting(options: UseProviderRoutingOptions): UseProvi
 
   // Expose event emitter for router callbacks
   useEffect(() => {
-    (routerRef.current as any).__emitRoutingEvent = emitRoutingEvent;
+    (routerRef.current as Record<string, unknown>).__emitRoutingEvent = emitRoutingEvent;
   }, [emitRoutingEvent]);
 
   const clearEvents = useCallback(() => {

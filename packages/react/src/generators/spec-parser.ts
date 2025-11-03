@@ -147,12 +147,18 @@ export class SpecParser extends BaseSpecParser {
   ): 'tailwind' | 'styled-components' | 'css-modules' | 'inline' {
     const lowerDesc = description.toLowerCase();
 
-    if (lowerDesc.includes('tailwind')) return 'tailwind';
-    if (lowerDesc.includes('styled-components') || lowerDesc.includes('styled'))
+    if (lowerDesc.includes('tailwind')) {
+      return 'tailwind';
+    }
+    if (lowerDesc.includes('styled-components') || lowerDesc.includes('styled')) {
       return 'styled-components';
-    if (lowerDesc.includes('css modules') || lowerDesc.includes('css-modules'))
+    }
+    if (lowerDesc.includes('css modules') || lowerDesc.includes('css-modules')) {
       return 'css-modules';
-    if (lowerDesc.includes('inline styles') || lowerDesc.includes('inline')) return 'inline';
+    }
+    if (lowerDesc.includes('inline styles') || lowerDesc.includes('inline')) {
+      return 'inline';
+    }
 
     // Default to tailwind (most common)
     return 'tailwind';
