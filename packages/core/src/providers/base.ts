@@ -6,9 +6,9 @@ import { getLogger } from '@weaveai/shared';
 import type { ILanguageModel } from './interfaces.js';
 import type {
   GenerateOptions,
-  GenerateResult,
+  GenerateData,
   ClassifyOptions,
-  ClassificationResult,
+  ClassificationData,
   ExtractOptions,
   ChatMessage,
   ChatOptions,
@@ -27,7 +27,7 @@ export abstract class BaseLanguageModel implements ILanguageModel {
 
   public abstract getProviderInfo(): { provider: string; model: string };
 
-  public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
+  public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateData> {
     throw new OperationNotSupportedError('generate', this.constructor.name, {
       prompt,
       options,
@@ -38,7 +38,7 @@ export abstract class BaseLanguageModel implements ILanguageModel {
     text: string,
     labels: string[],
     options?: ClassifyOptions
-  ): Promise<ClassificationResult> {
+  ): Promise<ClassificationData> {
     throw new OperationNotSupportedError('classify', this.constructor.name, {
       text,
       labels,

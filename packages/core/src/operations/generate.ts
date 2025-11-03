@@ -4,7 +4,13 @@
 
 import { validateNonEmptyString } from '@weaveai/shared';
 import { BaseOperation } from './base.js';
-import type { GenerateOptions, GenerateResult } from '../types/index.js';
+import type {
+  GenerateOptions,
+  GenerateResult,
+  GenerateData,
+  WeaveOperationError,
+  WeaveEstimatedSize,
+} from '../types/index.js';
 import { StreamHandler, normalizeStreamingConfig } from '../streaming/index.js';
 
 /**
@@ -70,9 +76,9 @@ export class GenerateOperation extends BaseOperation {
         options: modelOptions,
       });
 
-      const result = await this.model.generate(prompt, modelOptions);
+      const data = await this.model.generate(prompt, modelOptions);
 
-      this.markSuccess(metadata, result.tokenCount);
+      this.markSuccess(metadata, data.tokenCount);
 
       this.logger.info('Generate operation completed', {
         operationId,
@@ -88,7 +94,7 @@ export class GenerateOperation extends BaseOperation {
         }
 
         const state = streamHandler.getState();
-        result.stream = {
+        data.stream = {
           id: state.id,
           handler: streamHandler,
           totalChunks: state.totalChunks,
@@ -96,7 +102,14 @@ export class GenerateOperation extends BaseOperation {
         };
       }
 
-      return result;
+      const estimatedSize = this.estimateSize(data.text.length);
+      const uiMetadata = {
+        displayAs: 'text' as const,
+        canStream: normalizedStreaming.enabled,
+        estimatedSize,
+      };
+
+      return this.buildResult(metadata, data, uiMetadata);
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.markError(metadata, err);
@@ -117,7 +130,35 @@ export class GenerateOperation extends BaseOperation {
         }
       }
 
-      throw err;
+      const fallbackData: GenerateData = {
+        text: '',
+        tokenCount: { input: 0, output: 0 },
+        finishReason: 'error',
+      };
+
+      const errorDetails: WeaveOperationError = {
+        code: err.name ?? 'GENERATE_ERROR',
+        message: err.message,
+        recoverable: false,
+      };
+
+      const uiMetadata = {
+        displayAs: 'text' as const,
+        canStream: normalizedStreaming.enabled,
+        estimatedSize: 'small' as WeaveEstimatedSize,
+      };
+
+      return this.buildResult(metadata, fallbackData, uiMetadata, errorDetails);
     }
+  }
+
+  private estimateSize(length: number): WeaveEstimatedSize {
+    if (length <= 280) {
+      return 'small';
+    }
+    if (length <= 2000) {
+      return 'medium';
+    }
+    return 'large';
   }
 }

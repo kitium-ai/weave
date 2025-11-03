@@ -13,6 +13,7 @@ import type {
   ClassifyOptions,
   ClassificationResult,
   ExtractOptions,
+  ExtractResult,
 } from './types';
 import { ProviderConfigError } from './errors';
 
@@ -66,8 +67,12 @@ export class Weave {
   /**
    * Extract structured data from text
    */
-  public async extract(text: string, schema: unknown, options?: ExtractOptions): Promise<unknown> {
-    return this.extractOp.execute(text, schema, options);
+  public async extract<T = unknown>(
+    text: string,
+    schema: unknown,
+    options?: ExtractOptions
+  ): Promise<ExtractResult<T>> {
+    return this.extractOp.execute<T>(text, schema, options);
   }
 
   /**

@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import type { GenerateOptions } from '@weaveai/core';
+import type { GenerateOptions, GenerateResult, WeaveOperationError } from '@weaveai/core';
 import { useWeaveContext } from '../context';
 
 /**
@@ -24,7 +24,8 @@ export interface UseAIStreamReturn {
   fullText: string;
   loading: boolean;
   error: Error | null;
-  streamGenerate: (prompt: string, options?: GenerateOptions) => Promise<string | null>;
+  lastResult: GenerateResult | null;
+  streamGenerate: (prompt: string, options?: GenerateOptions) => Promise<GenerateResult | null>;
   clear: () => void;
 }
 
@@ -37,15 +38,17 @@ export function useAIStream(options?: UseAIStreamOptions): UseAIStreamReturn {
   const [fullText, setFullText] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [lastResult, setLastResult] = useState<GenerateResult | null>(null);
 
   const clear = useCallback(() => {
     setChunks([]);
     setFullText('');
     setError(null);
+    setLastResult(null);
   }, []);
 
   const streamGenerate = useCallback(
-    async (prompt: string, generateOptions?: GenerateOptions): Promise<string | null> => {
+    async (prompt: string, generateOptions?: GenerateOptions): Promise<GenerateResult | null> => {
       if (!weave) {
         const err = new Error('Weave instance not available');
         setError(err);
@@ -71,8 +74,25 @@ export function useAIStream(options?: UseAIStreamOptions): UseAIStreamReturn {
         };
 
         const result = await weave.generate(prompt, streamingOptions);
+        setLastResult(result);
+
+        if (result.status === 'error') {
+          const errorDetails: WeaveOperationError | undefined = result.error;
+          const opError = new Error(errorDetails?.message ?? 'Streaming generate failed');
+          setError(opError);
+          options?.onError?.(opError);
+          return result;
+        }
+
+        setFullText((prev) => {
+          if (prev.length > 0) {
+            return prev;
+          }
+          return result.data.text ?? prev;
+        });
+
         options?.onComplete?.();
-        return result.text;
+        return result;
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
         setError(error);
@@ -90,6 +110,7 @@ export function useAIStream(options?: UseAIStreamOptions): UseAIStreamReturn {
     fullText,
     loading,
     error,
+    lastResult,
     streamGenerate,
     clear,
   };

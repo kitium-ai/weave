@@ -4,7 +4,12 @@
 
 import { validateNonEmptyString, validateNonEmptyArray } from '@weaveai/shared';
 import { BaseOperation } from './base.js';
-import type { ClassifyOptions, ClassificationResult } from '../types/index.js';
+import type {
+  ClassifyOptions,
+  ClassificationResult,
+  ClassificationData,
+  WeaveOperationError,
+} from '../types/index.js';
 
 /**
  * Classify text into categories
@@ -30,17 +35,21 @@ export class ClassifyOperation extends BaseOperation {
         options,
       });
 
-      const result = await this.model.classify(text, labels, options);
+      const data = await this.model.classify(text, labels, options);
 
       this.markSuccess(metadata);
 
       this.logger.info('Classify operation completed', {
         operationId,
         duration: metadata.duration,
-        result: result.label,
+        result: data.label,
       });
 
-      return result;
+      return this.buildResult(metadata, data, {
+        displayAs: 'json',
+        canStream: false,
+        estimatedSize: 'small',
+      });
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.markError(metadata, err);
@@ -50,7 +59,23 @@ export class ClassifyOperation extends BaseOperation {
         duration: metadata.duration,
       });
 
-      throw err;
+      const fallbackData: ClassificationData = {
+        label: '',
+        confidence: 0,
+        scores: {},
+      };
+
+      const errorDetails: WeaveOperationError = {
+        code: err.name ?? 'CLASSIFY_ERROR',
+        message: err.message,
+        recoverable: false,
+      };
+
+      return this.buildResult(metadata, fallbackData, {
+        displayAs: 'json',
+        canStream: false,
+        estimatedSize: 'small',
+      }, errorDetails);
     }
   }
 }

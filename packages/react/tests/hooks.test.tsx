@@ -14,22 +14,67 @@ import {
   useAIStream,
 } from '../src/hooks/index.js';
 import { WeaveProvider } from '../src/context/WeaveContext.js';
-import type { Weave } from '@weaveai/core';
+import type {
+  Weave,
+  GenerateResult,
+  ClassificationResult,
+  ExtractResult,
+  WeaveOperationMetadata,
+} from '@weaveai/core';
 
 // Mock Weave instance
+const createMockMetadata = (overrides?: Partial<WeaveOperationMetadata>): WeaveOperationMetadata => ({
+  operationId: 'op-123',
+  duration: 25,
+  timestamp: new Date('2025-01-01T00:00:00Z'),
+  provider: 'mock',
+  model: 'mock-model',
+  ui: {
+    displayAs: 'text',
+    canStream: false,
+    estimatedSize: 'small',
+  },
+  cached: false,
+  ...overrides,
+});
+
 const createMockWeave = (): Weave => {
-  return {
-    generate: vi.fn().mockResolvedValue({
+  const generateResult: GenerateResult = {
+    status: 'success',
+    data: {
       text: 'Generated text',
       tokenCount: { input: 10, output: 20 },
       finishReason: 'stop',
+    },
+    metadata: createMockMetadata({
+      tokens: { input: 10, output: 20 },
     }),
-    classify: vi.fn().mockResolvedValue({
+  };
+
+  const classifyResult: ClassificationResult = {
+    status: 'success',
+    data: {
       label: 'positive',
       confidence: 0.95,
       scores: { positive: 0.95, negative: 0.05 },
+    },
+    metadata: createMockMetadata({
+      ui: { displayAs: 'json', canStream: false, estimatedSize: 'small' },
     }),
-    extract: vi.fn().mockResolvedValue({ name: 'John', age: 30 }),
+  };
+
+  const extractResult: ExtractResult<{ name: string; age: number }> = {
+    status: 'success',
+    data: { name: 'John', age: 30 },
+    metadata: createMockMetadata({
+      ui: { displayAs: 'json', canStream: false, estimatedSize: 'medium' },
+    }),
+  };
+
+  return {
+    generate: vi.fn().mockResolvedValue(generateResult),
+    classify: vi.fn().mockResolvedValue(classifyResult),
+    extract: vi.fn().mockResolvedValue(extractResult),
     getModel: vi.fn().mockReturnValue({
       chat: vi.fn().mockResolvedValue('Chat response'),
     }),
@@ -117,11 +162,12 @@ describe('Weave React Hooks', () => {
 
       await act(async () => {
         const response = await result.current.generate('Test prompt');
-        expect(response).toBe('Generated text');
+        expect(response?.data.text).toBe('Generated text');
+        expect(response?.status).toBe('success');
       });
 
-      expect(result.current.data).toBe('Generated text');
-      expect(result.current.status).toBe('success');
+      expect(result.current.data?.data.text).toBe('Generated text');
+      expect(result.current.data?.status).toBe('success');
     });
   });
 
@@ -165,10 +211,11 @@ describe('Weave React Hooks', () => {
           name: 'string',
           age: 'number',
         });
-        expect(response).toBeTruthy();
+        expect(response?.data).toEqual({ name: 'John', age: 30 });
+        expect(response?.status).toBe('success');
       });
 
-      expect(result.current.data).toBeTruthy();
+      expect(result.current.data?.data).toEqual({ name: 'John', age: 30 });
       expect(result.current.status).toBe('success');
     });
   });
@@ -256,6 +303,7 @@ describe('Weave React Hooks', () => {
       expect(result.current.fullText).toBe('');
       expect(result.current.loading).toBe(false);
       expect(result.current.error).toBeNull();
+      expect(result.current.lastResult).toBeNull();
     });
 
     it('should execute stream generate', async () => {
@@ -267,7 +315,9 @@ describe('Weave React Hooks', () => {
       });
 
       // Response should be returned
-      expect(response).toBe('Generated text');
+      expect(response?.data.text).toBe('Generated text');
+      expect(result.current.lastResult?.data.text).toBe('Generated text');
+      expect(result.current.fullText).toBe('Generated text');
       expect(result.current.loading).toBe(false);
     });
 
@@ -281,6 +331,7 @@ describe('Weave React Hooks', () => {
       expect(result.current.chunks).toEqual([]);
       expect(result.current.fullText).toBe('');
       expect(result.current.error).toBeNull();
+      expect(result.current.lastResult).toBeNull();
     });
 
     it('should call callbacks', async () => {

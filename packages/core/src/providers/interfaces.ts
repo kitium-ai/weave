@@ -4,9 +4,9 @@
 
 import type {
   GenerateOptions,
-  GenerateResult,
+  GenerateData,
   ClassifyOptions,
-  ClassificationResult,
+  ClassificationData,
   ExtractOptions,
   ChatMessage,
   ChatOptions,
@@ -19,7 +19,7 @@ export interface ILanguageModel {
   /**
    * Generate text from a prompt
    */
-  generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult>;
+  generate(prompt: string, options?: GenerateOptions): Promise<GenerateData>;
 
   /**
    * Classify text into categories
@@ -28,7 +28,7 @@ export interface ILanguageModel {
     text: string,
     labels: string[],
     options?: ClassifyOptions
-  ): Promise<ClassificationResult>;
+  ): Promise<ClassificationData>;
 
   /**
    * Extract structured data from text

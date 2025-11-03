@@ -36,7 +36,7 @@ export interface GenerateOptions extends BaseOperationOptions {
 /**
  * Generate result
  */
-export interface GenerateResult {
+export interface GenerateData {
   text: string;
   tokenCount: {
     input: number;
@@ -45,6 +45,8 @@ export interface GenerateResult {
   finishReason: 'stop' | 'length' | 'error';
   stream?: StreamResult<string>;
 }
+
+export type GenerateResult = WeaveOperationResult<GenerateData>;
 
 /**
  * Classification options
@@ -56,11 +58,13 @@ export interface ClassifyOptions extends BaseOperationOptions {
 /**
  * Classification result
  */
-export interface ClassificationResult {
+export interface ClassificationData {
   label: string;
   confidence: number;
   scores?: Record<string, number>;
 }
+
+export type ClassificationResult = WeaveOperationResult<ClassificationData>;
 
 /**
  * Extraction options
@@ -69,6 +73,8 @@ export interface ExtractOptions extends BaseOperationOptions {
   schema: Record<string, string> | { type: string; properties: Record<string, unknown> };
   strict?: boolean;
 }
+
+export type ExtractResult<T = unknown> = WeaveOperationResult<T>;
 
 /**
  * Summary options
@@ -178,6 +184,10 @@ export interface OperationMetadata {
   error?: Error;
   tokenCount?: TokenCountResult;
   cost?: CostEstimate;
+  provider?: string;
+  model?: string;
+  cached?: boolean;
+  cacheKey?: string;
 }
 
 /**
@@ -201,4 +211,52 @@ export interface ToolResult {
   success: boolean;
   result?: unknown;
   error?: string;
+}
+
+export type WeaveDisplayType = 'text' | 'markdown' | 'json' | 'html' | 'component';
+export type WeaveEstimatedSize = 'small' | 'medium' | 'large';
+
+export interface WeaveOperationUiMetadata {
+  displayAs: WeaveDisplayType;
+  canStream: boolean;
+  estimatedSize: WeaveEstimatedSize;
+}
+
+export interface WeaveOperationCostMetadata {
+  input: number;
+  output: number;
+  total: number;
+  currency: string;
+}
+
+export interface WeaveOperationTokenMetadata {
+  input: number;
+  output: number;
+}
+
+export interface WeaveOperationMetadata {
+  operationId: string;
+  duration: number;
+  timestamp: Date;
+  provider: string;
+  model: string;
+  ui: WeaveOperationUiMetadata;
+  cost?: WeaveOperationCostMetadata;
+  tokens?: WeaveOperationTokenMetadata;
+  cached: boolean;
+  cacheKey?: string;
+}
+
+export interface WeaveOperationError {
+  code: string;
+  message: string;
+  recoverable: boolean;
+  suggestion?: string;
+}
+
+export interface WeaveOperationResult<T = unknown> {
+  status: 'success' | 'error' | 'pending';
+  data: T;
+  metadata: WeaveOperationMetadata;
+  error?: WeaveOperationError;
 }

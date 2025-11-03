@@ -6,9 +6,9 @@
 import { BaseLanguageModel } from './base.js';
 import type {
   GenerateOptions,
-  GenerateResult,
+  GenerateData,
   ClassifyOptions,
-  ClassificationResult,
+  ClassificationData,
   ExtractOptions,
   ChatMessage,
   ChatOptions,
@@ -71,7 +71,7 @@ export class GoogleProvider extends BaseLanguageModel {
   /**
    * Generate text from a prompt using Google API
    */
-  public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
+  public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateData> {
     this.logger.debug('Google generate', { prompt, options });
     const messages: GoogleContent[] = [
       {
@@ -111,7 +111,7 @@ export class GoogleProvider extends BaseLanguageModel {
     text: string,
     labels: string[],
     options?: ClassifyOptions
-  ): Promise<ClassificationResult> {
+  ): Promise<ClassificationData> {
     this.logger.debug('Google classify', { text, labels });
 
     const prompt = `Classify the following text into one of these categories: ${labels.join(', ')}\n\nText: "${text}"\n\nRespond with only the category name.`;

@@ -6,9 +6,9 @@
 import { BaseLanguageModel } from './base.js';
 import type {
   GenerateOptions,
-  GenerateResult,
+  GenerateData,
   ClassifyOptions,
-  ClassificationResult,
+  ClassificationData,
   ExtractOptions,
   ChatMessage,
   ChatOptions,
@@ -75,7 +75,7 @@ export class OpenAIProvider extends BaseLanguageModel {
   /**
    * Generate text from a prompt using OpenAI API
    */
-  public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
+  public async generate(prompt: string, options?: GenerateOptions): Promise<GenerateData> {
     this.logger.debug('OpenAI generate', { prompt, options });
     const messages: OpenAIMessage[] = [{ role: 'user', content: prompt }];
 
@@ -93,7 +93,7 @@ export class OpenAIProvider extends BaseLanguageModel {
     const response = await this.callOpenAI(messages, options);
 
     const text = response.choices[0]?.message?.content ?? response.choices[0]?.text ?? '';
-    return {
+    const responseData: GenerateData = {
       text,
       tokenCount: {
         input: response.usage.prompt_tokens,
@@ -101,6 +101,7 @@ export class OpenAIProvider extends BaseLanguageModel {
       },
       finishReason: (response.choices[0]?.finish_reason as 'stop' | 'length' | 'error') ?? 'stop',
     };
+    return responseData;
   }
 
   /**
@@ -110,7 +111,7 @@ export class OpenAIProvider extends BaseLanguageModel {
     text: string,
     labels: string[],
     options?: ClassifyOptions
-  ): Promise<ClassificationResult> {
+  ): Promise<ClassificationData> {
     this.logger.debug('OpenAI classify', { text, labels });
 
     const prompt = `Classify the following text into one of these categories: ${labels.join(', ')}\n\nText: "${text}"\n\nRespond with only the category name.`;

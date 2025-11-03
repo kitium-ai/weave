@@ -1,5 +1,5 @@
 import { getLogger, validateDefined, validateNonEmptyString, validateObject } from '@weaveai/shared';
-import type { GenerateOptions, GenerateResult } from '@weaveai/core';
+import type { GenerateOptions, GenerateData } from '@weaveai/core';
 import {
   ComponentGenerationError,
   ComponentGenerationOptions,
@@ -110,7 +110,7 @@ export class ComponentGenerator {
     };
     modelOptions.onChunk = undefined;
 
-    let result: GenerateResult;
+    let result: GenerateData;
     try {
       this.logger.debug('Component generation request', {
         framework: this.config.framework,
@@ -283,7 +283,7 @@ export class ComponentGenerator {
     framework: SupportedFramework,
     styledWith: SupportedStyling | undefined,
     language: OutputLanguage,
-    tokens?: GenerateResult['tokenCount']
+    tokens?: GenerateData['tokenCount']
   ): { component: GeneratedComponent; warnings: string[] } {
     const warnings: string[] = [];
     const trimmed = raw.trim();
@@ -331,7 +331,7 @@ export class ComponentGenerator {
     raw: string,
     prompt: string,
     warnings: string[],
-    tokens: GenerateResult['tokenCount'] | undefined,
+    tokens: GenerateData['tokenCount'] | undefined,
     imports: string[]
   ): GeneratedComponentMetadata {
     const metadata: GeneratedComponentMetadata = {

@@ -3,19 +3,13 @@
  * Generates React component code from specifications
  */
 
-import { BaseCodeBuilder, CodeFormatter, type GeneratorOutput, type CodeGenerationOptions } from '@weaveai/shared';
-import type { ComponentSpec, ComponentProp } from './types.js';
+import { BaseCodeBuilder, type GeneratorOutput, type CodeGenerationOptions } from '@weaveai/shared';
+import type { ComponentSpec } from './types.js';
 
 /**
  * ComponentBuilder - Generates React component code from specifications
  */
 export class ComponentBuilder extends BaseCodeBuilder<ComponentSpec> {
-  private formatter: CodeFormatter;
-
-  constructor(formatter?: CodeFormatter) {
-    super();
-    this.formatter = formatter || new CodeFormatter();
-  }
 
   /**
    * Build a complete generated component from specification
@@ -152,14 +146,13 @@ ${exampleProps}
     const firstProp = spec.props[0];
     const propTests = spec.props
       .slice(0, 2)
-      .map((prop) => {
-        const defaultVal = prop.defaultValue || 'test';
-        return `
+      .map(
+        (prop) => `
   it('should handle ${prop.name} prop', () => {
     // Add specific assertions for ${prop.name}
     expect(true).toBe(true);
-  });`;
-      })
+  });`
+      )
       .join('');
 
     return `/**

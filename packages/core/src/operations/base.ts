@@ -4,7 +4,13 @@
 
 import { getLogger, generateOperationId } from '@weaveai/shared';
 import type { ILanguageModel } from '../providers/interfaces.js';
-import type { OperationMetadata } from '../types/index.js';
+import type {
+  OperationMetadata,
+  WeaveOperationMetadata,
+  WeaveOperationResult,
+  WeaveOperationError,
+  WeaveOperationUiMetadata,
+} from '../types/index.js';
 import { advancedCostTracker } from '../advanced/index.js';
 
 /**
@@ -27,11 +33,15 @@ export abstract class BaseOperation {
    * Create operation metadata
    */
   protected createMetadata(operationName: string, operationId: string): OperationMetadata {
+    const providerInfo = this.model.getProviderInfo();
     return {
       id: operationId,
       operationName,
       startTime: new Date(),
       status: 'pending',
+      provider: providerInfo.provider,
+      model: providerInfo.model,
+      cached: false,
     };
   }
 
@@ -45,6 +55,7 @@ export abstract class BaseOperation {
     metadata.endTime = new Date();
     metadata.duration = metadata.endTime.getTime() - metadata.startTime.getTime();
     metadata.status = 'success';
+
     if (tokenCount) {
       metadata.tokenCount = {
         ...tokenCount,
@@ -91,5 +102,59 @@ export abstract class BaseOperation {
    */
   protected generateOperationId(): string {
     return generateOperationId();
+  }
+
+  /**
+   * Build operation result with unified metadata
+   */
+  protected buildResult<T>(
+    metadata: OperationMetadata,
+    data: T,
+    ui: WeaveOperationUiMetadata,
+    errorDetails?: WeaveOperationError
+  ): WeaveOperationResult<T> {
+    const duration = metadata.duration ?? (metadata.endTime?.getTime() ?? Date.now()) - metadata.startTime.getTime();
+    const timestamp = metadata.endTime ?? new Date();
+    const provider = metadata.provider ?? this.model.getProviderInfo().provider;
+    const model = metadata.model ?? this.model.getProviderInfo().model;
+
+    const tokens = metadata.tokenCount
+      ? {
+          input: metadata.tokenCount.input,
+          output: metadata.tokenCount.output,
+        }
+      : undefined;
+
+    const cost = metadata.cost
+      ? {
+          input: metadata.cost.tokenCount.input,
+          output: metadata.cost.tokenCount.output,
+          total: metadata.cost.tokenCount.total,
+          currency: metadata.cost.currency ?? 'USD',
+        }
+      : undefined;
+
+    const metadataPayload: WeaveOperationMetadata = {
+      operationId: metadata.id,
+      duration,
+      timestamp,
+      provider,
+      model,
+      ui,
+      cost,
+      tokens,
+      cached: metadata.cached ?? false,
+      cacheKey: metadata.cacheKey,
+    };
+
+    const status: WeaveOperationResult<T>['status'] =
+      errorDetails ? 'error' : metadata.status === 'pending' ? 'pending' : metadata.status;
+
+    return {
+      status,
+      data,
+      metadata: metadataPayload,
+      ...(errorDetails ? { error: errorDetails } : {}),
+    };
   }
 }

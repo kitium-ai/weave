@@ -4,13 +4,17 @@
 
 import { validateNonEmptyString, validateObject } from '@weaveai/shared';
 import { BaseOperation } from './base.js';
-import type { ExtractOptions } from '../types/index.js';
+import type { ExtractOptions, ExtractResult, WeaveOperationError } from '../types/index.js';
 
 /**
  * Extract structured data from text
  */
 export class ExtractOperation extends BaseOperation {
-  public async execute(text: string, schema: unknown, options?: ExtractOptions): Promise<unknown> {
+  public async execute<T = unknown>(
+    text: string,
+    schema: unknown,
+    options?: ExtractOptions
+  ): Promise<ExtractResult<T>> {
     validateNonEmptyString(text, 'text');
     validateObject(schema, 'schema');
 
@@ -25,7 +29,7 @@ export class ExtractOperation extends BaseOperation {
         options,
       });
 
-      const result = await this.model.extract(text, schema, options);
+      const data = (await this.model.extract(text, schema, options)) as T;
 
       this.markSuccess(metadata);
 
@@ -34,7 +38,15 @@ export class ExtractOperation extends BaseOperation {
         duration: metadata.duration,
       });
 
-      return result;
+      return this.buildResult<T>(
+        metadata,
+        data,
+        {
+          displayAs: 'json',
+          canStream: false,
+          estimatedSize: 'medium',
+        }
+      );
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.markError(metadata, err);
@@ -44,7 +56,22 @@ export class ExtractOperation extends BaseOperation {
         duration: metadata.duration,
       });
 
-      throw err;
+      const errorDetails: WeaveOperationError = {
+        code: err.name ?? 'EXTRACT_ERROR',
+        message: err.message,
+        recoverable: false,
+      };
+
+      return this.buildResult<T>(
+        metadata,
+        null as unknown as T,
+        {
+          displayAs: 'json',
+          canStream: false,
+          estimatedSize: 'small',
+        },
+        errorDetails
+      );
     }
   }
 }

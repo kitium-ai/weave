@@ -161,7 +161,7 @@ export default function ProductsPage() {
         {products.map((product) => (
           <div key={product.id} className="border rounded p-4">
             <h2 className="font-bold">{product.name}</h2>
-            <p className="text-gray-600">${product.price}</p>
+            <p className="text-gray-600">\${product.price}</p>
           </div>
         ))}
       </div>

@@ -3,7 +3,15 @@
  */
 
 import { useState, useCallback, useRef } from 'react';
-import type { GenerateOptions, ClassifyOptions, ExtractOptions } from '@weaveai/core';
+import type {
+  GenerateOptions,
+  ClassifyOptions,
+  ExtractOptions,
+  GenerateResult,
+  ClassificationResult,
+  ExtractResult,
+  WeaveOperationResult,
+} from '@weaveai/core';
 import { useWeaveContext } from '../context/WeaveContext.js';
 
 /**
@@ -16,7 +24,7 @@ export type AIStatus = 'idle' | 'loading' | 'success' | 'error';
  */
 export interface UseAIOptions<T = unknown> {
   onSuccess?: (data: T) => void;
-  onError?: (error: Error) => void;
+  onError?: (error: Error, result?: T) => void;
   onStart?: () => void;
 }
 
@@ -41,6 +49,9 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
   const [error, setError] = useState<Error | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  const isWeaveResult = (value: unknown): value is WeaveOperationResult =>
+    typeof value === 'object' && value !== null && 'status' in value && 'metadata' in value;
+
   const execute = useCallback(
     async (fn: () => Promise<T>): Promise<T | null> => {
       if (!weave) {
@@ -58,7 +69,15 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
         abortControllerRef.current = new AbortController();
         const result = await fn();
         setData(result);
-        options?.onSuccess?.(result);
+
+        if (isWeaveResult(result) && result.status === 'error') {
+          const operationError = new Error(result.error?.message ?? 'Operation failed');
+          setError(operationError);
+          options?.onError?.(operationError, result);
+        } else {
+          options?.onSuccess?.(result);
+        }
+
         return result;
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
@@ -84,18 +103,17 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
 /**
  * Hook for generate operation
  */
-export function useGenerateAI(options?: UseAIOptions<string>) {
+export function useGenerateAI(options?: UseAIOptions<GenerateResult>) {
   const { weave } = useWeaveContext();
-  const aiHook = useAI<string>(options);
+  const aiHook = useAI<GenerateResult>(options);
 
   const generate = useCallback(
-    async (prompt: string, generateOptions?: GenerateOptions): Promise<string | null> => {
+    async (prompt: string, generateOptions?: GenerateOptions): Promise<GenerateResult | null> => {
       return aiHook.execute(async () => {
         if (!weave) {
           throw new Error('Weave instance not available');
         }
-        const result = await weave.generate(prompt, generateOptions);
-        return result.text;
+        return weave.generate(prompt, generateOptions);
       });
     },
     [weave, aiHook]
@@ -110,9 +128,9 @@ export function useGenerateAI(options?: UseAIOptions<string>) {
 /**
  * Hook for classify operation
  */
-export function useClassifyAI(options?: UseAIOptions<{ label: string; confidence: number }>) {
+export function useClassifyAI(options?: UseAIOptions<ClassificationResult>) {
   const { weave } = useWeaveContext();
-  const aiHook = useAI<{ label: string; confidence: number }>(options);
+  const aiHook = useAI<ClassificationResult>(options);
 
   const classify = useCallback(
     async (text: string, labels: string[], classifyOptions?: ClassifyOptions) => {
@@ -120,11 +138,7 @@ export function useClassifyAI(options?: UseAIOptions<{ label: string; confidence
         if (!weave) {
           throw new Error('Weave instance not available');
         }
-        const result = await weave.classify(text, labels, classifyOptions);
-        return {
-          label: result.label,
-          confidence: result.confidence,
-        };
+        return weave.classify(text, labels, classifyOptions);
       });
     },
     [weave, aiHook]
@@ -139,9 +153,9 @@ export function useClassifyAI(options?: UseAIOptions<{ label: string; confidence
 /**
  * Hook for extract operation
  */
-export function useExtractAI(options?: UseAIOptions<unknown>) {
+export function useExtractAI<T = unknown>(options?: UseAIOptions<ExtractResult<T>>) {
   const { weave } = useWeaveContext();
-  const aiHook = useAI<unknown>(options);
+  const aiHook = useAI<ExtractResult<T>>(options);
 
   const extract = useCallback(
     async (text: string, schema: unknown, extractOptions?: ExtractOptions) => {
@@ -149,7 +163,7 @@ export function useExtractAI(options?: UseAIOptions<unknown>) {
         if (!weave) {
           throw new Error('Weave instance not available');
         }
-        return weave.extract(text, schema, extractOptions);
+        return weave.extract<T>(text, schema, extractOptions);
       });
     },
     [weave, aiHook]

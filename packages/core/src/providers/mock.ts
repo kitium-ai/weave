@@ -4,9 +4,9 @@
 
 import type {
   GenerateOptions,
-  GenerateResult,
+  GenerateData,
   ClassifyOptions,
-  ClassificationResult,
+  ClassificationData,
   ExtractOptions,
   ChatMessage,
   ChatOptions,
@@ -22,7 +22,7 @@ export class MockLanguageModel implements ILanguageModel {
     private readonly delays: Map<string, number> = new Map()
   ) {}
 
-  public async generate(prompt: string, _options?: GenerateOptions): Promise<GenerateResult> {
+  public async generate(prompt: string, _options?: GenerateOptions): Promise<GenerateData> {
     await this.simulateDelay('generate');
 
     const mockText = this.responses.get(`generate:${prompt}`) ?? `Mock response to: ${prompt}`;
@@ -41,7 +41,7 @@ export class MockLanguageModel implements ILanguageModel {
     text: string,
     labels: string[],
     _options?: ClassifyOptions
-  ): Promise<ClassificationResult> {
+  ): Promise<ClassificationData> {
     await this.simulateDelay('classify');
 
     const mockLabel = this.responses.get(`classify:${text}`) ?? labels[0];

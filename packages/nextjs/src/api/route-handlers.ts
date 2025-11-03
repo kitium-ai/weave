@@ -32,7 +32,8 @@ export function createGenerateHandler(options: WeaveRouteOptions) {
       }
 
       const result = await options.weave.generate(prompt, generateOptions);
-      return new NextResponse(JSON.stringify(result), { status: 200 });
+      const status = result.status === 'error' ? 500 : 200;
+      return new NextResponse(JSON.stringify(result), { status });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       return new NextResponse(JSON.stringify({ error: message }), { status: 500 });
@@ -67,7 +68,8 @@ export function createClassifyHandler(options: WeaveRouteOptions) {
       }
 
       const result = await options.weave.classify(text, labels);
-      return new NextResponse(JSON.stringify(result), { status: 200 });
+      const status = result.status === 'error' ? 500 : 200;
+      return new NextResponse(JSON.stringify(result), { status });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       return new NextResponse(JSON.stringify({ error: message }), { status: 500 });
@@ -100,7 +102,8 @@ export function createExtractHandler(options: WeaveRouteOptions) {
       }
 
       const result = await options.weave.extract(text, schema);
-      return new NextResponse(JSON.stringify(result), { status: 200 });
+      const status = result.status === 'error' ? 500 : 200;
+      return new NextResponse(JSON.stringify(result), { status });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       return new NextResponse(JSON.stringify({ error: message }), { status: 500 });

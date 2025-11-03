@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import type { ExtractOptions } from '@weaveai/core';
+import type { ExtractOptions, ExtractResult } from '@weaveai/core';
 import { useWeaveContext } from '../context/WeaveContext.js';
 
 export interface UseSmartExtractOptions<TOutput = Record<string, unknown>> {
@@ -164,12 +164,22 @@ export function useSmartExtract<TOutput extends Record<string, unknown> = Record
       };
 
       try {
-        const raw = await weave.extract(prompt, mergedOptions.targetSchema, extractOptions);
-        if (!raw || typeof raw !== 'object') {
+        const rawResult = await weave.extract<TOutput>(
+          prompt,
+          mergedOptions.targetSchema,
+          extractOptions
+        );
+
+        if (rawResult.status === 'error') {
+          const message = rawResult.error?.message ?? 'Extraction returned an error';
+          throw new Error(message);
+        }
+
+        if (!rawResult.data || typeof rawResult.data !== 'object') {
           throw new Error('Extraction returned an unexpected result');
         }
 
-        const result = raw as TOutput;
+        const result = rawResult.data as TOutput;
         const { score, missing } = evaluateConfidence(result, mergedOptions.targetSchema);
 
         if (score < confidenceThreshold) {
