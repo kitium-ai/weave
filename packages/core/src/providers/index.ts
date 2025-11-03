@@ -11,3 +11,4 @@ export * from './anthropic.js';
 export * from './google.js';
 export * from './circuit-breaker.js';
 export * from './router.js';
+export * from './routing-ui.js';

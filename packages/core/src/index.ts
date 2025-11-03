@@ -30,4 +30,5 @@ export * from './utils/index.js';
 export * from './streaming/index.js';
 export * from './observability/index.js';
 export * from './config/index.js';
+export * from './caching/index.js';
 export * from './weave.js';

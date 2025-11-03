@@ -56,3 +56,17 @@ export type {
   PromptMetrics,
   PromptTestResult,
 } from '../types/prompt-template.js';
+
+export { useCache } from './useCache.js';
+export type {
+  UseCacheOptions,
+  UseCacheReturn,
+  CacheFeedbackEvent,
+} from './useCache.js';
+
+export { useProviderRouting, useProviderNotifications } from './useProviderRouting.js';
+export type {
+  UseProviderRoutingOptions,
+  UseProviderRoutingReturn,
+  UseProviderNotificationsOptions,
+} from './useProviderRouting.js';

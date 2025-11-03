@@ -20,6 +20,28 @@ export { SentimentBadge } from './SentimentBadge.js';
 
 export { PromptEditor } from './PromptEditor.js';
 
+export {
+  ProviderSwitch,
+  ProviderStatusIndicator,
+  ProviderEventFeed,
+  ProviderSelector,
+} from './ProviderSwitch.js';
+
+export type {
+  ProviderSwitchProps,
+  ProviderStatusIndicatorProps,
+  ProviderEventFeedProps,
+  ProviderSelectorProps,
+} from './ProviderSwitch.js';
+
+export { CacheFeedback, CacheFeedbackHistory, CacheBadge } from './CacheFeedback.js';
+
+export type {
+  CacheFeedbackProps,
+  CacheFeedbackHistoryProps,
+  CacheBadgeProps,
+} from './CacheFeedback.js';
+
 // Re-export types and ChatMessage from core
 export type {
   StreamingTextProps,
