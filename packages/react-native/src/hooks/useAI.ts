@@ -2,103 +2,106 @@
  * React Native hooks for Weave AI framework
  */
 
-import { useState, useCallback, useRef } from 'react';
-import type { Weave, GenerateOptions } from '@weaveai/core';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import type {
+  Weave,
+  GenerateOptions,
+  GenerateResult,
+  ClassifyOptions,
+  ClassificationResult,
+  ExtractOptions,
+  ExtractResult,
+} from '@weaveai/core';
+import {
+  AIExecutionController,
+  type AIExecutionOptions,
+  type AIExecutionState,
+  type CostSummary,
+} from '@weaveai/shared';
 
-export interface UseAIOptions {
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: Error) => void;
-  onStart?: () => void;
-}
+export interface UseAIOptions<T = unknown> extends AIExecutionOptions<T> {}
 
 export interface UseAIReturn<T = unknown> {
   data: T | null;
   loading: boolean;
   error: Error | null;
-  status: 'idle' | 'loading' | 'success' | 'error';
+  status: AIExecutionState<T>['status'];
+  cost: CostSummary | null;
+  budgetExceeded: boolean;
   execute: (fn: () => Promise<T>) => Promise<T | null>;
+  resetCost: () => void;
 }
+
+const INITIAL_STATE: AIExecutionState<any> = {
+  data: null,
+  loading: false,
+  error: null,
+  status: 'idle',
+  cost: null,
+  budgetExceeded: false,
+};
 
 /**
  * React Native hook for AI operations
  */
-export function useAI<T = unknown>(_weave: Weave, options?: UseAIOptions): UseAIReturn<T> {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const isMountedRef = useRef(true);
+export function useAI<T = unknown>(_weave: Weave, options?: UseAIOptions<T>): UseAIReturn<T> {
+  const controllerRef = useRef(new AIExecutionController<T>(options));
+  const [state, setState] = useState<AIExecutionState<T>>(INITIAL_STATE);
 
-  const execute = useCallback(
-    async (fn: () => Promise<T>): Promise<T | null> => {
-      if (!isMountedRef.current) {
-        return null;
-      }
+  useEffect(() => {
+    const unsubscribe = controllerRef.current.subscribe((next) => {
+      setState(next);
+    });
 
-      try {
-        setLoading(true);
-        setError(null);
-        setStatus('loading');
-        options?.onStart?.();
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-        const result = await fn();
+  useEffect(() => {
+    if (options) {
+      controllerRef.current.setOptions(options);
+    }
+  }, [options]);
 
-        if (isMountedRef.current) {
-          setData(result);
-          setStatus('success');
-          options?.onSuccess?.(result);
-        }
+  const execute = useCallback(async (fn: () => Promise<T>) => {
+    return controllerRef.current.execute(fn);
+  }, []);
 
-        return result;
-      } catch (err) {
-        const errorObj = err instanceof Error ? err : new Error(String(err));
-
-        if (isMountedRef.current) {
-          setError(errorObj);
-          setStatus('error');
-          options?.onError?.(errorObj);
-        }
-
-        return null;
-      } finally {
-        if (isMountedRef.current) {
-          setLoading(false);
-        }
-      }
-    },
-    [options]
-  );
+  const resetCost = useCallback(() => {
+    controllerRef.current.resetCost();
+  }, []);
 
   return {
-    data,
-    loading,
-    error,
-    status,
+    data: state.data,
+    loading: state.loading,
+    error: state.error,
+    status: state.status,
+    cost: state.cost,
+    budgetExceeded: state.budgetExceeded,
     execute,
+    resetCost,
   };
 }
 
 /**
  * React Native hook for text generation
  */
-export function useGenerateAI(weave: Weave, options?: UseAIOptions) {
-  const { data, loading, error, status, execute } = useAI<string>(weave, options);
+export function useGenerateAI(
+  weave: Weave,
+  options?: UseAIOptions<GenerateResult>
+) {
+  const ai = useAI<GenerateResult>(weave, { ...(options ?? {}), operation: 'generate' });
 
   const generate = useCallback(
-    async (prompt: string, generateOptions?: GenerateOptions): Promise<string | null> => {
-      return execute(async () => {
-        const result = await weave.generate(prompt, generateOptions);
-        return result.text;
-      });
+    async (prompt: string, generateOptions?: GenerateOptions): Promise<GenerateResult | null> => {
+      return ai.execute(() => weave.generate(prompt, generateOptions));
     },
-    [weave, execute]
+    [ai, weave]
   );
 
   return {
-    data,
-    loading,
-    error,
-    status,
+    ...ai,
     generate,
   };
 }
@@ -106,23 +109,25 @@ export function useGenerateAI(weave: Weave, options?: UseAIOptions) {
 /**
  * React Native hook for text classification
  */
-export function useClassifyAI(weave: Weave, options?: UseAIOptions) {
-  const { data, loading, error, status, execute } = useAI(weave, options);
+export function useClassifyAI(
+  weave: Weave,
+  options?: UseAIOptions<ClassificationResult>
+) {
+  const ai = useAI<ClassificationResult>(weave, { ...(options ?? {}), operation: 'classify' });
 
   const classify = useCallback(
-    async (text: string, labels: string[]) => {
-      return execute(async () => {
-        return await weave.classify(text, labels);
-      });
+    async (
+      text: string,
+      labels: string[],
+      classifyOptions?: ClassifyOptions
+    ): Promise<ClassificationResult | null> => {
+      return ai.execute(() => weave.classify(text, labels, classifyOptions));
     },
-    [weave, execute]
+    [ai, weave]
   );
 
   return {
-    data,
-    loading,
-    error,
-    status,
+    ...ai,
     classify,
   };
 }
@@ -130,23 +135,25 @@ export function useClassifyAI(weave: Weave, options?: UseAIOptions) {
 /**
  * React Native hook for data extraction
  */
-export function useExtractAI(weave: Weave, options?: UseAIOptions) {
-  const { data, loading, error, status, execute } = useAI(weave, options);
+export function useExtractAI<T = unknown>(
+  weave: Weave,
+  options?: UseAIOptions<ExtractResult<T>>
+) {
+  const ai = useAI<ExtractResult<T>>(weave, { ...(options ?? {}), operation: 'extract' });
 
   const extract = useCallback(
-    async (text: string, schema: unknown) => {
-      return execute(async () => {
-        return await weave.extract(text, schema);
-      });
+    async (
+      text: string,
+      schema: unknown,
+      extractOptions?: ExtractOptions
+    ): Promise<ExtractResult<T> | null> => {
+      return ai.execute(() => weave.extract<T>(text, schema, extractOptions));
     },
-    [weave, execute]
+    [ai, weave]
   );
 
   return {
-    data,
-    loading,
-    error,
-    status,
+    ...ai,
     extract,
   };
 }

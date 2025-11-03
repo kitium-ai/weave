@@ -54,6 +54,12 @@ Works with any AI provider:
 - Rate limiting protection
 - Security best practices
 
+### Unified UI Building Blocks
+- **Shared AI controllers** – Reuse the same budgeting, cost tracking, and execution logic across every framework.
+- **Chat orchestration** – Vue composables, Svelte stores, Angular services, and React Native hooks now share the rich multi-turn chat engine from the React package.
+- **Smart caching helpers** – Cache feedback, stats, and invalidation flows are exposed consistently through framework primitives.
+- **Provider routing UI** – Monitor and steer provider fallbacks with unified state for Vue, Angular, Svelte, and React Native.
+
 ## Quick Start
 
 ### Installation
@@ -323,4 +329,3 @@ We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for gu
 ## License
 
 Weave is licensed under the Apache 2.0 License. See [LICENSE](./LICENSE) for details.
-

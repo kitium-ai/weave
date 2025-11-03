@@ -4,13 +4,29 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import type { Weave, GenerateOptions } from '@weaveai/core';
+import type {
+  Weave,
+  GenerateOptions,
+  GenerateResult,
+  ClassifyOptions,
+  ClassificationResult,
+  ExtractOptions,
+  ExtractResult,
+} from '@weaveai/core';
+import {
+  AIExecutionController,
+  type AIExecutionOptions,
+  type AIStatus,
+  type CostSummary,
+} from '@weaveai/shared';
 
 export interface AIState<T = unknown> {
   data: T | null;
   loading: boolean;
   error: Error | null;
-  status: 'idle' | 'loading' | 'success' | 'error';
+  status: AIStatus;
+  cost: CostSummary | null;
+  budgetExceeded: boolean;
 }
 
 /**
@@ -20,17 +36,42 @@ export interface AIState<T = unknown> {
   providedIn: 'root',
 })
 export class AIService<T = unknown> {
+  private readonly controller: AIExecutionController<T>;
+  private baseOptions?: AIExecutionOptions<T>;
+
   private readonly initialState: AIState<T> = {
     data: null,
     loading: false,
     error: null,
     status: 'idle',
+    cost: null,
+    budgetExceeded: false,
   };
 
   private readonly stateSubject = new BehaviorSubject<AIState<T>>(this.initialState);
   readonly state$: Observable<AIState<T>> = this.stateSubject.asObservable();
 
-  constructor(protected weave: Weave) {}
+  constructor(protected weave: Weave) {
+    this.controller = new AIExecutionController<T>();
+    this.controller.subscribe((state) => {
+      this.stateSubject.next({
+        data: state.data,
+        loading: state.loading,
+        error: state.error,
+        status: state.status,
+        cost: state.cost,
+        budgetExceeded: state.budgetExceeded,
+      });
+    });
+  }
+
+  /**
+   * Configure execution options.
+   */
+  configure(options: AIExecutionOptions<T>): void {
+    this.baseOptions = { ...(this.baseOptions ?? {}), ...options };
+    this.controller.setOptions(this.baseOptions);
+  }
 
   /**
    * Get current state
@@ -43,45 +84,30 @@ export class AIService<T = unknown> {
    * Execute an async function with state management
    */
   async execute(fn: () => Promise<T>): Promise<T | null> {
-    try {
-      this.updateState({ loading: true, status: 'loading' });
-
-      const result = await fn();
-
-      this.updateState({
-        data: result,
-        loading: false,
-        status: 'success',
-        error: null,
-      });
-
-      return result;
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-
-      this.updateState({
-        loading: false,
-        status: 'error',
-        error,
-      });
-
-      return null;
-    }
+    return this.controller.execute(fn);
   }
 
   /**
    * Reset state to initial
    */
   reset(): void {
+    this.controller.resetCost();
     this.stateSubject.next(this.initialState);
   }
 
   /**
-   * Update state
+   * Update controller options temporarily for single invocation.
    */
-  protected updateState(partial: Partial<AIState<T>>): void {
-    const current = this.stateSubject.value;
-    this.stateSubject.next({ ...current, ...partial });
+  protected applyOptions(
+    operation: AIExecutionOptions<T>['operation'],
+    options?: AIExecutionOptions<T>
+  ): void {
+    const merged: AIExecutionOptions<T> = {
+      ...(this.baseOptions ?? {}),
+      ...(options ?? {}),
+      operation,
+    };
+    this.controller.setOptions(merged);
   }
 }
 
@@ -91,14 +117,18 @@ export class AIService<T = unknown> {
 @Injectable({
   providedIn: 'root',
 })
-export class GenerateService extends AIService<string> {
+export class GenerateService extends AIService<GenerateResult> {
   /**
    * Generate text from prompt
    */
-  async generate(prompt: string, options?: GenerateOptions): Promise<string | null> {
+  async generate(
+    prompt: string,
+    options?: GenerateOptions,
+    controllerOptions?: AIExecutionOptions<GenerateResult>
+  ): Promise<GenerateResult | null> {
+    this.applyOptions('generate', controllerOptions);
     return this.execute(async () => {
-      const result = await this.weave.generate(prompt, options);
-      return result.text;
+      return this.weave.generate(prompt, options);
     });
   }
 }
@@ -109,13 +139,19 @@ export class GenerateService extends AIService<string> {
 @Injectable({
   providedIn: 'root',
 })
-export class ClassifyService extends AIService {
+export class ClassifyService extends AIService<ClassificationResult> {
   /**
    * Classify text into categories
    */
-  async classify(text: string, labels: string[]): Promise<unknown | null> {
+  async classify(
+    text: string,
+    labels: string[],
+    options?: ClassifyOptions,
+    controllerOptions?: AIExecutionOptions<ClassificationResult>
+  ): Promise<ClassificationResult | null> {
+    this.applyOptions('classify', controllerOptions);
     return this.execute(async () => {
-      return await this.weave.classify(text, labels);
+      return this.weave.classify(text, labels, options);
     });
   }
 }
@@ -126,13 +162,19 @@ export class ClassifyService extends AIService {
 @Injectable({
   providedIn: 'root',
 })
-export class ExtractService extends AIService {
+export class ExtractService<T = unknown> extends AIService<ExtractResult<T>> {
   /**
    * Extract structured data from text
    */
-  async extract(text: string, schema: unknown): Promise<unknown | null> {
+  async extract(
+    text: string,
+    schema: unknown,
+    options?: ExtractOptions,
+    controllerOptions?: AIExecutionOptions<ExtractResult<T>>
+  ): Promise<ExtractResult<T> | null> {
+    this.applyOptions('extract', controllerOptions);
     return this.execute(async () => {
-      return await this.weave.extract(text, schema);
+      return this.weave.extract<T>(text, schema, options);
     });
   }
 }

@@ -1,90 +1,70 @@
 /**
- * Vue 3 composable for AI operations
+ * Vue 3 composables for AI operations
  */
 
-import { ref, computed, inject, type Ref, type ComputedRef } from 'vue';
-import type { Weave, GenerateOptions } from '@weaveai/core';
+import { ref, computed, inject, onBeforeUnmount, type Ref, type ComputedRef } from 'vue';
+import type {
+  Weave,
+  GenerateOptions,
+  GenerateResult,
+  ClassifyOptions,
+  ClassificationResult,
+  ExtractOptions,
+  ExtractResult,
+} from '@weaveai/core';
+import {
+  AIExecutionController,
+  type AIExecutionOptions,
+  type CostSummary,
+  type AIStatus,
+} from '@weaveai/shared';
 
-export interface UseAIOptions {
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: Error) => void;
-  onStart?: () => void;
-}
+export interface UseAIOptions<T = unknown> extends AIExecutionOptions<T> {}
 
 export interface UseAIReturn<T = unknown> {
   data: Ref<T | null>;
   loading: Ref<boolean>;
   error: Ref<Error | null>;
-  status: ComputedRef<'idle' | 'loading' | 'success' | 'error'>;
+  status: ComputedRef<AIStatus>;
+  cost: Ref<CostSummary | null>;
+  budgetExceeded: Ref<boolean>;
   execute: (fn: () => Promise<T>) => Promise<T | null>;
+  resetCost: () => void;
 }
 
 /**
- * Composable for AI operations with state management
+ * Composable for AI operations with budgeting and cost tracking.
  */
-export function useAI<T = unknown>(options?: UseAIOptions): UseAIReturn<T> {
+export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
   const data = ref<T | null>(null);
   const loading = ref(false);
   const error = ref<Error | null>(null);
-  const _status = ref<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const statusRef = ref<AIStatus>('idle');
+  const cost = ref<CostSummary | null>(null);
+  const budgetExceeded = ref(false);
 
-  const status = computed(() => _status.value);
+  const controller = new AIExecutionController<T>(options);
+  const unsubscribe = controller.subscribe((state) => {
+    data.value = state.data;
+    loading.value = state.loading;
+    error.value = state.error;
+    statusRef.value = state.status;
+    cost.value = state.cost;
+    budgetExceeded.value = state.budgetExceeded;
+  });
+
+  onBeforeUnmount(() => {
+    unsubscribe();
+  });
 
   const execute = async (fn: () => Promise<T>): Promise<T | null> => {
-    if (!fn) {
-      return null;
-    }
-
-    try {
-      loading.value = true;
-      error.value = null;
-      _status.value = 'loading';
-      options?.onStart?.();
-
-      const result = await fn();
-      data.value = result;
-      _status.value = 'success';
-      options?.onSuccess?.(result);
-
-      return result;
-    } catch (err) {
-      const errorObj = err instanceof Error ? err : new Error(String(err));
-      error.value = errorObj;
-      _status.value = 'error';
-      options?.onError?.(errorObj);
-      return null;
-    } finally {
-      loading.value = false;
-    }
+    return controller.execute(fn);
   };
 
-  return {
-    data: data as Ref<T | null>,
-    loading,
-    error,
-    status,
-    execute,
-  };
-}
+  const status = computed(() => statusRef.value);
 
-/**
- * Vue composable for text generation
- */
-export function useGenerateAI(options?: UseAIOptions) {
-  const weave = inject<Weave>('weave');
-  const { data, loading, error, status, execute } = useAI<string>(options);
-
-  const generate = async (
-    prompt: string,
-    generateOptions?: GenerateOptions
-  ): Promise<string | null> => {
-    return execute(async () => {
-      if (!weave) {
-        throw new Error('Weave not provided');
-      }
-      const result = await weave.generate(prompt, generateOptions);
-      return result.text;
-    });
+  const resetCost = () => {
+    controller.resetCost();
   };
 
   return {
@@ -92,56 +72,88 @@ export function useGenerateAI(options?: UseAIOptions) {
     loading,
     error,
     status,
+    cost,
+    budgetExceeded,
+    execute,
+    resetCost,
+  };
+}
+
+/**
+ * Vue composable for text generation with cost tracking.
+ */
+export function useGenerateAI(options?: UseAIOptions<GenerateResult>) {
+  const weave = inject<Weave>('weave');
+  const ai = useAI<GenerateResult>({ ...(options ?? {}), operation: 'generate' });
+
+  const generate = async (
+    prompt: string,
+    generateOptions?: GenerateOptions
+  ): Promise<GenerateResult | null> => {
+    return ai.execute(async () => {
+      if (!weave) {
+        throw new Error('Weave not provided');
+      }
+      return weave.generate(prompt, generateOptions);
+    });
+  };
+
+  return {
+    ...ai,
     generate,
   };
 }
 
 /**
- * Vue composable for text classification
+ * Vue composable for text classification.
  */
-export function useClassifyAI(options?: UseAIOptions) {
+export function useClassifyAI(options?: UseAIOptions<ClassificationResult>) {
   const weave = inject<Weave>('weave');
-  const { data, loading, error, status, execute } = useAI(options);
+  const ai = useAI<ClassificationResult>({ ...(options ?? {}), operation: 'classify' });
 
-  const classify = async (text: string, labels: string[]) => {
-    return execute(async () => {
+  const classify = async (
+    text: string,
+    labels: string[],
+    classifyOptions?: ClassifyOptions
+  ): Promise<ClassificationResult | null> => {
+    return ai.execute(async () => {
       if (!weave) {
         throw new Error('Weave not provided');
       }
-      return await weave.classify(text, labels);
+      return weave.classify(text, labels, classifyOptions);
     });
   };
 
   return {
-    data,
-    loading,
-    error,
-    status,
+    ...ai,
     classify,
   };
 }
 
 /**
- * Vue composable for data extraction
+ * Vue composable for data extraction.
  */
-export function useExtractAI(options?: UseAIOptions) {
+export function useExtractAI<T = unknown>(
+  options?: UseAIOptions<ExtractResult<T>>
+) {
   const weave = inject<Weave>('weave');
-  const { data, loading, error, status, execute } = useAI(options);
+  const ai = useAI<ExtractResult<T>>({ ...(options ?? {}), operation: 'extract' });
 
-  const extract = async (text: string, schema: unknown) => {
-    return execute(async () => {
+  const extract = async (
+    text: string,
+    schema: unknown,
+    extractOptions?: ExtractOptions
+  ): Promise<ExtractResult<T> | null> => {
+    return ai.execute(async () => {
       if (!weave) {
         throw new Error('Weave not provided');
       }
-      return await weave.extract(text, schema);
+      return weave.extract<T>(text, schema, extractOptions);
     });
   };
 
   return {
-    data,
-    loading,
-    error,
-    status,
+    ...ai,
     extract,
   };
 }

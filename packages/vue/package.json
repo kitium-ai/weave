@@ -29,7 +29,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@weaveai/core": "1.1.0"
+    "@weaveai/core": "1.1.0",
+    "@weaveai/shared": "1.1.0"
   },
   "peerDependencies": {
     "vue": "^3.0.0"

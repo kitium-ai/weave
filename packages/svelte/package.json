@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@weaveai/core": "1.1.0",
+    "@weaveai/shared": "1.1.0",
     "svelte": "^4.0.0"
   },
   "peerDependencies": {

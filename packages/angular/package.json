@@ -25,7 +25,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@weaveai/core": "1.1.0"
+    "@weaveai/core": "1.1.0",
+    "@weaveai/shared": "1.1.0"
   },
   "peerDependencies": {
     "@angular/common": "^17.0.0 || ^18.0.0",
