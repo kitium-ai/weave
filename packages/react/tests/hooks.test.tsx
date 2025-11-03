@@ -76,7 +76,7 @@ const createMockWeave = (): Weave => {
     classify: vi.fn().mockResolvedValue(classifyResult),
     extract: vi.fn().mockResolvedValue(extractResult),
     getModel: vi.fn().mockReturnValue({
-      chat: vi.fn().mockResolvedValue('Chat response'),
+      chat: vi.fn(),
     }),
   } as unknown as Weave;
 };
@@ -225,8 +225,10 @@ describe('Weave React Hooks', () => {
       const { result } = renderHook(() => useAIChat(), { wrapper });
 
       expect(result.current.messages).toEqual([]);
-      expect(result.current.loading).toBe(false);
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.streaming).toBe(false);
       expect(result.current.error).toBeNull();
+      expect(result.current.costSummary).toBeNull();
     });
 
     it('should send message and receive response', async () => {
@@ -237,7 +239,7 @@ describe('Weave React Hooks', () => {
         response = await result.current.sendMessage('Hello');
       });
 
-      expect(response).toBe('Chat response');
+      expect(response).toBe('Generated text');
       expect(result.current.messages).toHaveLength(2);
       expect(result.current.messages[0].role).toBe('user');
       expect(result.current.messages[1].role).toBe('assistant');
@@ -288,10 +290,21 @@ describe('Weave React Hooks', () => {
       expect(result.current.messages).toHaveLength(1);
 
       act(() => {
-        result.current.clearMessages();
+        result.current.clear();
       });
 
       expect(result.current.messages).toHaveLength(0);
+    });
+
+    it('should provide downloadable transcript', async () => {
+      const { result } = renderHook(() => useAIChat(), { wrapper });
+
+      await act(async () => {
+        await result.current.sendMessage('Hello world');
+      });
+
+      const payload = result.current.download();
+      expect(payload).toContain('Hello world');
     });
   });
 

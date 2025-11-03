@@ -103,7 +103,7 @@ export function AIChat({
   renderError,
   renderInput = DefaultInputRenderer,
 }: AIChatProps): React.ReactElement {
-  const { messages, loading, error, sendMessage, clearMessages } = useAIChat({ onError });
+  const { messages, isLoading, streaming, error, sendMessage, clear } = useAIChat({ onError });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to latest message
@@ -151,18 +151,18 @@ export function AIChat({
         {messages.map((message, index) => (
           <div key={index}>{renderMessage(message, index)}</div>
         ))}
-        {loading && renderLoading?.()}
+        {(isLoading || streaming) && renderLoading?.()}
         {error && renderError?.(error)}
         <div ref={messagesEndRef} />
       </div>
 
       {/* Input container */}
       <div>
-        {renderInput({ onSubmit: handleSendMessage, isLoading: loading })}
+        {renderInput({ onSubmit: handleSendMessage, isLoading })}
         {messages.length > 0 && (
           <button
-            onClick={clearMessages}
-            disabled={loading}
+            onClick={clear}
+            disabled={isLoading}
             style={{
               marginTop: '8px',
               padding: '4px 8px',
@@ -171,8 +171,8 @@ export function AIChat({
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.6 : 1,
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              opacity: isLoading ? 0.6 : 1,
             }}
           >
             Clear Chat
