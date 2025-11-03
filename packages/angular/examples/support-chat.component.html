@@ -1,0 +1,17 @@
+<section class="chat-card">
+  <h2>Support Assistant</h2>
+
+  <ul>
+    <li *ngFor="let message of (state$ | async)?.messages">
+      <strong>{{ message.role }}:</strong>
+      <span>{{ message.content }}</span>
+    </li>
+  </ul>
+
+  <form (ngSubmit)="send(input)">
+    <input #input placeholder="Ask a question…" />
+    <button type="submit" [disabled]="(state$ | async)?.isLoading">
+      Send
+    </button>
+  </form>
+</section>
