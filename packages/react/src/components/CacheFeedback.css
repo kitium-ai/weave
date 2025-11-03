@@ -1,5 +1,6 @@
 /**
  * CacheFeedback Component Styles
+ * Uses kitium-ui theme variables for consistency
  */
 
 /* Cache Feedback Toast */
@@ -8,10 +9,10 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background: white;
+  background: var(--kt-surface-primary);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: var(--kt-shadow-lg);
+  font-family: var(--kt-font-family);
   font-size: 13px;
   z-index: 9999;
   animation: slideIn 0.3s ease-out;
@@ -41,18 +42,18 @@
 
 /* Cache Feedback Types */
 .cache-feedback--hit {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid var(--kt-success);
   background: #f0fdf4;
 }
 
 .cache-feedback--miss {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid var(--kt-warning);
   background: #fffbeb;
 }
 
 .cache-feedback--stored {
-  border-left: 4px solid #3b82f6;
-  background: #eff6ff;
+  border-left: 4px solid var(--kt-primary-light);
+  background: var(--kt-active-bg);
 }
 
 .cache-feedback__content {
@@ -75,7 +76,7 @@
 .cache-feedback__message {
   margin: 0 0 4px 0;
   font-weight: 500;
-  color: #1f2937;
+  color: var(--kt-text-primary);
   word-break: break-word;
 }
 
@@ -83,7 +84,7 @@
   display: flex;
   gap: 12px;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--kt-text-tertiary);
 }
 
 .cache-feedback__saving {
@@ -94,7 +95,7 @@
   flex-shrink: 0;
   background: transparent;
   border: none;
-  color: #9ca3af;
+  color: var(--kt-text-tertiary);
   cursor: pointer;
   font-size: 16px;
   padding: 4px;
@@ -104,14 +105,14 @@
 }
 
 .cache-feedback__close:hover {
-  color: #6b7280;
+  color: var(--kt-text-secondary);
 }
 
 /* Cache History */
 .cache-history {
   padding: 16px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--kt-surface-primary);
+  border: 1px solid var(--kt-border-default);
   border-radius: 8px;
   max-height: 400px;
   overflow-y: auto;
@@ -121,7 +122,7 @@
   margin: 0 0 12px 0;
   font-size: 14px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--kt-text-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -129,7 +130,7 @@
 .cache-history__empty {
   margin: 0;
   font-size: 13px;
-  color: #9ca3af;
+  color: var(--kt-text-tertiary);
   text-align: center;
   padding: 20px 0;
 }
@@ -143,24 +144,24 @@
 .cache-history__item {
   padding: 10px;
   border-radius: 6px;
-  border-left: 3px solid #e5e7eb;
-  background: #f9fafb;
+  border-left: 3px solid var(--kt-border-light);
+  background: var(--kt-surface-secondary);
   font-size: 12px;
 }
 
 .cache-history__item--hit {
-  border-left-color: #10b981;
+  border-left-color: var(--kt-success);
   background: #f0fdf4;
 }
 
 .cache-history__item--miss {
-  border-left-color: #f59e0b;
+  border-left-color: var(--kt-warning);
   background: #fffbeb;
 }
 
 .cache-history__item--stored {
-  border-left-color: #3b82f6;
-  background: #eff6ff;
+  border-left-color: var(--kt-primary-light);
+  background: var(--kt-active-bg);
 }
 
 .cache-history__item-header {
@@ -176,18 +177,18 @@
 
 .cache-history__type {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--kt-text-primary);
 }
 
 .cache-history__time {
   margin-left: auto;
-  color: #9ca3af;
+  color: var(--kt-text-tertiary);
   font-size: 11px;
 }
 
 .cache-history__message {
   margin: 0 0 6px 0;
-  color: #374151;
+  color: var(--kt-text-secondary);
   word-break: break-word;
 }
 
@@ -195,7 +196,7 @@
   display: flex;
   gap: 12px;
   font-size: 11px;
-  color: #6b7280;
+  color: var(--kt-text-tertiary);
   margin-top: 4px;
 }
 
@@ -206,7 +207,7 @@
   padding: 4px 8px;
   border-radius: 4px;
   font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--kt-font-family);
   position: relative;
 }
 
@@ -230,7 +231,7 @@
   display: flex;
   align-items: center;
   gap: inherit;
-  color: #059669;
+  color: var(--kt-success);
   background: #d1fae5;
 }
 
@@ -238,8 +239,8 @@
   display: flex;
   align-items: center;
   gap: inherit;
-  color: #7c3aed;
-  background: #ede9fe;
+  color: var(--kt-info);
+  background: var(--kt-active-bg);
 }
 
 .cache-badge__icon {
@@ -257,15 +258,15 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2937;
-  color: white;
+  background: var(--kt-text-primary);
+  color: var(--kt-text-inverse);
   padding: 8px 12px;
   border-radius: 6px;
   font-size: 11px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
+  transition: opacity var(--kt-transition-normal);
   margin-bottom: 6px;
   z-index: 1000;
 }

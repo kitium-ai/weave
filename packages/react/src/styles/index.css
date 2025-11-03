@@ -1,0 +1,33 @@
+/**
+ * Weave React Styles
+ * Global styles and theme integration
+ */
+
+/* Import kitium-ui theme variables */
+@import './theme-variables.css';
+
+/* Global defaults */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--kt-font-family);
+  font-size: var(--kt-font-size-md);
+  color: var(--kt-text-primary);
+  background: var(--kt-surface-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Weave component base styles */
+.weave-component {
+  font-family: var(--kt-font-family);
+}
