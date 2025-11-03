@@ -147,7 +147,13 @@ export class ChatController {
       }
 
       const prompt = this.buildConversationPrompt(conversationWithUser);
-      const streamingFramework = this.streamingOptions.framework ?? 'generic';
+      const streamingFramework = (this.streamingOptions.framework ?? 'vanilla') as
+        | 'react'
+        | 'angular'
+        | 'vue'
+        | 'svelte'
+        | 'vanilla'
+        | undefined;
 
       const result = await this.generate(prompt, {
         ...(options ?? {}),
@@ -156,7 +162,6 @@ export class ChatController {
               enabled: true,
               uiContext: {
                 framework: streamingFramework,
-                renderer: this.streamingOptions.renderer ?? 'text',
               },
             }
           : false,
@@ -243,15 +248,19 @@ export class ChatController {
     );
 
     // Best effort to trigger download in browser context
-    if (typeof document !== 'undefined' && typeof URL !== 'undefined') {
+    if (typeof globalThis !== 'undefined' && 'document' in globalThis && 'URL' in globalThis) {
       try {
-        const blob = new Blob([payload], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const doc = (globalThis as any).document;
+        const URLClass = (globalThis as any).URL;
+        const BlobClass = (globalThis as any).Blob;
+
+        const blob = new BlobClass([payload], { type: 'application/json' });
+        const url = URLClass.createObjectURL(blob);
+        const link = doc.createElement('a');
         link.href = url;
         link.download = `weave-chat-${Date.now()}.json`;
         link.click();
-        URL.revokeObjectURL(url);
+        URLClass.revokeObjectURL(url);
       } catch (downloadError) {
         console.warn('Failed to trigger download', downloadError);
       }
@@ -320,8 +329,8 @@ export class ChatController {
       totalCost: (this.state.costSummary?.totalCost ?? 0) + cost.total,
       currency: cost.currency,
       tokens: {
-        input: (this.state.costSummary?.tokens.input ?? 0) + (tokens.input ?? 0),
-        output: (this.state.costSummary?.tokens.output ?? 0) + (tokens.output ?? 0),
+        input: (this.state.costSummary?.tokens?.input ?? 0) + (tokens.input ?? 0),
+        output: (this.state.costSummary?.tokens?.output ?? 0) + (tokens.output ?? 0),
       },
     };
 

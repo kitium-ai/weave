@@ -64,10 +64,10 @@ export interface CostSummary {
 export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
   const { weave } = useWeaveContext();
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [costSummary, setCostSummary] = useState<CostSummary | null>(null);
-  const [budgetExceeded, setBudgetExceeded] = useState(false);
+  const [budgetExceeded, setBudgetExceeded] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const sessionCostRef = useRef<number>(0);
 
@@ -200,12 +200,12 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
   );
 
   return {
-    data,
+    data: data ?? null,
     loading,
     error,
     status: loading ? 'loading' : error ? 'error' : data ? 'success' : 'idle',
     cost: costSummary,
-    budgetExceeded,
+    budgetExceeded: budgetExceeded ?? false,
     resetCost,
     execute,
   };

@@ -36,21 +36,21 @@ export interface UseAIReturn<T = unknown> {
  * Composable for AI operations with budgeting and cost tracking.
  */
 export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
-  const data = ref<T | null>(null);
-  const loading = ref(false);
-  const error = ref<Error | null>(null);
-  const statusRef = ref<AIStatus>('idle');
-  const cost = ref<CostSummary | null>(null);
-  const budgetExceeded = ref(false);
+  const data = ref<T | null>(null) as Ref<T | null>;
+  const loading = ref(false) as Ref<boolean>;
+  const error = ref<Error | null>(null) as Ref<Error | null>;
+  const statusRef = ref<AIStatus>('idle') as Ref<AIStatus>;
+  const cost = ref<CostSummary | null>(null) as Ref<CostSummary | null>;
+  const budgetExceeded = ref(false) as Ref<boolean>;
 
   const controller = new AIExecutionController<T>(options);
   const unsubscribe = controller.subscribe((state) => {
-    data.value = state.data;
+    data.value = state.data ?? null;
     loading.value = state.loading;
     error.value = state.error;
     statusRef.value = state.status;
     cost.value = state.cost;
-    budgetExceeded.value = state.budgetExceeded;
+    budgetExceeded.value = state.budgetExceeded ?? false;
   });
 
   onBeforeUnmount(() => {

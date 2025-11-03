@@ -55,12 +55,12 @@ export class AIService<T = unknown> {
     this.controller = new AIExecutionController<T>();
     this.controller.subscribe((state) => {
       this.stateSubject.next({
-        data: state.data,
+        data: state.data ?? null,
         loading: state.loading,
         error: state.error,
         status: state.status,
         cost: state.cost,
-        budgetExceeded: state.budgetExceeded,
+        budgetExceeded: state.budgetExceeded ?? false,
       });
     });
   }

@@ -31,7 +31,7 @@ export class GenerateServiceNest extends WeaveService {
    */
   async generate(prompt: string, options?: { [key: string]: unknown }): Promise<string> {
     const result = await this.weave.generate(prompt, options);
-    return result.text;
+    return result.data.text;
   }
 }
 

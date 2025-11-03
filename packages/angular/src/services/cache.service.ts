@@ -10,7 +10,6 @@ import {
   type CacheControllerState,
   type CacheFeedbackEvent,
 } from '@weaveai/shared';
-import type { CacheConfig } from '@weaveai/core';
 
 export interface CacheState {
   lastFeedback: CacheFeedbackEvent | null;

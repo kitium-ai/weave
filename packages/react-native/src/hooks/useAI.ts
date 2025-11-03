@@ -73,12 +73,12 @@ export function useAI<T = unknown>(_weave: Weave, options?: UseAIOptions<T>): Us
   }, []);
 
   return {
-    data: state.data,
+    data: state.data ?? null,
     loading: state.loading,
     error: state.error,
     status: state.status,
     cost: state.cost,
-    budgetExceeded: state.budgetExceeded,
+    budgetExceeded: state.budgetExceeded ?? false,
     execute,
     resetCost,
   };
