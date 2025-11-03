@@ -18,6 +18,8 @@ export { AISearch } from './AISearch.js';
 export { AIForm } from './AIForm.js';
 export { SentimentBadge } from './SentimentBadge.js';
 
+export { PromptEditor } from './PromptEditor.js';
+
 // Re-export types and ChatMessage from core
 export type {
   StreamingTextProps,
@@ -34,3 +36,5 @@ export type {
   SentimentScore,
   ComponentTheme,
 } from '../types/components.js';
+
+export type { PromptEditorProps } from '../types/prompt-template.js';

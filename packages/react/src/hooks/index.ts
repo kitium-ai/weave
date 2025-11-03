@@ -45,3 +45,14 @@ export type {
   SmartExtractResult,
   UseSmartExtractRunOptions,
 } from './useSmartExtract.js';
+
+export { usePromptTemplate } from './use-prompt-template.js';
+export type {
+  UsePromptTemplateOptions,
+  UsePromptTemplateReturn,
+  PromptTemplate,
+  PromptVariable,
+  PromptVariant,
+  PromptMetrics,
+  PromptTestResult,
+} from '../types/prompt-template.js';
