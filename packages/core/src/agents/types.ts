@@ -7,11 +7,20 @@
 /**
  * Agent tool definition
  */
+export type AgentUiDisplayType = 'text' | 'markdown' | 'json' | 'html' | 'component';
+
+export interface AgentToolUiContext {
+  displayElement?: string;
+  displayAs?: AgentUiDisplayType;
+  additionalProps?: Record<string, unknown>;
+}
+
 export interface AgentTool {
   name: string;
   description: string;
   execute: (input: unknown) => Promise<unknown>;
   schema?: Record<string, unknown>;
+  uiContext?: AgentToolUiContext;
 }
 
 /**
@@ -30,6 +39,7 @@ export interface AgentStepResult {
   action: AgentAction;
   observation: unknown;
   timestamp: number;
+  ui?: AgentToolUiContext;
 }
 
 /**
@@ -54,6 +64,12 @@ export interface AgentResponse {
   };
 }
 
+export interface AgentThinkingConfig {
+  displaySteps?: boolean;
+  updateUI?: boolean;
+  onStep?: (step: AgentStepResult) => void;
+}
+
 /**
  * Agent configuration
  */
@@ -64,6 +80,8 @@ export interface AgentConfig {
   maxSteps?: number;
   temperature?: number;
   systemPrompt?: string;
+  goal?: string;
+  thinking?: AgentThinkingConfig;
 }
 
 /**
@@ -76,4 +94,5 @@ export interface AgentExecutionContext {
   maxSteps: number;
   currentStep: number;
   memory: Map<string, unknown>;
+  thinking?: AgentThinkingConfig;
 }

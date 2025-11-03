@@ -11,6 +11,7 @@ import type {
   AgentAction,
   AgentExecutionContext,
   AgentTool,
+  AgentThinkingConfig,
 } from './types.js';
 
 /**
@@ -25,6 +26,8 @@ export class Agent {
   private readonly temperature: number;
   private readonly systemPrompt: string;
   private readonly model: ILanguageModel;
+  private readonly defaultGoal?: string;
+  private readonly thinking?: AgentThinkingConfig;
 
   public constructor(model: ILanguageModel, config: AgentConfig) {
     this.name = config.name;
@@ -34,6 +37,8 @@ export class Agent {
     this.temperature = config.temperature ?? 0.7;
     this.systemPrompt = config.systemPrompt ?? this.getDefaultSystemPrompt();
     this.model = model;
+    this.defaultGoal = config.goal;
+    this.thinking = config.thinking;
 
     this.logger.debug('Agent initialized', {
       name: this.name,
@@ -45,16 +50,18 @@ export class Agent {
   /**
    * Execute the agent with a goal
    */
-  public async execute(goal: string): Promise<AgentResponse> {
-    this.logger.debug('Agent executing', { goal });
+  public async execute(goal?: string): Promise<AgentResponse> {
+    const targetGoal = goal ?? this.defaultGoal ?? 'Solve the provided task';
+    this.logger.debug('Agent executing', { goal: targetGoal });
 
     const context: AgentExecutionContext = {
-      goal,
+      goal: targetGoal,
       steps: [],
       availableTools: Array.from(this.tools.values()),
       maxSteps: this.maxSteps,
       currentStep: 0,
       memory: new Map(),
+      thinking: this.thinking,
     };
 
     let result: unknown = null;
@@ -86,10 +93,27 @@ export class Agent {
             action,
             observation,
             timestamp: Date.now(),
+            ui: tool.uiContext,
           };
 
           context.steps.push(step);
           context.memory.set(`step_${context.currentStep}`, observation);
+
+          if (this.thinking?.displaySteps) {
+            this.logger.info('Agent step summary', {
+              step: context.currentStep,
+              tool: action.tool,
+              reasoning: action.reasoning,
+            });
+          }
+
+          if (this.thinking?.updateUI && this.thinking?.onStep) {
+            try {
+              this.thinking.onStep(step);
+            } catch (callbackError) {
+              this.logger.warn('Thinking onStep callback failed', { error: callbackError });
+            }
+          }
 
           this.logger.debug('Agent step completed', {
             step: context.currentStep,

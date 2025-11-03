@@ -6,6 +6,12 @@ import { getLogger, validateDefined } from '@weaveai/shared';
 import type { ILanguageModel } from './providers';
 import { getProviderRegistry, MockLanguageModel } from './providers';
 import { GenerateOperation, ClassifyOperation, ExtractOperation } from './operations';
+import { Agent } from './agents/agent.js';
+import type {
+  AgentTool,
+  AgentConfig,
+  AgentThinkingConfig,
+} from './agents/types.js';
 import type {
   WeaveConfig,
   GenerateOptions,
@@ -27,6 +33,10 @@ export class Weave {
   private readonly classifyOp: ClassifyOperation;
   private readonly extractOp: ExtractOperation;
   private readonly logger = getLogger();
+  private readonly agentDefaults = {
+    name: 'Weave Agent',
+    description: 'An intelligent agent powered by Weave',
+  };
 
   public constructor(config: WeaveConfig) {
     validateDefined(config, 'config');
@@ -73,6 +83,83 @@ export class Weave {
     options?: ExtractOptions
   ): Promise<ExtractResult<T>> {
     return this.extractOp.execute<T>(text, schema, options);
+  }
+
+  /**
+   * Create an agent instance with optional UI-aware tools
+   */
+  public createAgent(options: CreateAgentOptions): Agent {
+    const normalizedTools = options.tools.map((tool) =>
+      this.normalizeAgentTool(tool)
+    );
+
+    const agentConfig: AgentConfig = {
+      name: options.name ?? this.agentDefaults.name,
+      description: options.description ?? options.goal ?? this.agentDefaults.description,
+      tools: normalizedTools,
+      maxSteps: options.maxSteps,
+      temperature: options.temperature,
+      systemPrompt: options.systemPrompt,
+      goal: options.goal,
+      thinking: options.thinking,
+    };
+
+    return new Agent(this.model, agentConfig);
+  }
+
+  private normalizeAgentTool(tool: AgentToolDefinition): AgentTool {
+    if (typeof tool !== 'string') {
+      return tool;
+    }
+
+    switch (tool) {
+      case 'generate':
+        return {
+          name: 'generate',
+          description: 'Generate text using the current provider',
+          execute: async (input: unknown) => {
+            const { prompt, options } = (input as { prompt?: string; options?: GenerateOptions }) ?? {};
+            if (!prompt || typeof prompt !== 'string') {
+              throw new Error('Generate tool requires a "prompt" string');
+            }
+            return this.generate(prompt, options);
+          },
+        };
+      case 'classify':
+        return {
+          name: 'classify',
+          description: 'Classify text into predefined labels',
+          execute: async (input: unknown) => {
+            const { text, labels, options } =
+              (input as { text?: string; labels?: string[]; options?: ClassifyOptions }) ?? {};
+            if (!text || typeof text !== 'string') {
+              throw new Error('Classify tool requires a "text" string');
+            }
+            if (!Array.isArray(labels) || labels.length === 0) {
+              throw new Error('Classify tool requires a non-empty "labels" array');
+            }
+            return this.classify(text, labels, options);
+          },
+        };
+      case 'extract':
+        return {
+          name: 'extract',
+          description: 'Extract structured data using a schema',
+          execute: async (input: unknown) => {
+            const { text, schema, options } =
+              (input as { text?: string; schema?: unknown; options?: ExtractOptions }) ?? {};
+            if (!text || typeof text !== 'string') {
+              throw new Error('Extract tool requires a "text" string');
+            }
+            if (!schema) {
+              throw new Error('Extract tool requires a "schema"');
+            }
+            return this.extract(text, schema, options);
+          },
+        };
+      default:
+        throw new Error(`Unknown built-in agent tool: ${tool}`);
+    }
   }
 
   /**
@@ -162,4 +249,17 @@ export class Weave {
  */
 export function createWeave(config: WeaveConfig): Weave {
   return new Weave(config);
+}
+
+export type AgentToolDefinition = AgentTool | 'generate' | 'classify' | 'extract';
+
+export interface CreateAgentOptions {
+  name?: string;
+  description?: string;
+  goal?: string;
+  tools: AgentToolDefinition[];
+  thinking?: AgentThinkingConfig;
+  maxSteps?: number;
+  temperature?: number;
+  systemPrompt?: string;
 }

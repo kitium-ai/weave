@@ -145,10 +145,6 @@ export class HookBuilder {
   private static generateHookCode(spec: HookSpec): string {
     const returnTypeInterface = this.toCamelCase(spec.name) + 'Return';
     const optionsInterface = this.toCamelCase(spec.name) + 'Options';
-    const params = spec.parameters
-      .map((p) => `  ${p.name}${p.optional ? '?' : ''}: ${p.type}`)
-      .join(',\n');
-
     const hookCode = `/**
  * ${spec.name} Hook
  * ${spec.description}

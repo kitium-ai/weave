@@ -6,6 +6,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Agent } from '../src/agents/agent.js';
 import type { AgentTool, AgentConfig } from '../src/agents/types.js';
 import type { ILanguageModel } from '../src/providers/interfaces.js';
+import { Weave } from '../src/weave.js';
 
 // Mock language model
 const createMockModel = (): ILanguageModel => {
@@ -42,6 +43,10 @@ describe('Agent Framework', () => {
           a: { type: 'number' },
           b: { type: 'number' },
         },
+      },
+      uiContext: {
+        displayAs: 'json',
+        displayElement: '#calc-results',
       },
     };
 
@@ -132,6 +137,25 @@ describe('Agent Framework', () => {
       await agent.execute('Calculate 5 + 3');
 
       expect(calculatorTool.execute).toHaveBeenCalled();
+    });
+
+    it('should include ui context and trigger thinking callbacks when configured', async () => {
+      const onStep = vi.fn();
+      const config: AgentConfig = {
+        ...agentConfig,
+        thinking: {
+          displaySteps: true,
+          updateUI: true,
+          onStep,
+        },
+      };
+
+      const agent = new Agent(model, config);
+      const response = await agent.execute('Explain your math');
+
+      expect(response.steps[0]?.ui).toEqual(calculatorTool.uiContext);
+      expect(onStep).toHaveBeenCalled();
+      expect(onStep.mock.calls[0][0].ui).toEqual(calculatorTool.uiContext);
     });
 
     it('should handle tool execution errors gracefully', async () => {
@@ -238,5 +262,41 @@ describe('Agent Framework', () => {
       expect(response).toBeDefined();
       expect(response.steps.length).toBeLessThanOrEqual(5);
     });
+  });
+});
+
+describe(''Weave agent factory'', () => {
+  it(''should create an agent with built-in tools'', () => {
+    const weave = new Weave({ provider: { type: ''mock'' } as any });
+    const agent = weave.createAgent({ tools: [''generate'', ''classify''], goal: ''Classify data'' });
+
+    const toolNames = agent.getTools().map((tool) => tool.name);
+    expect(toolNames).toContain(''generate'');
+    expect(toolNames).toContain(''classify'');
+  });
+
+  it(''should keep custom ui-aware tools'', async () => {
+    const weave = new Weave({ provider: { type: ''mock'' } as any });
+    const displayTool: AgentTool = {
+      name: ''display-result'',
+      description: ''Display data in UI'',
+      uiContext: {
+        displayElement: ''#analysis-panel'',
+        displayAs: ''markdown'',
+      },
+      execute: vi.fn().mockResolvedValue({ success: true, displayed: true }),
+    };
+
+    const agent = weave.createAgent({
+      tools: [''generate'', displayTool],
+      goal: ''Show answer'',
+      thinking: {
+        updateUI: true,
+        onStep: vi.fn(),
+      },
+    });
+
+    const uiTool = agent.getTools().find((tool) => tool.name === ''display-result'');
+    expect(uiTool?.uiContext?.displayElement).toBe(''#analysis-panel'');
   });
 });

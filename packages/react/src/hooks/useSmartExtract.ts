@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import type { ExtractOptions, ExtractResult } from '@weaveai/core';
+import type { ExtractOptions } from '@weaveai/core';
 import { useWeaveContext } from '../context/WeaveContext.js';
 
-export interface UseSmartExtractOptions<TOutput = Record<string, unknown>> {
+export interface UseSmartExtractOptions<TOutput extends Record<string, unknown> = Record<string, unknown>> {
+  initialData?: Partial<TOutput>;
   targetSchema: unknown;
   fuzzyMatch?: boolean;
   confidence?: number;
@@ -11,18 +12,19 @@ export interface UseSmartExtractOptions<TOutput = Record<string, unknown>> {
   promptSuffix?: string;
 }
 
-export interface UseSmartExtractRunOptions<TOutput = Record<string, unknown>>
-  extends Partial<UseSmartExtractOptions<TOutput>> {
+export type UseSmartExtractRunOptions<
+  TOutput extends Record<string, unknown> = Record<string, unknown>
+> = Partial<UseSmartExtractOptions<TOutput>> & {
   overrideConfidence?: number;
-}
+};
 
-export interface SmartExtractResult<TOutput> {
+export interface SmartExtractResult<TOutput extends Record<string, unknown>> {
   data: TOutput | null;
   confidence: number;
   missingFields: string[];
 }
 
-export interface UseSmartExtractReturn<TOutput = Record<string, unknown>> {
+export interface UseSmartExtractReturn<TOutput extends Record<string, unknown> = Record<string, unknown>> {
   extract: (
     input: string,
     options?: UseSmartExtractRunOptions<TOutput>
