@@ -4,16 +4,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ChatMessage, GenerateOptions, GenerateResult } from '@weaveai/core';
+import type { CostSummary } from './useAI.js';
 import { useWeaveContext } from '../context/WeaveContext.js';
-
-export interface ChatCostSummary {
-  totalCost: number;
-  currency: string;
-  tokens: {
-    input: number;
-    output: number;
-  };
-}
 
 export interface UseAIChatOptions {
   initialMessages?: ChatMessage[];
@@ -38,7 +30,7 @@ export interface UseAIChatReturn {
   isLoading: boolean;
   streaming: boolean;
   error: Error | null;
-  costSummary: ChatCostSummary | null;
+  costSummary: CostSummary | null;
   sendMessage: (content: string, options?: GenerateOptions) => Promise<string | null>;
   addMessage: (message: ChatMessage) => void;
   removeMessage: (index: number) => void;
@@ -67,7 +59,7 @@ export function useAIChat(options?: UseAIChatOptions): UseAIChatReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [costSummary, setCostSummary] = useState<ChatCostSummary | null>(null);
+  const [costSummary, setCostSummary] = useState<CostSummary | null>(null);
 
   const streamingBufferRef = useRef('');
   const streamingLastEmitRef = useRef(0);

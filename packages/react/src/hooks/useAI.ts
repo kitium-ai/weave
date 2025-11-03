@@ -26,6 +26,13 @@ export interface UseAIOptions<T = unknown> {
   onSuccess?: (data: T) => void;
   onError?: (error: Error, result?: T) => void;
   onStart?: () => void;
+  trackCosts?: boolean;
+  budget?: {
+    perOperation?: number;
+    perSession?: number;
+    onBudgetExceeded?: 'warn' | 'block';
+  };
+  operation?: 'generate' | 'classify' | 'extract' | 'custom';
 }
 
 /**
@@ -36,7 +43,19 @@ export interface UseAIReturn<T = unknown> {
   loading: boolean;
   error: Error | null;
   status: AIStatus;
+  cost: CostSummary | null;
+  budgetExceeded: boolean;
+  resetCost: () => void;
   execute: (fn: () => Promise<T>) => Promise<T | null>;
+}
+
+export interface CostSummary {
+  totalCost: number;
+  currency: string;
+  tokens: {
+    input: number;
+    output: number;
+  };
 }
 
 /**
@@ -47,10 +66,33 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [costSummary, setCostSummary] = useState<CostSummary | null>(null);
+  const [budgetExceeded, setBudgetExceeded] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const sessionCostRef = useRef<number>(0);
 
   const isWeaveResult = (value: unknown): value is WeaveOperationResult =>
     typeof value === 'object' && value !== null && 'status' in value && 'metadata' in value;
+
+  const resetCost = useCallback(() => {
+    setCostSummary(null);
+    sessionCostRef.current = 0;
+    setBudgetExceeded(false);
+  }, []);
+
+  const handleBudgetExceeded = useCallback(
+    (message: string, mode: 'warn' | 'block', result?: T) => {
+      setBudgetExceeded(true);
+      if (mode === 'warn') {
+        console.warn(message);
+      } else {
+        const budgetError = new Error(message);
+        setError(budgetError);
+        options?.onError?.(budgetError, result);
+      }
+    },
+    [options]
+  );
 
   const execute = useCallback(
     async (fn: () => Promise<T>): Promise<T | null> => {
@@ -61,13 +103,79 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
         return null;
       }
 
+      const budget = options?.budget;
+      const onBudgetExceeded = budget?.onBudgetExceeded ?? 'warn';
+
+      if (budget?.perSession !== undefined && sessionCostRef.current >= budget.perSession) {
+        if (onBudgetExceeded === 'block') {
+          const budgetError = new Error('Session budget exceeded');
+          setError(budgetError);
+          options?.onError?.(budgetError);
+          setBudgetExceeded(true);
+          return null;
+        }
+        console.warn('Session budget exceeded');
+      }
+
       try {
         setLoading(true);
         setError(null);
         options?.onStart?.();
+        setBudgetExceeded(false);
 
         abortControllerRef.current = new AbortController();
         const result = await fn();
+
+        if (isWeaveResult(result)) {
+          const cost = result.metadata.cost?.total ?? 0;
+
+          if (options?.trackCosts && result.metadata.cost) {
+            setCostSummary((prev) => {
+              if (!prev) {
+                return {
+                  totalCost: result.metadata.cost?.total ?? 0,
+                  currency: result.metadata.cost?.currency ?? 'USD',
+                  tokens: {
+                    input: result.metadata.tokens?.input ?? 0,
+                    output: result.metadata.tokens?.output ?? 0,
+                  },
+                };
+              }
+              return {
+                totalCost: prev.totalCost + (result.metadata.cost?.total ?? 0),
+                currency: result.metadata.cost?.currency ?? prev.currency,
+                tokens: {
+                  input: prev.tokens.input + (result.metadata.tokens?.input ?? 0),
+                  output: prev.tokens.output + (result.metadata.tokens?.output ?? 0),
+                },
+              };
+            });
+          }
+
+          if (options?.trackCosts) {
+            sessionCostRef.current += cost;
+          }
+
+          if (budget?.perOperation !== undefined && cost > budget.perOperation) {
+            handleBudgetExceeded('Operation budget exceeded', onBudgetExceeded);
+            if (onBudgetExceeded === 'block') {
+              options?.onError?.(new Error('Operation budget exceeded'), result as unknown as T);
+              return null;
+            }
+          }
+
+          if (
+            budget?.perSession !== undefined &&
+            sessionCostRef.current > budget.perSession
+          ) {
+            handleBudgetExceeded('Session budget exceeded', onBudgetExceeded);
+            if (onBudgetExceeded === 'block') {
+              options?.onError?.(new Error('Session budget exceeded'), result as unknown as T);
+              return null;
+            }
+          }
+        }
+
         setData(result);
 
         if (isWeaveResult(result) && result.status === 'error') {
@@ -96,6 +204,9 @@ export function useAI<T = unknown>(options?: UseAIOptions<T>): UseAIReturn<T> {
     loading,
     error,
     status: loading ? 'loading' : error ? 'error' : data ? 'success' : 'idle',
+    cost: costSummary,
+    budgetExceeded,
+    resetCost,
     execute,
   };
 }

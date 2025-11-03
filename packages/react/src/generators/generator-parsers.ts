@@ -294,7 +294,7 @@ export class UtilSpecParser {
     return 'general';
   }
 
-  private static generateExamples(name: string, description: string): string[] {
+  private static generateExamples(name: string, _description: string): string[] {
     return [
       `${name}('example')`,
       `${name}({ key: 'value' })`,
