@@ -39,9 +39,19 @@ export class WeaveError extends Error {
     this.statusCode = options.statusCode || 500;
     this.timestamp = new Date();
 
-    // Capture stack trace
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, WeaveError);
+    // Capture stack trace if available (Node.js feature)
+    if (
+      typeof (
+        Error as unknown as {
+          captureStackTrace?: (target: Error, constructor: Record<string, unknown>) => void;
+        }
+      ).captureStackTrace === 'function'
+    ) {
+      (
+        Error as unknown as {
+          captureStackTrace: (target: Error, constructor: Record<string, unknown>) => void;
+        }
+      ).captureStackTrace(this, WeaveError as unknown as Record<string, unknown>);
     }
   }
 

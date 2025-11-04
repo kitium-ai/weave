@@ -229,7 +229,7 @@ app.get('/api/health', (req, res) => {
 
 // Error handling
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', err);
+  logError('Error:', err);
   res.status(err.status || 500).json({
     success: false,
     error: err.message || 'Internal server error',
@@ -289,7 +289,7 @@ export class ProductsController {
   }
 
   private handleError(error: any, res: Response): void {
-    console.error('Controller error:', error);
+    logError('Controller error:', error);
     res.status(error.status || 500).json({
       success: false,
       error: error.message || 'Internal server error',

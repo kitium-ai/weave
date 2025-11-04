@@ -9,6 +9,7 @@
  * - React Hook Form compatibility
  */
 
+import { logError } from '@weaveai/shared';
 import { useState, useCallback, useMemo } from 'react';
 
 export interface UseAIFormOptions {
@@ -121,7 +122,7 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
       try {
         await onSubmit?.(values);
       } catch (error) {
-        console.error('Form submission error:', error);
+        logError('Form submission error:', error);
       } finally {
         setIsSubmitting(false);
       }
@@ -149,7 +150,7 @@ export function useAIForm(options: UseAIFormOptions = {}): UseAIFormReturn {
       const formErrors = validateForm(newValues);
       setErrors(formErrors);
     } catch (error) {
-      console.error('AI fill error:', error);
+      logError('AI fill error:', error);
     } finally {
       setIsValidating(false);
     }

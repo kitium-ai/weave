@@ -1,3 +1,4 @@
+import { logError } from '@weaveai/shared';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -220,7 +221,7 @@ export class AIFormComponent implements OnInit {
       await this.onSubmit(this.formData);
       this.submit.emit(this.formData);
     } catch (error) {
-      console.error('Form submission error:', error);
+      logError('Form submission error:', error);
     } finally {
       this.isSubmitting = false;
     }
@@ -239,7 +240,7 @@ export class AIFormComponent implements OnInit {
         }
       }
     } catch (error) {
-      console.error('AI fill error:', error);
+      logError('AI fill error:', error);
     } finally {
       this.isSubmitting = false;
     }

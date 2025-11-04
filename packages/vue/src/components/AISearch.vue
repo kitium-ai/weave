@@ -35,46 +35,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { AISearchProps } from '../types/components'
+import { ref } from 'vue';
+import type { AISearchProps } from '../types/components';
 
 const props = withDefaults(defineProps<AISearchProps>(), {
   placeholder: 'Search...',
   showScore: true,
   isLoading: false,
-  results: () => []
-})
+  results: () => [],
+});
 
 const emit = defineEmits<{
-  search: [query: string]
-  selectResult: [result: any]
-}>()
+  search: [query: string];
+  selectResult: [result: any];
+}>();
 
-const searchQuery = ref('')
-const isLoading = ref(props.isLoading)
-const hasSearched = ref(false)
+const searchQuery = ref('');
+const isLoading = ref(props.isLoading);
+const hasSearched = ref(false);
 
 const handleSearch = async () => {
-  if (!searchQuery.value.trim()) return
+  if (!searchQuery.value.trim()) return;
 
-  hasSearched.value = true
-  isLoading.value = true
+  hasSearched.value = true;
+  isLoading.value = true;
 
   try {
-    emit('search', searchQuery.value)
+    emit('search', searchQuery.value);
     if (props.onSearch) {
-      await props.onSearch(searchQuery.value)
+      await props.onSearch(searchQuery.value);
     }
   } catch (error) {
-    console.error('Search error:', error)
+    logError('Search error:', error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 const selectResult = (result: any) => {
-  emit('selectResult', result)
-}
+  emit('selectResult', result);
+};
 </script>
 
 <style scoped>
@@ -148,7 +148,9 @@ const selectResult = (result: any) => {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
 .weave-search__result-item:hover {

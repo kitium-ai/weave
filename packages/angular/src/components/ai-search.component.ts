@@ -1,3 +1,4 @@
+import { logError } from '@weaveai/shared';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -156,7 +157,7 @@ export class AISearchComponent {
         await this.onSearch(this.searchQuery);
       }
     } catch (error) {
-      console.error('Search error:', error);
+      logError('Search error:', error);
     }
   }
 

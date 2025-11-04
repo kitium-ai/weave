@@ -1,3 +1,4 @@
+import { logError } from '@weaveai/shared';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -132,7 +133,7 @@ export class AITextareaComponent {
         this.valueChange.emit(this.value);
       }
     } catch (error) {
-      console.error('AI suggestion error:', error);
+      logError('AI suggestion error:', error);
     } finally {
       this.isLoading = false;
     }

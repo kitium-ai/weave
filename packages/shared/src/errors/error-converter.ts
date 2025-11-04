@@ -1,6 +1,6 @@
 /**
  * Error Converter Utility
- * Normalizes and converts various error types to standard Weave error format
+ * Normalizes and converts various error types to the standard Weave error format
  */
 
 import type { WeaveError } from './index.js';
@@ -47,7 +47,7 @@ export function getErrorStatus(error: unknown): number | undefined {
 }
 
 /**
- * Check if error is a rate limit error
+ * Check if the error is a rate limit error
  */
 function isRateLimitError(error: unknown): boolean {
   if (error instanceof RateLimitError) {
@@ -62,7 +62,7 @@ function isRateLimitError(error: unknown): boolean {
 }
 
 /**
- * Check if error is an authentication error
+ * Check if the error is an authentication error
  */
 function isAuthenticationError(error: unknown): boolean {
   if (error instanceof AuthenticationError) {
@@ -83,7 +83,7 @@ function isAuthenticationError(error: unknown): boolean {
 }
 
 /**
- * Check if error is a timeout error
+ * Check if the error is a timeout error
  */
 function isTimeoutError(error: unknown): boolean {
   if (error instanceof TimeoutError) {
@@ -103,7 +103,7 @@ function isTimeoutError(error: unknown): boolean {
 }
 
 /**
- * Check if error is a validation error
+ * Check if the error is a validation error
  */
 function isValidationError(error: unknown): boolean {
   if (error instanceof ValidationError) {
@@ -220,7 +220,7 @@ export function safeNormalizeError(
     }
     return normalizeError(error, context, providerName);
   } catch {
-    // If normalization fails, create basic error
+    // If normalization fails, create a basic error
     return new WeaveErrorClass('Failed to normalize error', 'ERROR_NORMALIZATION_FAILED', 500, {
       originalError: error,
     });
@@ -251,7 +251,7 @@ export function formatErrorMessage(error: unknown, includeStack = false): string
 }
 
 /**
- * Chain error handling with custom handler
+ * Chain error handling with a custom handler
  */
 export function handleError(
   error: unknown,

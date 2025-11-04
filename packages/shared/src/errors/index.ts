@@ -1,6 +1,6 @@
 /**
  * Error classes for Weave framework
- * Provides hierarchical error types for different failure scenarios
+ * Provide hierarchical error types for different failure scenarios
  */
 
 export class WeaveError extends Error {
@@ -108,7 +108,7 @@ export class OperationError extends WeaveError {
 }
 
 /**
- * Type guard to check if error is a WeaveError
+ * Type guard to check if the error is a WeaveError
  */
 export function isWeaveError(error: unknown): error is WeaveError {
   return error instanceof WeaveError;
@@ -126,6 +126,3 @@ export function isErrorType<T extends WeaveError>(
 
 // Export error converter utilities
 export * from './error-converter.js';
-
-// Export error logger utilities
-export * from './error-logger.js';

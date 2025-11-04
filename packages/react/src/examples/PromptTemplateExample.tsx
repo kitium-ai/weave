@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { usePromptTemplate, PromptEditor } from '@weaveai/react';
+import { logError, logInfo } from '@weaveai/shared';
 
 export const BasicPromptTemplateExample = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -45,6 +46,10 @@ export const BasicPromptTemplateExample = () => {
         variables={currentTemplate.variables}
         onChange={(template) => setTemplate(template)}
         onTest={handleTest}
+        onSave={() => {}}
+        variants={[]}
+        onVariantChange={() => {}}
+        className={''}
         testData={{
           wordCount: '500',
           topic: 'Machine Learning',
@@ -202,7 +207,7 @@ export const PromptTemplatePersistenceExample = () => {
           const json = event.target?.result as string;
           importTemplate(json);
         } catch (error) {
-          console.error('Import failed:', error);
+          logError('Import failed:', error);
         }
       };
       reader.readAsText(file);
@@ -298,7 +303,7 @@ export const PromptTemplateValidationExample = () => {
         type: 'string',
         required: true,
         validation: (value: unknown) => {
-          const valid = ['contact', 'registration', 'survey'].includes(value);
+          const valid = ['contact', 'registration', 'survey'].includes(value as string);
           return valid || 'Must be: contact, registration, or survey';
         },
       },
@@ -321,8 +326,8 @@ export const PromptTemplateValidationExample = () => {
       fieldCount: 5,
     });
 
-    console.log('Template validation:', templateValid);
-    console.log('Variables validation:', variablesValid);
+    logInfo('Template validation:', templateValid);
+    logInfo('Variables validation:', variablesValid);
   };
 
   return (

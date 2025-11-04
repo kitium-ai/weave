@@ -1,0 +1,63 @@
+{
+  "Weave Chat": {
+    "prefix": "weave-chat",
+    "body": [
+      "// Use Weave Chat in your Cursor IDE",
+      "// Press Ctrl+Shift+/ to open the chat panel",
+      "// Ask questions and get AI-powered responses"
+    ],
+    "description": "Quick access to Weave Chat functionality"
+  },
+  "Weave Inline Edit": {
+    "prefix": "weave-edit",
+    "body": [
+      "// Use Weave Inline Edit for code modifications",
+      "// 1. Select the code you want to edit",
+      "// 2. Press Ctrl+K Ctrl+I",
+      "// 3. Enter your edit instruction",
+      "// Example: 'Add error handling' or 'Convert to async/await'"
+    ],
+    "description": "Quick reference for Weave inline editing"
+  },
+  "Weave Code Analysis": {
+    "prefix": "weave-analyze",
+    "body": [
+      "// Use Weave to analyze code quality",
+      "// 1. Select code to analyze",
+      "// 2. Press Ctrl+Shift+W A",
+      "// Weave will provide:",
+      "//   - Code quality assessment",
+      "//   - Potential issues",
+      "//   - Performance considerations",
+      "//   - Best practice recommendations"
+    ],
+    "description": "Code analysis with Weave AI"
+  },
+  "Weave Optimization": {
+    "prefix": "weave-optimize",
+    "body": [
+      "// Get optimization suggestions from Weave",
+      "// 1. Select code to optimize",
+      "// 2. Press Ctrl+Shift+W O",
+      "// Review suggestions for:",
+      "//   - Performance improvements",
+      "//   - Code clarity",
+      "//   - Efficiency gains",
+      "//   - Modern patterns"
+    ],
+    "description": "Get optimization suggestions with Weave"
+  },
+  "Weave Generate Prompt": {
+    "prefix": "weave-prompt",
+    "body": [
+      "// Generate AI-optimized prompts with Weave",
+      "// 1. Select code",
+      "// 2. Press Ctrl+Shift+W P",
+      "// Use generated prompt for:",
+      "//   - AI training",
+      "//   - Code documentation",
+      "//   - Fine-tuning models"
+    ],
+    "description": "Generate optimized prompts for selected code"
+  }
+}

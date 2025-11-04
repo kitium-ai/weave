@@ -172,7 +172,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     return res.status(200).json(result);
   } catch (error) {
-    console.error('API error:', error);
+    logError('API error:', error);
     return res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Internal server error',

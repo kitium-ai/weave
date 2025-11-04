@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+  <id>com.kitiumai.weave</id>
+  <name>Weave AI Assistant</name>
+  <vendor email="support@kitium.ai" url="https://github.com/kitium-ai/weave">KitiumAI</vendor>
+
+  <description><![CDATA[
+    <p>Weave AI Assistant for WebStorm - Intelligent code analysis, editing, and optimization powered by Anthropic's Claude.</p>
+    <p>Features:</p>
+    <ul>
+      <li><strong>AI Chat</strong> - Real-time conversation with Claude AI</li>
+      <li><strong>Code Analysis</strong> - Comprehensive code quality assessment</li>
+      <li><strong>Inline Editing</strong> - Edit code with natural language instructions</li>
+      <li><strong>Optimization Suggestions</strong> - Get performance improvement ideas</li>
+      <li><strong>Documentation Generation</strong> - Auto-generate JSDoc/docstrings</li>
+      <li><strong>Prompt Generation</strong> - Create AI-optimized prompts from code</li>
+    </ul>
+    <p>Quick Start: Configure your Anthropic API key in settings and press Ctrl+Shift+/ to open the chat panel.</p>
+  ]]></description>
+
+  <change-notes><![CDATA[
+    <h3>1.0.0 Initial Release</h3>
+    <ul>
+      <li>Chat interface with Anthropic Claude</li>
+      <li>Code analysis and insights</li>
+      <li>Inline code editing</li>
+      <li>Optimization suggestions</li>
+      <li>Documentation generation</li>
+      <li>Prompt generation for AI training</li>
+    </ul>
+  ]]></change-notes>
+
+  <!-- Plugin compatibility -->
+  <idea-version since-build="231.0" until-build="241.*"/>
+
+  <!-- Declare support for WebStorm and other JetBrains IDEs -->
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.platform</depends>
+
+  <actions>
+    <!-- Chat Action -->
+    <action id="Weave.ChatAction"
+            class="com.kitiumai.weave.actions.ChatAction"
+            text="Chat with Weave AI"
+            description="Open Weave AI chat panel">
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift slash"/>
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+      <add-to-group group-id="ConsoleEditorPopupMenu" anchor="first"/>
+      <add-to-group group-id="EditorTabPopupMenu" anchor="first"/>
+    </action>
+
+    <!-- Inline Edit Action -->
+    <action id="Weave.InlineEditAction"
+            class="com.kitiumai.weave.actions.InlineEditAction"
+            text="Weave: Inline Edit"
+            description="Edit selected code with AI assistance">
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl k" second-keystroke="ctrl i"/>
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+
+    <!-- Analyze Code Action -->
+    <action id="Weave.AnalyzeCodeAction"
+            class="com.kitiumai.weave.actions.AnalyzeCodeAction"
+            text="Weave: Analyze Code"
+            description="Analyze code quality and get insights">
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift w" second-keystroke="a"/>
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+
+    <!-- Optimize Code Action -->
+    <action id="Weave.OptimizeAction"
+            class="com.kitiumai.weave.actions.OptimizeAction"
+            text="Weave: Suggest Optimization"
+            description="Get AI-powered optimization suggestions">
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift w" second-keystroke="o"/>
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+
+    <!-- Generate Prompt Action -->
+    <action id="Weave.GeneratePromptAction"
+            class="com.kitiumai.weave.actions.GeneratePromptAction"
+            text="Weave: Generate Prompt"
+            description="Generate an optimized prompt for selected code">
+      <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift w" second-keystroke="p"/>
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+
+    <!-- Generate Documentation Action -->
+    <action id="Weave.GenerateDocAction"
+            class="com.kitiumai.weave.actions.GenerateDocAction"
+            text="Weave: Generate Documentation"
+            description="Generate JSDoc/docstring for selected code">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+  </actions>
+
+  <!-- Settings -->
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Settings Configurable -->
+    <projectConfigurable parentId="tools" id="Weave.Settings"
+                         instance="com.kitiumai.weave.settings.WeaveSettingsConfigurable"
+                         displayName="Weave AI Assistant"
+                         nonDefaultProject="false"/>
+
+    <!-- Persistent Settings Storage -->
+    <projectService serviceImplementation="com.kitiumai.weave.settings.WeaveSettings"/>
+
+    <!-- Toolwindow Factory -->
+    <toolWindowFactory id="Weave AI Chat"
+                       implementation="com.kitiumai.weave.toolwindow.WeaveChatToolWindowFactory"
+                       anchor="right"
+                       icon="/icons/weave.svg"
+                       doNotActivateOnStart="true"/>
+
+    <!-- Editor Listener -->
+    <editorFactoryListener implementation="com.kitiumai.weave.editor.WeaveEditorListener"/>
+  </extensions>
+
+  <!-- Application Listeners -->
+  <applicationListeners>
+    <listener class="com.kitiumai.weave.listeners.WeaveStartupListener"
+              topic="com.intellij.ide.AppLifecycleListener"/>
+  </applicationListeners>
+
+  <!-- Project Listeners -->
+  <projectListeners>
+    <listener class="com.kitiumai.weave.listeners.WeaveProjectListener"
+              topic="com.intellij.openapi.project.ProjectManagerListener"/>
+  </projectListeners>
+
+</idea-plugin>

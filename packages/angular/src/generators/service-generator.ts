@@ -73,7 +73,7 @@ ${methods}
     ).pipe(
       tap(response => console.log('Response:', response)),
       catchError(error => {
-        console.error('Error:', error);
+        logError('Error:', error);
         return of(null);
       })
     );
@@ -144,7 +144,7 @@ export class ExampleComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (data) => console.log(data),
-        (error) => console.error(error)
+        (error) => logError(error)
       );
   }
 

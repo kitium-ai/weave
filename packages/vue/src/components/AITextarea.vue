@@ -23,56 +23,56 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { AITextareaProps } from '../types/components'
+import { ref, computed } from 'vue';
+import type { AITextareaProps } from '../types/components';
 
 const props = withDefaults(defineProps<AITextareaProps>(), {
   minRows: 3,
   maxRows: 8,
   placeholder: 'Enter text here...',
   disabled: false,
-  readonly: false
-})
+  readonly: false,
+});
 
 const emit = defineEmits<{
-  'update:value': [value: string]
-}>()
+  'update:value': [value: string];
+}>();
 
-const isLoading = ref(false)
-const lineHeight = 24 // Default line height in pixels
+const isLoading = ref(false);
+const lineHeight = 24; // Default line height in pixels
 
 const minHeight = computed(() => {
-  return (props.minRows || 3) * lineHeight
-})
+  return (props.minRows || 3) * lineHeight;
+});
 
 const maxHeight = computed(() => {
-  return (props.maxRows || 8) * lineHeight
-})
+  return (props.maxRows || 8) * lineHeight;
+});
 
 const handleInput = (e: Event) => {
-  const target = e.target as HTMLTextAreaElement
-  emit('update:value', target.value)
+  const target = e.target as HTMLTextAreaElement;
+  emit('update:value', target.value);
 
   // Auto-resize based on content
-  target.style.height = 'auto'
-  target.style.height = Math.min(target.scrollHeight, maxHeight.value) + 'px'
-}
+  target.style.height = 'auto';
+  target.style.height = Math.min(target.scrollHeight, maxHeight.value) + 'px';
+};
 
 const handleAISuggest = async () => {
-  if (!props.onAISuggest || isLoading.value || !props.value) return
+  if (!props.onAISuggest || isLoading.value || !props.value) return;
 
-  isLoading.value = true
+  isLoading.value = true;
   try {
-    const suggestion = await props.onAISuggest(props.value)
+    const suggestion = await props.onAISuggest(props.value);
     if (suggestion) {
-      emit('update:value', suggestion)
+      emit('update:value', suggestion);
     }
   } catch (error) {
-    console.error('AI suggestion error:', error)
+    logError('AI suggestion error:', error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 </script>
 
 <style scoped>
@@ -92,7 +92,9 @@ const handleAISuggest = async () => {
   line-height: 1.5;
   resize: none;
   overflow-y: auto;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .weave-textarea:focus {

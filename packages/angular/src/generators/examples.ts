@@ -3,6 +3,7 @@
  * Demonstrates how to use Angular component and service generators
  */
 
+import { logError, logInfo } from '@weaveai/shared';
 import { AngularComponentBuilder } from './component-generator';
 import { AngularServiceBuilder } from './service-generator';
 import type { AngularComponentSpec, AngularServiceSpec } from './types';
@@ -63,12 +64,12 @@ export function exampleComponentGeneration(): void {
     'A reusable product card component for e-commerce applications'
   );
 
-  console.log('Generated Component Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated Component Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -137,12 +138,12 @@ export function exampleServiceGeneration(): void {
     'Service for handling user-related API calls with proper error handling'
   );
 
-  console.log('Generated Service Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated Service Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -197,20 +198,20 @@ export class ProductsComponent {
   loadProducts(): void {
     this.userService.getUsers(1, 10).subscribe({
       next: (users) => {
-        console.log('Loaded users:', users);
+        logInfo('Loaded users:', users);
       },
       error: (error) => {
-        console.error('Error loading products:', error);
+        logError('Error loading products:', error);
       },
     });
   }
 
   onAddToCart(productId: number): void {
-    console.log('Product added to cart:', productId);
+    logInfo('Product added to cart:', productId);
   }
 
   onViewDetails(productId: number): void {
-    console.log('View details for product:', productId);
+    logInfo('View details for product:', productId);
   }
 }
 `;
@@ -219,22 +220,22 @@ export class ProductsComponent {
  * Example 5: Integrated usage
  */
 export async function runIntegratedExample(): Promise<void> {
-  console.log('=== Angular Generators Examples ===\n');
+  logInfo('=== Angular Generators Examples ===\n');
 
-  console.log('1. Generating Component...');
+  logInfo('1. Generating Component...');
   exampleComponentGeneration();
 
-  console.log('\n2. Generating Service...');
+  logInfo('\n2. Generating Service...');
   exampleServiceGeneration();
 
-  console.log('\n3. Module Usage:');
-  console.log(usageInModule);
+  logInfo('\n3. Module Usage:');
+  logInfo(usageInModule);
 
-  console.log('\n4. Component Usage:');
-  console.log(componentUsage);
+  logInfo('\n4. Component Usage:');
+  logInfo(componentUsage);
 }
 
 // Run examples if this file is executed directly
 if (require.main === module) {
-  runIntegratedExample().catch(console.error);
+  runIntegratedExample().catch(logError);
 }

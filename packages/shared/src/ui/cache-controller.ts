@@ -2,6 +2,7 @@
  * Framework-agnostic cache controller with feedback events.
  */
 
+import { logInfo, logError } from '../logger/index.js';
 import { CacheManager } from '@weaveai/core';
 import type { CacheStatistics, CacheConfig } from '@weaveai/core';
 
@@ -80,7 +81,7 @@ export class CacheController {
 
       return null;
     } catch (error) {
-      console.error('Cache query failed:', error);
+      logError('Cache query failed:', error);
       this.emitFeedback({
         type: 'miss',
         message: 'Cache query error',
@@ -104,7 +105,7 @@ export class CacheController {
       });
       await this.refreshStats();
     } catch (error) {
-      console.error('Cache store failed:', error);
+      logError('Cache store failed:', error);
     }
   }
 
@@ -113,7 +114,7 @@ export class CacheController {
       const stats = await this.cacheManager.getStats();
       this.updateState({ stats });
     } catch (error) {
-      console.error('Failed to fetch cache stats:', error);
+      logError('Failed to fetch cache stats:', error);
     }
   }
 
@@ -131,7 +132,7 @@ export class CacheController {
         timestamp: new Date(),
       });
     } catch (error) {
-      console.error('Failed to clear cache:', error);
+      logError('Failed to clear cache:', error);
     }
   }
 
@@ -144,7 +145,7 @@ export class CacheController {
     this.options.onFeedback?.(event);
 
     if (this.options.showNotification) {
-      console.log(`[Cache ${event.type}]`, event.message);
+      logInfo(`[Cache ${event.type}] ${event.message}`);
     }
   }
 

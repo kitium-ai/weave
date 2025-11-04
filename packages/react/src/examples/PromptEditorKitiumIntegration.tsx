@@ -6,7 +6,9 @@
 import React, { useState } from 'react';
 import { PromptEditor } from '../components/PromptEditor';
 import { usePromptTemplate } from '../hooks/use-prompt-template';
+// @ts-expect-error - KtButton, KtCard, KtInput, KtTabs, KtAlert, KtLayout, KtPanel are not defined
 import { KtButton, KtCard, KtInput, KtTabs, KtAlert, KtLayout, KtPanel } from '@kitium/ui';
+import { logInfo } from '@weaveai/shared';
 
 /**
  * Example 1: Basic Integration with KtButton and KtCard
@@ -30,7 +32,7 @@ export function PromptEditorBasicIntegration() {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('Template saved:', currentTemplate);
+      logInfo('Template saved:', { template: currentTemplate });
     } finally {
       setIsSaving(false);
     }
@@ -44,7 +46,12 @@ export function PromptEditorBasicIntegration() {
             template={currentTemplate}
             variables={[{ name: 'topic', required: true, description: 'Article topic' }]}
             onChange={setTemplate}
-            onTest={(result) => console.log('Test result:', result)}
+            onTest={async (variables) => ({
+              success: true,
+              renderedPrompt: '',
+              variables,
+              duration: 0,
+            })}
           />
 
           <KtLayout direction="horizontal" gap="sm">
@@ -320,7 +327,7 @@ export function PromptEditorTemplateLibrary() {
                   required: true,
                 }))}
                 onChange={(newTemplate) => {
-                  console.log('Template updated:', newTemplate);
+                  logInfo('Template updated:', { template: newTemplate });
                   setTemplate(newTemplate);
                 }}
               />
@@ -356,7 +363,11 @@ export function PromptEditorDashboard() {
   ];
 
   const selected = templates.find((t) => t.id === selectedId);
-  const { currentTemplate, setTemplate, exportTemplate } = usePromptTemplate({
+  const {
+    currentTemplate,
+    setTemplate,
+    export: exportTemplate,
+  } = usePromptTemplate({
     name: selected?.name || 'new-template',
   });
 
@@ -429,7 +440,7 @@ export function PromptEditorDashboard() {
                 <KtButton
                   variant="primary"
                   onClick={() => {
-                    console.log('Template exported:', exportTemplate());
+                    logInfo('Template exported:', { template: exportTemplate() });
                   }}
                 >
                   Save & Export
@@ -447,7 +458,7 @@ export function PromptEditorDashboard() {
               <PromptEditor
                 template=""
                 variables={[]}
-                onChange={(t) => console.log('New template:', t)}
+                onChange={(t) => logInfo('New template:', { template: t })}
               />
 
               <KtLayout direction="horizontal" gap="sm">

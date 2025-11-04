@@ -26,39 +26,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { ContentGeneratorProps } from '../types/components'
+import { ref } from 'vue';
+import type { ContentGeneratorProps } from '../types/components';
 
 const props = withDefaults(defineProps<ContentGeneratorProps>(), {
   showPreview: true,
-  isLoading: false
-})
+  isLoading: false,
+});
 
 const emit = defineEmits<{
-  'update:isLoading': [isLoading: boolean]
-  generated: [content: string]
-}>()
+  'update:isLoading': [isLoading: boolean];
+  generated: [content: string];
+}>();
 
-const selectedType = ref<'blog' | 'social' | 'email' | 'product' | 'documentation'>(props.type)
-const generatedContent = ref('')
-const isLoading = ref(props.isLoading)
+const selectedType = ref<'blog' | 'social' | 'email' | 'product' | 'documentation'>(props.type);
+const generatedContent = ref('');
+const isLoading = ref(props.isLoading);
 
 const handleGenerate = async () => {
-  isLoading.value = true
-  emit('update:isLoading', true)
+  isLoading.value = true;
+  emit('update:isLoading', true);
 
   try {
-    const content = await generateContent(selectedType.value)
-    generatedContent.value = content
-    emit('generated', content)
-    await props.onGenerate(content)
+    const content = await generateContent(selectedType.value);
+    generatedContent.value = content;
+    emit('generated', content);
+    await props.onGenerate(content);
   } catch (error) {
-    console.error('Generation error:', error)
+    logError('Generation error:', error);
   } finally {
-    isLoading.value = false
-    emit('update:isLoading', false)
+    isLoading.value = false;
+    emit('update:isLoading', false);
   }
-}
+};
 
 const generateContent = async (type: string): Promise<string> => {
   // Mock generation - would use AI provider in real implementation
@@ -67,10 +67,10 @@ const generateContent = async (type: string): Promise<string> => {
     social: `Check this out! [content] #AI`,
     email: `Subject: [Subject]\n\nDear [Name],\n\n[Body]`,
     product: `[Product Name]\n\nFeatures:\n- Feature 1\n- Feature 2`,
-    documentation: `# Documentation\n\n## Overview\n[Description]`
-  }
-  return templates[type] || 'No template available'
-}
+    documentation: `# Documentation\n\n## Overview\n[Description]`,
+  };
+  return templates[type] || 'No template available';
+};
 </script>
 
 <style scoped>

@@ -21,6 +21,7 @@ import {
   getModelsByProvider,
   type WeaveConfig,
 } from '../utils/config.js';
+import { logInfo } from '@weaveai/shared';
 
 type PackageMap = Record<string, string>;
 
@@ -34,7 +35,7 @@ interface FrameworkPackageJson {
 }
 
 export async function createCommand() {
-  console.log(chalk.cyan('? Select your preferences:\n'));
+  logInfo(chalk.cyan('? Select your preferences:\n'));
 
   // Step 1: Project Name
   const nameResult = await prompts({
@@ -143,12 +144,12 @@ export async function createCommand() {
     });
 
     if (!keyInput.apiKey) {
-      console.log(chalk.yellow('⚠ Skipping API key setup (you can add it later in .env.local)'));
+      logInfo(chalk.yellow('⚠ Skipping API key setup (you can add it later in .env.local)'));
     } else {
       apiKey = keyInput.apiKey;
     }
   } else {
-    console.log(chalk.yellow('ℹ You can add your API key later in .env.local'));
+    logInfo(chalk.yellow('ℹ You can add your API key later in .env.local'));
   }
 
   // Step 6: Confirmation
@@ -160,12 +161,12 @@ export async function createCommand() {
     apiKey: apiKey || 'PLACEHOLDER_API_KEY',
   };
 
-  console.log('\n' + chalk.cyan('Summary of your choices:'));
-  console.log(chalk.gray(`  Project: ${config.projectName}`));
-  console.log(chalk.gray(`  Framework: ${getFrameworkInfo(config.framework).name}`));
-  console.log(chalk.gray(`  Provider: ${getProviderInfo(config.provider).name}`));
-  console.log(chalk.gray(`  Model: ${config.model}`));
-  console.log(chalk.gray(`  API Key: ${apiKey ? '✓ Provided' : '⚠ Will add later'}`));
+  logInfo('\n' + chalk.cyan('Summary of your choices:'));
+  logInfo(chalk.gray(`  Project: ${config.projectName}`));
+  logInfo(chalk.gray(`  Framework: ${getFrameworkInfo(config.framework).name}`));
+  logInfo(chalk.gray(`  Provider: ${getProviderInfo(config.provider).name}`));
+  logInfo(chalk.gray(`  Model: ${config.model}`));
+  logInfo(chalk.gray(`  API Key: ${apiKey ? '✓ Provided' : '⚠ Will add later'}`));
 
   const confirmResult = await prompts({
     type: 'confirm',
@@ -175,7 +176,7 @@ export async function createCommand() {
   });
 
   if (!confirmResult.confirmed) {
-    console.log(chalk.yellow('\nProject creation cancelled'));
+    logInfo(chalk.yellow('\nProject creation cancelled'));
     process.exit(0);
   }
 
@@ -231,20 +232,20 @@ async function scaffoldProject(config: WeaveConfig, projectPath: string) {
     spinner.succeed('Project created successfully!');
 
     // Display next steps
-    console.log('\n' + chalk.cyan('Next steps:'));
-    console.log(chalk.gray(`\n1. Navigate to project:`));
-    console.log(chalk.white(`   cd ${config.projectName}`));
+    logInfo('\n' + chalk.cyan('Next steps:'));
+    logInfo(chalk.gray(`\n1. Navigate to project:`));
+    logInfo(chalk.white(`   cd ${config.projectName}`));
 
-    console.log(chalk.gray(`\n2. If you didn't provide an API key, configure it now:`));
-    console.log(chalk.white(`   Edit .env.local and add your API key`));
+    logInfo(chalk.gray(`\n2. If you didn't provide an API key, configure it now:`));
+    logInfo(chalk.white(`   Edit .env.local and add your API key`));
 
-    console.log(chalk.gray(`\n3. Install dependencies:`));
-    console.log(chalk.white(`   npm install`));
+    logInfo(chalk.gray(`\n3. Install dependencies:`));
+    logInfo(chalk.white(`   npm install`));
 
-    console.log(chalk.gray(`\n4. Start development server:`));
-    console.log(chalk.white(`   npm run dev`));
+    logInfo(chalk.gray(`\n4. Start development server:`));
+    logInfo(chalk.white(`   npm run dev`));
 
-    console.log(chalk.cyan(`\nFor more information, visit: https://weave.ai/docs\n`));
+    logInfo(chalk.cyan(`\nFor more information, visit: https://weave.ai/docs\n`));
   } catch (error) {
     spinner.fail('Failed to create project');
     throw error;

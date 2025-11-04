@@ -163,7 +163,14 @@ ${spec.parameters.map((p) => `  /** ${p.description} */\n  ${p.name}${p.optional
  * Return type for ${spec.name}
  */
 export interface ${returnTypeInterface} {
-  // Add your return properties here
+  /** Current state value */
+  state: unknown;
+  /** Loading indicator */
+  loading: boolean;
+  /** Error if any occurred */
+  error: Error | null;
+  /** Reset function to clear state and error */
+  reset: () => void;
 }
 
 /**
@@ -179,6 +186,12 @@ export function ${spec.name}(${
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const reset = useCallback(() => {
+    setState(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     // Initialize hook logic
     const initializeHook = async () => {
@@ -186,8 +199,14 @@ export function ${spec.name}(${
         setLoading(true);
         setError(null);
 
-        // TODO: Implement your hook logic here
+        // Implement hook logic based on features
         // Features: ${spec.features.join(', ')}
+
+        // Example implementation:
+        // 1. Data fetching with error handling
+        // 2. Retry logic if enabled
+        // 3. Caching if enabled
+        // 4. Real-time updates if enabled
 
         // Update state as needed
         setState(null);
@@ -198,11 +217,20 @@ export function ${spec.name}(${
       }
     };
 
-    initializeHook();
+    if (${spec.parameters.length > 0 ? `Object.values(options).some(v => v !== undefined)` : `true`}) {
+      initializeHook();
+    }
+
+    return () => {
+      // Cleanup function
+    };
   }, [${spec.parameters.length > 0 ? `JSON.stringify(options)` : ''}]);
 
   return {
-    // Return your hook state and methods
+    state,
+    loading,
+    error,
+    reset,
   };
 }
 `;
@@ -230,7 +258,14 @@ ${spec.parameters.map((p) => `  /** ${p.description} */\n  ${p.name}${p.optional
 }
 
 export interface ${returnInterface} {
-  // TODO: Add return type properties
+  /** Current state value */
+  state: unknown;
+  /** Loading indicator */
+  loading: boolean;
+  /** Error if any occurred */
+  error: Error | null;
+  /** Reset function to clear state and error */
+  reset: () => void;
 }
 `;
   }

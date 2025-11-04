@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { logError } from '@weaveai/shared';
 
 export interface ChatMessage {
   id: string;
@@ -306,7 +307,7 @@ export class AIChatboxComponent implements OnInit, AfterViewChecked {
       try {
         await this.onSendMessage(messageToSend);
       } catch (error) {
-        console.error('Error sending message:', error);
+        logError('Error sending message:', error);
       } finally {
         this.isLoading = false;
       }

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { logError } from '@weaveai/shared';
 
 @Component({
   selector: 'weave-content-generator',
@@ -118,7 +119,7 @@ export class ContentGeneratorComponent {
       this.generated.emit(content);
       await this.onGenerate(content);
     } catch (error) {
-      console.error('Generation error:', error);
+      logError('Generation error:', error);
     } finally {
       this.isLoading = false;
       this.isLoadingChange.emit(false);

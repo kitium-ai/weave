@@ -87,6 +87,7 @@ export class QueryBuilder {
  * ${spec.description}
  */
 
+import { logError } from '@weaveai/shared/utils/logging';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { UseMutationOptions } from '@tanstack/react-query';
 import { api${this.toPascalCase(spec.name)} } from './api-client';
@@ -239,7 +240,7 @@ export function Example() {
       console.log('Success:', data);
     },
     onError: (error) => {
-      console.error('Error:', error);
+      logError('Error:', error);
     },
   });
 

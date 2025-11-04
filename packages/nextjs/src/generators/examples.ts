@@ -2,6 +2,7 @@
  * Next.js Generators Examples
  * Demonstrates how to use Next.js API route and page generators
  */
+import { logError, logInfo } from '@weaveai/shared';
 import {
   NextJSApiRouteBuilder,
   NextJSPageBuilder,
@@ -39,12 +40,12 @@ export function exampleApiRouteGeneration(): void {
     'API route for fetching products with pagination and search support'
   );
 
-  console.log('Generated API Route Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated API Route Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -75,8 +76,8 @@ export function examplePostApiRoute(): void {
   const builder = new NextJSApiRouteBuilder();
   const output = builder.build(apiRouteSpec, 'API route for creating new products with validation');
 
-  console.log('Generated Create Product API:');
-  console.log(output.code);
+  logInfo('Generated Create Product API:');
+  logInfo(output.code);
 }
 
 /**
@@ -100,12 +101,12 @@ export function examplePageGeneration(): void {
     'Interactive dashboard page with charts and real-time data'
   );
 
-  console.log('Generated Page Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated Page Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -271,25 +272,25 @@ export default function CreateProductPage() {
  * Example 6: Integrated usage
  */
 export async function runIntegratedExample(): Promise<void> {
-  console.log('=== Next.js Generators Examples ===\n');
+  logInfo('=== Next.js Generators Examples ===\n');
 
-  console.log('1. Generating API Route (GET)...');
+  logInfo('1. Generating API Route (GET)...');
   exampleApiRouteGeneration();
 
-  console.log('\n2. Generating API Route (POST)...');
+  logInfo('\n2. Generating API Route (POST)...');
   examplePostApiRoute();
 
-  console.log('\n3. Generating Page Component...');
+  logInfo('\n3. Generating Page Component...');
   examplePageGeneration();
 
-  console.log('\n4. API Usage in Component:');
-  console.log(apiUsageExample);
+  logInfo('\n4. API Usage in Component:');
+  logInfo(apiUsageExample);
 
-  console.log('\n5. Create Product Form:');
-  console.log(createProductExample);
+  logInfo('\n5. Create Product Form:');
+  logInfo(createProductExample);
 }
 
 // Run examples if this file is executed directly
 if (require.main === module) {
-  runIntegratedExample().catch(console.error);
+  runIntegratedExample().catch(logError);
 }

@@ -73,55 +73,55 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import type { AIFormProps } from '../types/components'
+import { ref, reactive } from 'vue';
+import type { AIFormProps } from '../types/components';
 
 const props = withDefaults(defineProps<AIFormProps>(), {
   showAIFill: true,
-  isSubmitting: false
-})
+  isSubmitting: false,
+});
 
 const emit = defineEmits<{
-  submit: [values: Record<string, unknown>]
-}>()
+  submit: [values: Record<string, unknown>];
+}>();
 
-const formData = reactive<Record<string, unknown>>({})
-const isSubmitting = ref(props.isSubmitting)
+const formData = reactive<Record<string, unknown>>({});
+const isSubmitting = ref(props.isSubmitting);
 
 // Initialize form data
 props.schema.forEach((field) => {
-  formData[field.name] = field.type === 'checkbox' ? false : ''
-})
+  formData[field.name] = field.type === 'checkbox' ? false : '';
+});
 
 const handleSubmit = async () => {
-  isSubmitting.value = true
+  isSubmitting.value = true;
   try {
-    await props.onSubmit(formData)
-    emit('submit', formData)
+    await props.onSubmit(formData);
+    emit('submit', formData);
   } catch (error) {
-    console.error('Form submission error:', error)
+    logError('Form submission error:', error);
   } finally {
-    isSubmitting.value = false
+    isSubmitting.value = false;
   }
-}
+};
 
 const handleAIFill = async () => {
-  if (!props.onAIFill) return
+  if (!props.onAIFill) return;
 
-  isSubmitting.value = true
+  isSubmitting.value = true;
   try {
     for (const field of props.schema) {
-      const aiValue = await props.onAIFill(field.name, formData[field.name])
+      const aiValue = await props.onAIFill(field.name, formData[field.name]);
       if (aiValue !== undefined) {
-        formData[field.name] = aiValue
+        formData[field.name] = aiValue;
       }
     }
   } catch (error) {
-    console.error('AI fill error:', error)
+    logError('AI fill error:', error);
   } finally {
-    isSubmitting.value = false
+    isSubmitting.value = false;
   }
-}
+};
 </script>
 
 <style scoped>

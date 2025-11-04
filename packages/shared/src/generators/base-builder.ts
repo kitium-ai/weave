@@ -1,7 +1,6 @@
 /**
  * Base code builder class with common logic
  */
-
 import type { GeneratorOutput, BaseSpec, CodeGenerationOptions, CodeMetadata } from './types.js';
 
 /**
@@ -141,7 +140,7 @@ ${code
   .map((line) => indent + line)
   .join('\n')}
 } catch (error) {
-${indent}console.error('Error:', error);
+${indent}logError('Error:', error);
 ${indent}throw error;
 }`;
   }
@@ -159,7 +158,7 @@ ${indent}throw error;
 
     return `${code}
   .catch(error => {
-    console.error('Error:', error);
+    logError('Error:', error);
     throw error;
   })`;
   }

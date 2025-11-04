@@ -4,7 +4,7 @@
  */
 
 import { CacheManager } from './cache-manager.js';
-
+import { logInfo } from '@weaveai/shared';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { SimpleCache } from './cache-storage.js';
 import type { CacheConfig } from './types.js';
@@ -38,8 +38,8 @@ export async function exampleBasicCaching() {
   // Query cache
   const result = await cache.query('Explain quantum computing');
   if (result.hit) {
-    console.log('Cache hit!', result.data);
-    console.log('Savings:', result.savings);
+    logInfo('Cache hit!', { data: result.data });
+    logInfo('Savings:', { savings: result.savings });
   }
 }
 
@@ -53,11 +53,11 @@ export async function exampleSemanticCaching() {
     ttl: 3600,
     onCacheHit: async ({ savings, entry }) => {
       // UI feedback
-      console.log('✅ Cache hit!');
-      console.log(`💰 Saved: $${savings.cost.toFixed(4)}`);
-      console.log(`⚡ Latency saved: ${savings.latency.toFixed(0)}ms`);
-      console.log(`🎯 Tokens saved: ${savings.tokens}`);
-      console.log(`📝 Entry key: ${entry.key}`);
+      logInfo('✅ Cache hit!');
+      logInfo(`💰 Saved: $${savings.cost.toFixed(4)}`);
+      logInfo(`⚡ Latency saved: ${savings.latency.toFixed(0)}ms`);
+      logInfo(`🎯 Tokens saved: ${savings.tokens}`);
+      logInfo(`📝 Entry key: ${entry.key}`);
     },
   };
 
@@ -80,7 +80,7 @@ export async function exampleSemanticCaching() {
   });
 
   if (result.hit) {
-    console.log('Semantic match found!');
+    logInfo('Semantic match found!');
   }
 }
 
@@ -119,7 +119,7 @@ export async function exampleCostSavings() {
 
   const result = await cache.query('Generate a story about adventure');
   if (result.hit) {
-    console.log('Savings:', {
+    logInfo('Savings:', {
       costSaved: `$${result.savings.cost.toFixed(4)}`,
       latencySaved: `${result.savings.latency.toFixed(0)}ms`,
       tokensSaved: result.savings.tokens,
@@ -136,7 +136,7 @@ export async function exampleFuzzyMatching() {
     strategy: 'fuzzy',
     ttl: 3600,
     onCacheHit: async ({ savings }) => {
-      console.log('Fuzzy match found! Savings:', savings);
+      logInfo('Fuzzy match found! Savings:', { savings });
     },
   };
 
@@ -157,7 +157,7 @@ export async function exampleFuzzyMatching() {
     similarity: 0.7, // 70% match is enough
   });
 
-  console.log('Found match:', result.hit);
+  logInfo('Found match:', { hit: result.hit });
 }
 
 /**
@@ -189,7 +189,7 @@ export async function exampleCacheStats() {
 
   // Get stats
   const stats = await cache.getStats();
-  console.log('Cache Statistics:', {
+  logInfo('Cache Statistics:', {
     entries: stats.entriesCount,
     hitRate: `${(stats.hitRate * 100).toFixed(1)}%`,
     avgLatency: `${stats.avgLatency.toFixed(0)}ms`,
@@ -246,7 +246,7 @@ export async function exampleMultipleStrategies() {
     const exactMatch = await cache.query(testPrompt);
     const similarMatch = await cache.query(similarPrompt);
 
-    console.log(`\n${name} Strategy:`, {
+    logInfo(`\n${name} Strategy:`, {
       exactMatch: exactMatch.hit,
       similarMatch: similarMatch.hit,
     });
@@ -273,9 +273,9 @@ export async function exampleIntegrationWithGenerate(
     ttl: 3600,
     onCacheHit: async ({ savings, entry }) => {
       // Trigger UI feedback
-      console.log(`✅ Using cached response`);
-      console.log(`💾 Cache created: ${new Date(entry.createdAt).toLocaleString()}`);
-      console.log(`📊 Savings: $${savings.cost.toFixed(4)}`);
+      logInfo(`✅ Using cached response`);
+      logInfo(`💾 Cache created: ${new Date(entry.createdAt).toLocaleString()}`);
+      logInfo(`📊 Savings: $${savings.cost.toFixed(4)}`);
     },
   };
 
@@ -304,7 +304,7 @@ export async function exampleIntegrationWithGenerate(
 
   // Generate fresh result
   const start = performance.now();
-  const result = await generateFn(prompt) as CachedResult;
+  const result = (await generateFn(prompt)) as CachedResult;
   const latency = performance.now() - start;
 
   // Store in cache

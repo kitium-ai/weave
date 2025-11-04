@@ -3,6 +3,7 @@
  * React integration for smart caching with UI feedback
  */
 
+import { logError, logInfo } from '@weaveai/shared';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { CacheManager, CacheStatistics } from '@weaveai/core';
 import type { CacheConfig } from '@weaveai/core';
@@ -89,7 +90,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
 
       if (options.showNotification) {
         // Could trigger toast/notification here
-        console.log(`[Cache ${event.type}]`, event.message);
+        logInfo(`[Cache ${event.type}]`, { message: event.message });
       }
     },
     [options]
@@ -127,7 +128,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
           return null;
         }
       } catch (error) {
-        console.error('Cache query failed:', error);
+        logError('Cache query failed:', error);
         emitFeedback({
           type: 'miss',
           message: 'Cache query error',
@@ -162,7 +163,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
         // Refresh stats
         await refreshStats();
       } catch (error) {
-        console.error('Cache store failed:', error);
+        logError('Cache store failed:', error);
       }
     },
     [emitFeedback]
@@ -178,7 +179,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
       const newStats = await cacheManager.current.getStats();
       setStats(newStats);
     } catch (error) {
-      console.error('Failed to fetch cache stats:', error);
+      logError('Failed to fetch cache stats:', error);
     }
   }, []);
 
@@ -200,7 +201,7 @@ export function useCache(options: UseCacheOptions): UseCacheReturn {
         timestamp: new Date(),
       });
     } catch (error) {
-      console.error('Failed to clear cache:', error);
+      logError('Failed to clear cache:', error);
     }
   }, [emitFeedback]);
 

@@ -26,7 +26,11 @@
         class="weave-chatbox__input"
         @keydown.enter.ctrl="handleSend"
       ></textarea>
-      <button type="submit" class="weave-chatbox__send-button" :disabled="!inputMessage || isLoading">
+      <button
+        type="submit"
+        class="weave-chatbox__send-button"
+        :disabled="!inputMessage || isLoading"
+      >
         Send
       </button>
     </form>
@@ -34,87 +38,88 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, nextTick } from 'vue'
-import type { AIChatboxProps, ChatMessage } from '../types/components'
+import { nextTick, ref, watch } from 'vue';
+import type { AIChatboxProps, ChatMessage } from '../types/components';
+import { ErrorLogLevel, logError } from '@weaveai/shared';
 
 const props = withDefaults(defineProps<AIChatboxProps>(), {
   theme: 'light',
   showTimestamps: false,
   enableMarkdown: false,
-  placeholder: 'Type your message...'
-})
+  placeholder: 'Type your message...',
+});
 
 const emit = defineEmits<{
-  sendMessage: [message: string]
-}>()
+  sendMessage: [message: string];
+}>();
 
-const messages = ref<ChatMessage[]>(props.initialMessages || [])
-const inputMessage = ref('')
-const isLoading = ref(false)
-const messagesContainer = ref<HTMLDivElement | null>(null)
+const messages = ref<ChatMessage[]>(props.initialMessages || []);
+const inputMessage = ref('');
+const isLoading = ref(false);
+const messagesContainer = ref<HTMLDivElement | null>(null);
 
 const formatTime = (date: Date): string => {
   return new Intl.DateTimeFormat('en-US', {
     hour: '2-digit',
-    minute: '2-digit'
-  }).format(date)
-}
+    minute: '2-digit',
+  }).format(date);
+};
 
 const formatMarkdown = (text: string): string => {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/`(.*?)`/g, '<code>$1</code>')
-    .replace(/\n/g, '<br />')
-}
+    .replace(/\n/g, '<br />');
+};
 
 const scrollToBottom = async () => {
-  await nextTick()
+  await nextTick();
   if (messagesContainer.value) {
-    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
   }
-}
+};
 
 const handleSend = async () => {
-  if (!inputMessage.value.trim()) return
+  if (!inputMessage.value.trim()) return;
 
   const userMessage: ChatMessage = {
     id: `msg-${Date.now()}`,
     role: 'user',
     content: inputMessage.value,
-    timestamp: new Date()
-  }
+    timestamp: new Date(),
+  };
 
-  messages.value.push(userMessage)
-  const messageToSend = inputMessage.value
-  inputMessage.value = ''
+  messages.value.push(userMessage);
+  const messageToSend = inputMessage.value;
+  inputMessage.value = '';
 
-  emit('sendMessage', messageToSend)
-  await scrollToBottom()
+  emit('sendMessage', messageToSend);
+  await scrollToBottom();
 
   if (props.onSendMessage) {
-    isLoading.value = true
+    isLoading.value = true;
     try {
-      await props.onSendMessage(messageToSend)
+      await props.onSendMessage(messageToSend);
     } catch (error) {
-      console.error('Error sending message:', error)
+      logError('Error sending message:', ErrorLogLevel.ERROR, error);
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
-}
+};
 
 watch(
   () => props.initialMessages,
   (newMessages) => {
     if (newMessages) {
-      messages.value = newMessages
-      scrollToBottom()
+      messages.value = newMessages;
+      scrollToBottom();
     }
   }
-)
+);
 
-watch(messages, scrollToBottom, { deep: true })
+watch(messages, scrollToBottom, { deep: true });
 </script>
 
 <style scoped>

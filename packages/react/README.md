@@ -39,7 +39,7 @@ const weave = await Weave.createAsync({
 
 function HaikuGenerator() {
   const { generate, data, loading, cost } = useGenerateAI({
-    onError: (error) => console.error(error.message),
+    onError: (error) => logError(error.message),
     trackCosts: true,
   });
 

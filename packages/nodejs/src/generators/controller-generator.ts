@@ -58,11 +58,32 @@ ${methods}
     const errorMessage = error instanceof Error ? error.message : String(error);
     const status = error instanceof Error && 'status' in error ? (error as any).status : 500;
 
-    console.error('Controller error:', errorMessage);
+    logError('Controller error:', errorMessage);
     res.status(status).json({
       success: false,
       error: errorMessage || 'Internal server error',
     });
+  }
+
+  /**
+   * Process input data and apply business logic
+   */
+  private processData(input: unknown): unknown {
+    // Implement your business logic here
+    // Example: data validation, transformation, calculations
+    if (!input) {
+      return null;
+    }
+
+    // Return processed data
+    return input;
+  }
+
+  /**
+   * Generate unique ID for responses
+   */
+  private generateId(): string {
+    return \`\${Date.now()}-\${Math.random().toString(36).substr(2, 9)}\`;
   }
 }
 
@@ -118,16 +139,38 @@ export const ${this.toCamelCase(spec.name)}Controller = new ${className}();
 
       methodBody += `
 
-      // TODO: Implement business logic
-      const result = {
-        id: 1,
-        data: {},
-      };
+      // Business logic implementation
+      try {
+        // Extract data from request
+        const inputData = req.method === 'GET' ? req.query : req.body;
 
-      res.status(200).json({
-        success: true,
-        data: result,
-      });
+        // Perform business operations
+        // Example: process data, call external services, database operations
+        const processedData = this.processData(inputData);
+
+        // Validate output
+        if (!processedData) {
+          res.status(400).json({
+            success: false,
+            error: 'Invalid operation result',
+          });
+          return;
+        }
+
+        // Return success response
+        const result = {
+          id: this.generateId(),
+          data: processedData,
+          timestamp: new Date().toISOString(),
+        };
+
+        res.status(200).json({
+          success: true,
+          data: result,
+        });
+      } catch (innerError) {
+        this.handleError(innerError, res);
+      }
     } catch (error) {
       this.handleError(error, res);
     }

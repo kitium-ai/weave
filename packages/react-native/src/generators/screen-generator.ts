@@ -67,13 +67,52 @@ export const ${screenName} = (props: ${propsType}): JSX.Element => {
   const loadData = async (): Promise<void> => {
     try {
       setLoading(true);
-      // TODO: Implement data loading
-      setData({});
+      setError(null);
+
+      // Data loading implementation
+      // Steps:
+      // 1. Validate inputs
+      // 2. Fetch data from API/source
+      // 3. Transform/process data
+      // 4. Cache results if needed
+      // 5. Update state with loaded data
+
+      // Example: Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Validate and fetch data
+      const fetchedData = await this.fetchDataFromSource();
+
+      // Process/transform data
+      const processedData = this.processData(fetchedData);
+
+      // Update state with loaded data
+      setData(processedData);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      logError('Data loading error:', err);
+      setError(err instanceof Error ? err : new Error(errorMessage));
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchDataFromSource = async (): Promise<any> => {
+    // Implement actual data fetching
+    // - From API endpoint
+    // - From local database
+    // - From cache
+    // - From props
+    return ${spec.inputs.length > 0 ? 'props' : '{}'};
+  };
+
+  const processData = (rawData: any): any => {
+    // Transform and validate fetched data
+    // - Format dates
+    // - Map response structure
+    // - Validate required fields
+    // - Apply business logic
+    return rawData;
   };
 
   if (loading) {
@@ -132,6 +171,7 @@ const styles = StyleSheet.create({
     const imports = [
       "import React from 'react';",
       "import { View, Text, StyleSheet, ActivityIndicator, ScrollView, SafeAreaView } from 'react-native';",
+      "import { logError } from '@weaveai/shared/utils/logging';",
     ];
 
     if (spec.hasNavigation) {

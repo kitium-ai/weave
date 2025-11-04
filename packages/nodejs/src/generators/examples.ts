@@ -3,6 +3,7 @@
  * Demonstrates how to use Express server and controller generators
  */
 
+import { logError, logInfo } from '@weaveai/shared';
 import { ExpressServerBuilder } from './server-generator.js';
 import { ExpressControllerBuilder } from './controller-generator.js';
 import type { ExpressServerSpec, ExpressControllerSpec } from './types.js';
@@ -44,12 +45,12 @@ export function exampleServerGeneration(): void {
     'Production-grade Express server with security and middleware'
   );
 
-  console.log('Generated Server Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated Server Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -111,12 +112,12 @@ export function exampleControllerGeneration(): void {
   const builder = new ExpressControllerBuilder();
   const output = builder.build(controllerSpec, 'Complete CRUD controller for product management');
 
-  console.log('Generated Controller Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated Controller Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -164,7 +165,7 @@ app.get('/api/orders', ordersController.list.bind(ordersController));
 
 // Error handling
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', err);
+  logError('Error:', err);
   res.status(err.status || 500).json({
     success: false,
     error: err.message || 'Internal server error',
@@ -172,7 +173,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 });
 
 app.listen(port, () => {
-  console.log(\`Server running on http://localhost:\${port}\`);
+  logInfo(\`Server running on http://localhost:\${port}\`);
 });
 
 export default app;
@@ -276,25 +277,25 @@ export const productService = new ProductService();
  * Example 6: Integrated usage
  */
 export async function runIntegratedExample(): Promise<void> {
-  console.log('=== Node.js/Express Generators Examples ===\n');
+  logInfo('=== Node.js/Express Generators Examples ===\n');
 
-  console.log('1. Generating Express Server...');
+  logInfo('1. Generating Express Server...');
   exampleServerGeneration();
 
-  console.log('\n2. Generating Product Controller...');
+  logInfo('\n2. Generating Product Controller...');
   exampleControllerGeneration();
 
-  console.log('\n3. Server Setup with Controllers:');
-  console.log(serverSetupExample);
+  logInfo('\n3. Server Setup with Controllers:');
+  logInfo(serverSetupExample);
 
-  console.log('\n4. Middleware Examples:');
-  console.log(middlewareExample);
+  logInfo('\n4. Middleware Examples:');
+  logInfo(middlewareExample);
 
-  console.log('\n5. Service Layer Example:');
-  console.log(serviceLayerExample);
+  logInfo('\n5. Service Layer Example:');
+  logInfo(serviceLayerExample);
 }
 
 // Run examples if this file is executed directly
 if (require.main === module) {
-  runIntegratedExample().catch(console.error);
+  runIntegratedExample().catch(logError);
 }

@@ -4,52 +4,53 @@
  */
 
 import { MetricsCollector } from '../src/observability/metrics-collector.js';
+import { logInfo } from '@weaveai/shared';
 
 async function metricsExample() {
-  console.log('=== Metrics Collection ===\n');
+  logInfo('=== Metrics Collection ===\n');
 
   const collector = new MetricsCollector();
 
   // Counter metrics
-  console.log('--- Counter Metrics ---');
+  logInfo('--- Counter Metrics ---');
   collector.increment('api_requests', 1, { endpoint: '/users' });
   collector.increment('api_requests', 1, { endpoint: '/users' });
   collector.increment('api_requests', 1, { endpoint: '/posts' });
   collector.increment('api_errors', 1, { error_code: '500' });
 
   let metrics = collector.getMetrics();
-  console.log(`api_requests: ${metrics['api_requests'].value}`);
-  console.log(`api_errors: ${metrics['api_errors'].value}`);
+  logInfo(`api_requests: ${metrics['api_requests'].value}`);
+  logInfo(`api_errors: ${metrics['api_errors'].value}`);
 
   // Gauge metrics
-  console.log('\n--- Gauge Metrics ---');
+  logInfo('\n--- Gauge Metrics ---');
   collector.gauge('memory_usage_mb', 256);
   collector.gauge('active_connections', 42);
   collector.gauge('queue_size', 105);
 
   metrics = collector.getMetrics();
-  console.log(`memory_usage_mb: ${metrics['memory_usage_mb'].value}`);
-  console.log(`active_connections: ${metrics['active_connections'].value}`);
-  console.log(`queue_size: ${metrics['queue_size'].value}`);
+  logInfo(`memory_usage_mb: ${metrics['memory_usage_mb'].value}`);
+  logInfo(`active_connections: ${metrics['active_connections'].value}`);
+  logInfo(`queue_size: ${metrics['queue_size'].value}`);
 
   // Histogram metrics
-  console.log('\n--- Histogram Metrics ---');
+  logInfo('\n--- Histogram Metrics ---');
   for (let i = 1; i <= 100; i++) {
     collector.histogram('response_time_ms', Math.random() * 1000);
   }
 
   metrics = collector.getMetrics();
   const histogram = metrics['response_time_ms'];
-  console.log(`Count: ${histogram.count}`);
-  console.log(`Min: ${histogram.min?.toFixed(2)}ms`);
-  console.log(`Max: ${histogram.max?.toFixed(2)}ms`);
-  console.log(`Average: ${histogram.average?.toFixed(2)}ms`);
-  console.log(`P50: ${histogram.p50?.toFixed(2)}ms`);
-  console.log(`P95: ${histogram.p95?.toFixed(2)}ms`);
-  console.log(`P99: ${histogram.p99?.toFixed(2)}ms`);
+  logInfo(`Count: ${histogram.count}`);
+  logInfo(`Min: ${histogram.min?.toFixed(2)}ms`);
+  logInfo(`Max: ${histogram.max?.toFixed(2)}ms`);
+  logInfo(`Average: ${histogram.average?.toFixed(2)}ms`);
+  logInfo(`P50: ${histogram.p50?.toFixed(2)}ms`);
+  logInfo(`P95: ${histogram.p95?.toFixed(2)}ms`);
+  logInfo(`P99: ${histogram.p99?.toFixed(2)}ms`);
 
   // Timing metrics
-  console.log('\n--- Timing Metrics ---');
+  logInfo('\n--- Timing Metrics ---');
   const result = await collector.timeAsync('database_query', async () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
     return { rows: 100 };
@@ -57,8 +58,8 @@ async function metricsExample() {
 
   metrics = collector.getMetrics();
   const timing = metrics['database_query'];
-  console.log(`Query executed in ${timing.sum}ms`);
-  console.log(`Result: ${JSON.stringify(result)}`);
+  logInfo(`Query executed in ${timing.sum}ms`);
+  logInfo(`Result: ${JSON.stringify(result)}`);
 
   // Synchronous timing
   const syncResult = collector.timeSync('sync_operation', () => {
@@ -70,11 +71,11 @@ async function metricsExample() {
   });
 
   metrics = collector.getMetrics();
-  console.log(`Sync operation took ${metrics['sync_operation'].sum}ms`);
-  console.log(`Result: ${syncResult}`);
+  logInfo(`Sync operation took ${metrics['sync_operation'].sum}ms`);
+  logInfo(`Result: ${syncResult}`);
 
   // Operational flow
-  console.log('\n--- Operational Flow ---');
+  logInfo('\n--- Operational Flow ---');
   collector.clearMetrics();
 
   // Simulate request processing
@@ -92,19 +93,19 @@ async function metricsExample() {
   });
 
   metrics = collector.getMetrics();
-  console.log(`Total Requests: ${metrics['requests_total'].value}`);
-  console.log(`Successful: ${metrics['requests_success']?.value || 0}`);
-  console.log(`Failed: ${metrics['requests_failed']?.value || 0}`);
-  console.log(`Processing Time: ${metrics['request_processing'].sum}ms`);
+  logInfo(`Total Requests: ${metrics['requests_total'].value}`);
+  logInfo(`Successful: ${metrics['requests_success']?.value || 0}`);
+  logInfo(`Failed: ${metrics['requests_failed']?.value || 0}`);
+  logInfo(`Processing Time: ${metrics['request_processing'].sum}ms`);
 
   // Get all metrics summary
-  console.log('\n--- All Metrics ---');
+  logInfo('\n--- All Metrics ---');
   const allMetrics = collector.getMetrics();
   for (const [name, metric] of Object.entries(allMetrics)) {
-    console.log(`${name}: type=${metric.type}, value=${metric.value || metric.count || '...'}`);
+    logInfo(`${name}: type=${metric.type}, value=${metric.value || metric.count || '...'}`);
   }
 
-  console.log('\n✓ Metrics example completed\n');
+  logInfo('\n✓ Metrics example completed\n');
 }
 
 export { metricsExample };

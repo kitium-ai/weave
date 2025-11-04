@@ -56,7 +56,7 @@ app.use((err: Error | unknown, req: express.Request, res: express.Response, _nex
   const errorMessage = err instanceof Error ? err.message : String(err);
   const status = err instanceof Error && 'status' in err ? (err as any).status : 500;
 
-  console.error('Server error:', errorMessage);
+  logError('Server error:', errorMessage);
   res.status(status).json({
     success: false,
     error: errorMessage || 'Internal server error',

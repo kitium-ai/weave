@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { useComponentGenerator } from '../hooks/useComponentGenerator';
 import type { GeneratedComponent } from '../generators/types';
+import { logInfo, logError } from '@weaveai/shared';
 
 /**
  * Example component that generates React components with natural language
@@ -17,11 +18,11 @@ export function ComponentGeneratorExample() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { component, loading, error, generate } = useComponentGenerator({
     onSuccess: (comp) => {
-      console.log('Component generated:', comp.componentName);
+      logInfo('Component generated:', comp.componentName);
       setGeneratedComponent(comp);
     },
     onError: (err) => {
-      console.error('Generation error:', err);
+      logError('Generation error:', err);
     },
   });
 

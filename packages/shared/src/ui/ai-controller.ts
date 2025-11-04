@@ -1,3 +1,5 @@
+import { logError } from '../logger/index.js';
+
 /**
  * Framework-agnostic controller for managing AI operations.
  * Base types and interfaces used across different controllers.
@@ -56,6 +58,20 @@ export interface CostSummary {
 }
 
 /**
+ * Budget configuration for cost limiting
+ */
+export interface BudgetConfig {
+  /** Maximum budget per session in USD */
+  perSession?: number;
+  /** Maximum budget per hour in USD */
+  perHour?: number;
+  /** Maximum budget per day in USD */
+  perDay?: number;
+  /** Action to take when budget is exceeded: 'error', 'warn', or 'ignore' */
+  onBudgetExceeded?: 'error' | 'warn' | 'ignore';
+}
+
+/**
  * Options for AI operations
  */
 export interface AIControllerOptions<T = unknown> {
@@ -67,6 +83,8 @@ export interface AIControllerOptions<T = unknown> {
   cacheTTL?: number;
   /** Timeout for operations in milliseconds */
   timeout?: number;
+  /** Budget configuration */
+  budget?: BudgetConfig;
   /** Retry configuration */
   retries?: {
     maxAttempts?: number;
@@ -159,7 +177,7 @@ export abstract class AIController {
         try {
           (listener as (...args: unknown[]) => void)(data);
         } catch (error) {
-          console.error(`Error in ${event} listener:`, error);
+          logError(`Error in ${event} listener:`, error);
         }
       });
     }

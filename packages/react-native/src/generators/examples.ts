@@ -3,6 +3,7 @@
  * Demonstrates how to use React Native screen and hook generators
  */
 
+import { logError, logInfo } from '@weaveai/shared';
 import { ReactNativeScreenBuilder } from './screen-generator.js';
 import { ReactNativeHookBuilder } from './hook-generator.js';
 import type { ReactNativeScreenSpec, ReactNativeHookSpec } from './types.js';
@@ -41,12 +42,12 @@ export function exampleScreenGeneration(): void {
     'Product listing screen with search and filtering capabilities'
   );
 
-  console.log('Generated Screen Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
-  console.log('\nGenerated Examples:');
-  console.log(output.examples);
+  logInfo('Generated Screen Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
+  logInfo('\nGenerated Examples:');
+  logInfo(output.examples || '');
 }
 
 /**
@@ -76,10 +77,10 @@ export function exampleDataHookGeneration(): void {
     'Custom hook for fetching products with refetch capability'
   );
 
-  console.log('Generated Hook Code:');
-  console.log(output.code);
-  console.log('\nGenerated Tests:');
-  console.log(output.tests);
+  logInfo('Generated Hook Code:');
+  logInfo(output.code);
+  logInfo('\nGenerated Tests:');
+  logInfo(output.tests || '');
 }
 
 /**
@@ -100,8 +101,8 @@ export function exampleNavigationHookGeneration(): void {
   const builder = new ReactNativeHookBuilder();
   const output = builder.build(hookSpec, 'Custom hook providing navigation helpers');
 
-  console.log('Generated Navigation Hook:');
-  console.log(output.code);
+  logInfo('Generated Navigation Hook:');
+  logInfo(output.code);
 }
 
 /**
@@ -294,7 +295,7 @@ export const useProductManagement = (categoryId?: string) => {
     ) || [];
 
     // Add to cart logic
-    console.log('Adding to cart:', itemsToAdd);
+    logInfo('Adding to cart:', itemsToAdd);
     navigation.navigate('Cart');
   };
 
@@ -312,31 +313,31 @@ export const useProductManagement = (categoryId?: string) => {
  * Example 8: Integrated usage
  */
 export async function runIntegratedExample(): Promise<void> {
-  console.log('=== React Native Generators Examples ===\n');
+  logInfo('=== React Native Generators Examples ===\n');
 
-  console.log('1. Generating Product List Screen...');
+  logInfo('1. Generating Product List Screen...');
   exampleScreenGeneration();
 
-  console.log('\n2. Generating Data Fetching Hook...');
+  logInfo('\n2. Generating Data Fetching Hook...');
   exampleDataHookGeneration();
 
-  console.log('\n3. Generating Navigation Hook...');
+  logInfo('\n3. Generating Navigation Hook...');
   exampleNavigationHookGeneration();
 
-  console.log('\n4. Navigation Setup:');
-  console.log(navigationSetupExample);
+  logInfo('\n4. Navigation Setup:');
+  logInfo(navigationSetupExample);
 
-  console.log('\n5. Using Hooks in Screens:');
-  console.log(hooksUsageExample);
+  logInfo('\n5. Using Hooks in Screens:');
+  logInfo(hooksUsageExample);
 
-  console.log('\n6. Complete App Structure:');
-  console.log(appStructureExample);
+  logInfo('\n6. Complete App Structure:');
+  logInfo(appStructureExample);
 
-  console.log('\n7. Custom Hook Composition:');
-  console.log(hookCompositionExample);
+  logInfo('\n7. Custom Hook Composition:');
+  logInfo(hookCompositionExample);
 }
 
 // Run examples if this file is executed directly
 if (require.main === module) {
-  runIntegratedExample().catch(console.error);
+  runIntegratedExample().catch(logError);
 }

@@ -6,25 +6,32 @@
   "author": "KitiumAI",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "types": "./dist/shared/src/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/shared/src/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
     "./errors": {
-      "types": "./dist/types/errors/index.d.ts",
-      "import": "./dist/esm/errors/index.js",
-      "require": "./dist/cjs/errors/index.js"
+      "types": "./dist/shared/src/errors/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./logger": {
-      "types": "./dist/types/logger/index.d.ts",
-      "import": "./dist/esm/logger/index.js",
-      "require": "./dist/cjs/logger/index.js"
+      "types": "./dist/shared/src/logger/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./utils": {
+      "types": "./dist/shared/src/utils/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./validation": {
-      "types": "./dist/types/validation/index.d.ts",
-      "import": "./dist/esm/validation/index.js",
-      "require": "./dist/cjs/validation/index.js"
+      "types": "./dist/shared/src/validation/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   },
   "files": [
@@ -33,7 +40,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --sourcemap",
+    "build": "tsup src/index.ts --format esm,cjs --sourcemap && tsc --emitDeclarationOnly --outDir dist",
     "dev": "tsup src/index.ts --format esm --watch",
     "test": "vitest",
     "test:coverage": "vitest --coverage",

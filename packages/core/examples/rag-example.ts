@@ -5,16 +5,17 @@
 
 import { DocumentStore } from '../src/rag/document-store.js';
 import { RAGRetriever } from '../src/rag/rag-retriever.js';
+import { logInfo } from '@weaveai/shared';
 
 async function ragExample() {
-  console.log('=== Retrieval-Augmented Generation ===\n');
+  logInfo('=== Retrieval-Augmented Generation ===\n');
 
   // Create document store
   const store = new DocumentStore();
   const retriever = new RAGRetriever(store);
 
   // Add documents
-  console.log('Adding documents to knowledge base...');
+  logInfo('Adding documents to knowledge base...');
   await retriever.addDocuments([
     {
       id: 'doc1',
@@ -48,74 +49,74 @@ async function ragExample() {
     },
   ]);
 
-  console.log(`✓ Added ${retriever.getStats().documentCount} documents\n`);
+  logInfo(`✓ Added ${retriever.getStats().documentCount} documents\n`);
 
   // Semantic search
-  console.log('--- Semantic Search ---');
+  logInfo('--- Semantic Search ---');
   const semanticQuery = 'How do neural networks learn from data?';
-  console.log(`Query: "${semanticQuery}"`);
+  logInfo(`Query: "${semanticQuery}"`);
 
   const semanticContext = await retriever.retrieve(semanticQuery, {
     searchMethod: 'semantic',
     topK: 2,
   });
 
-  console.log(`\nFound ${semanticContext.documents.length} documents:`);
+  logInfo(`\nFound ${semanticContext.documents.length} documents:`);
   for (const doc of semanticContext.documents) {
-    console.log(`  [${doc.rank}] Similarity: ${(doc.similarity * 100).toFixed(2)}%`);
-    console.log(`      ${doc.content.substring(0, 80)}...`);
+    logInfo(`  [${doc.rank}] Similarity: ${(doc.similarity * 100).toFixed(2)}%`);
+    logInfo(`      ${doc.content.substring(0, 80)}...`);
   }
 
   // Keyword search
-  console.log('\n--- Keyword Search ---');
+  logInfo('\n--- Keyword Search ---');
   const keywordQuery = 'natural language';
-  console.log(`Query: "${keywordQuery}"`);
+  logInfo(`Query: "${keywordQuery}"`);
 
   const keywordContext = await retriever.retrieve(keywordQuery, {
     searchMethod: 'keyword',
     topK: 2,
   });
 
-  console.log(`\nFound ${keywordContext.documents.length} documents:`);
+  logInfo(`\nFound ${keywordContext.documents.length} documents:`);
   for (const doc of keywordContext.documents) {
-    console.log(`  [${doc.rank}] ${doc.id}`);
-    console.log(`      ${doc.content.substring(0, 80)}...`);
+    logInfo(`  [${doc.rank}] ${doc.id}`);
+    logInfo(`      ${doc.content.substring(0, 80)}...`);
   }
 
   // Hybrid search (semantic + keyword)
-  console.log('\n--- Hybrid Search ---');
+  logInfo('\n--- Hybrid Search ---');
   const hybridQuery = 'neural network learning';
-  console.log(`Query: "${hybridQuery}"`);
+  logInfo(`Query: "${hybridQuery}"`);
 
   const hybridContext = await retriever.retrieve(hybridQuery, {
     searchMethod: 'hybrid',
     topK: 2,
   });
 
-  console.log(`\nFound ${hybridContext.documents.length} documents:`);
+  logInfo(`\nFound ${hybridContext.documents.length} documents:`);
   for (const doc of hybridContext.documents) {
-    console.log(`  [${doc.rank}] Similarity: ${(doc.similarity * 100).toFixed(2)}%`);
-    console.log(`      ${doc.content.substring(0, 80)}...`);
+    logInfo(`  [${doc.rank}] Similarity: ${(doc.similarity * 100).toFixed(2)}%`);
+    logInfo(`      ${doc.content.substring(0, 80)}...`);
   }
 
   // Build augmented prompt
-  console.log('\n--- Augmented Prompt ---');
+  logInfo('\n--- Augmented Prompt ---');
   const userQuery = 'Explain how transformers work';
   const { augmentedPrompt, context } = await retriever.augmentPrompt(userQuery, {
     topK: 2,
   });
 
-  console.log(`User Question: "${userQuery}"\n`);
-  console.log('Augmented Prompt:');
-  console.log(augmentedPrompt.substring(0, 200) + '...\n');
+  logInfo(`User Question: "${userQuery}"\n`);
+  logInfo('Augmented Prompt:');
+  logInfo(augmentedPrompt.substring(0, 200) + '...\n');
 
   // Statistics
   const stats = retriever.getStats();
-  console.log('--- Statistics ---');
-  console.log(`Documents in store: ${stats.documentCount}`);
-  console.log(`Retrieval time: ${context.retrievalTime}ms`);
+  logInfo('--- Statistics ---');
+  logInfo(`Documents in store: ${stats.documentCount}`);
+  logInfo(`Retrieval time: ${context.retrievalTime}ms`);
 
-  console.log('\n✓ RAG example completed\n');
+  logInfo('\n✓ RAG example completed\n');
 }
 
 export { ragExample };

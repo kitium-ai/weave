@@ -1,0 +1,75 @@
+{
+  "Weave Generate": {
+    "prefix": "weave-generate",
+    "body": [
+      "const weave = await Weave.createAsync({",
+      "  provider: { type: '${1|openai,anthropic|}', apiKey: process.env.${2:API_KEY} },",
+      "});",
+      "",
+      "const result = await weave.generate('${3:Your prompt here}');",
+      "console.log(result.data.text);"
+    ],
+    "description": "Create a basic Weave generation operation"
+  },
+  "Weave Classify": {
+    "prefix": "weave-classify",
+    "body": [
+      "const result = await weave.classify(",
+      "  '${1:Text to classify}',",
+      "  [${2:'label1', 'label2', 'label3'}]",
+      ");",
+      "console.log(result.classification);"
+    ],
+    "description": "Classify text using Weave"
+  },
+  "Weave Extract": {
+    "prefix": "weave-extract",
+    "body": [
+      "const result = await weave.extract(",
+      "  '${1:Text to extract from}',",
+      "  {",
+      "    type: 'object',",
+      "    properties: {",
+      "      ${2:field}: { type: 'string' }",
+      "    }",
+      "  }",
+      ");",
+      "console.log(result.data);"
+    ],
+    "description": "Extract structured data using Weave"
+  },
+  "Weave with Caching": {
+    "prefix": "weave-cache",
+    "body": [
+      "const weave = await Weave.createAsync({",
+      "  provider: { type: '${1|openai,anthropic|}', apiKey: process.env.${2:API_KEY} },",
+      "  cache: {",
+      "    enabled: true,",
+      "    strategy: '${3|exact,semantic,fuzzy|}',",
+      "    ttl: ${4:3600}",
+      "  }",
+      "});",
+      "",
+      "const result = await weave.generate('${5:Your prompt}');"
+    ],
+    "description": "Create Weave with caching enabled"
+  },
+  "Weave Error Handling": {
+    "prefix": "weave-error",
+    "body": [
+      "try {",
+      "  const result = await weave.generate('${1:prompt}');",
+      "  console.log(result.data.text);",
+      "} catch (error) {",
+      "  if (error instanceof RateLimitError) {",
+      "    logError('Rate limit exceeded');",
+      "  } else if (error instanceof AuthenticationError) {",
+      "    logError('Authentication failed');",
+      "  } else {",
+      "    logError('Error:', error.message);",
+      "  }",
+      "}"
+    ],
+    "description": "Weave with comprehensive error handling"
+  }
+}
