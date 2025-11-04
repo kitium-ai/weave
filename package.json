@@ -1,11 +1,10 @@
 {
   "name": "weave",
-  "version": "0.1.0",
-  "description": "Universal AI integration framework - native to any web or mobile framework",
-  "private": true,
+  "version": "1.2.0",
+  "description": "Universal AI integration framework - native to any web or mobile framework ",
   "license": "Apache-2.0",
-  "author": "KitiumAI",
-  "homepage": "https://weave.ai",
+  "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",
+  "homepage": "https://kitiumai.com/weave",
   "repository": {
     "type": "git",
     "url": "https://github.com/kitium-ai/weave.git"
@@ -25,7 +24,13 @@
     "llm",
     "openai",
     "anthropic",
-    "framework-agnostic"
+    "framework-agnostic",
+    "native",
+    "kitium",
+    "kitiumai",
+    "ai-integration",
+    "ai-framework",
+    "ai-framework-agnostic"
   ],
   "workspaces": [
     "packages/core",
@@ -43,7 +48,6 @@
     "packages/swift",
     "packages/web",
     "packages/cli",
-    "packages/integrations/*",
     "examples/*"
   ],
   "packageManager": "yarn@4.9.4",
@@ -92,6 +96,6 @@
     "yarn": ">=4.0.0"
   },
   "dependencies": {
-    "@weaveai/shared": "^1.1.0"
+    "@weaveai/shared": "^1.2.0"
   }
 }

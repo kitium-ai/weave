@@ -1,9 +1,9 @@
 {
   "name": "@weaveai/shared",
-  "version": "1.1.0",
-  "description": "Weave shared utilities - common functionality across all packages",
+  "version": "1.2.0",
+  "description": "Weaveai shared utilities - common functionality across all packages",
   "license": "Apache-2.0",
-  "author": "KitiumAI",
+  "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/shared/src/index.d.ts",
@@ -67,7 +67,8 @@
     "kitiumai",
     "typescript",
     "node",
-    "javascript"
+    "javascript",
+    "ai-integration"
   ],
   "repository": {
     "type": "git",

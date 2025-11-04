@@ -1,6 +1,6 @@
 {
   "name": "create-weave-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Interactive CLI to scaffold a new Weave AI application in seconds",
   "type": "module",
   "bin": "./dist/index.js",
@@ -23,6 +23,9 @@
   },
   "keywords": [
     "weave",
+    "weaveai",
+    "kitiumai",
+    "kitium",
     "ai",
     "cli",
     "scaffold",
@@ -31,10 +34,12 @@
     "react",
     "vue",
     "svelte",
-    "angular"
+    "angular",
+    "react-native",
+    "nodejs"
   ],
   "dependencies": {
-    "@weaveai/shared": "1.1.0",
+    "@weaveai/shared": "1.2.0",
     "chalk": "^5.3.0",
     "fs-extra": "^11.2.0",
     "ora": "^8.0.1",

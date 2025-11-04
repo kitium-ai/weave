@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/svelte",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Svelte stores and components for Weave AI framework",
   "type": "module",
   "exports": {
@@ -30,8 +30,8 @@
     "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
-    "@weaveai/core": "1.1.0",
-    "@weaveai/shared": "1.1.0",
+    "@weaveai/core": "1.2.1",
+    "@weaveai/shared": "1.2.0",
     "svelte": "^4.0.0"
   },
   "peerDependencies": {
@@ -58,6 +58,9 @@
     "typescript",
     "javascript",
     "kitium",
-    "kitiumai"
+    "kitiumai",
+    "openai",
+    "anthropic",
+    "google"
   ]
 }

@@ -58,3 +58,4 @@ yarn-error.log*
 /.yarnrc.yml
 /.claude/
 /.husky/
+/packages/flutter/.dart_tool/

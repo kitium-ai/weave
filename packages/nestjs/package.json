@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/nestjs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "NestJS integration for Weave AI framework",
   "type": "module",
   "exports": {
@@ -30,7 +30,7 @@
     "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
-    "@weaveai/core": "1.1.0"
+    "@weaveai/core": "1.2.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",
@@ -61,6 +61,9 @@
     "ai",
     "llm",
     "typescript",
-    "javascript"
+    "javascript",
+    "openai",
+    "anthropic",
+    "google"
   ]
 }

@@ -1,7 +1,7 @@
 name: weave_flutter
 description: Flutter integration for Weave AI framework
-version: 0.3.0
-repository: https://github.com/example/weave
+version: 0.1.0
+repository: https://github.com/kitium-ai/weave
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

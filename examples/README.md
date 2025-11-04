@@ -2,6 +2,32 @@
 
 Comprehensive examples demonstrating how to use Weave across different frameworks and platforms.
 
+## 🎯 Featured Sample App
+
+### [Weave Scaffolding Sample App](./scaffold-sample-app/) 🚀
+
+A **complete, production-ready full-stack application** showcasing best practices:
+
+- **Content Generation Platform** with multi-provider AI support
+- Real-time streaming responses with progress tracking
+- Cost tracking and budget management
+- Prompt versioning and A/B testing
+- Caching strategies and optimization
+- Comprehensive error handling and retry logic
+- Detailed documentation and quick reference guides
+
+**Perfect for learning best practices!** Start here if you want to understand how to build a complete Weave application.
+
+```bash
+cd scaffold-sample-app
+npm install
+npm run dev
+```
+
+See [scaffold-sample-app/README.md](./scaffold-sample-app/README.md) and [scaffold-sample-app/QUICK_REFERENCE.md](./scaffold-sample-app/QUICK_REFERENCE.md) for details.
+
+---
+
 ## 📚 Examples by Framework
 
 ### Frontend Frameworks
@@ -380,11 +406,14 @@ flutter run
 
 ## 📖 Learning Path
 
-1. **Start Simple**: React Chat App
-2. **Explore Frontend**: Try Vue, Svelte, Angular
-3. **Go Mobile**: React Native or Flutter
-4. **Build Backend**: Node.js/Express or NestJS
-5. **Full Stack**: Next.js Pages App
+1. **Start Here**: [Scaffolding Sample App](./scaffold-sample-app/) - Complete production example
+2. **Start Simple**: React Chat App
+3. **Explore Frontend**: Try Vue, Svelte, Angular
+4. **Go Mobile**: React Native or Flutter
+5. **Build Backend**: Node.js/Express or NestJS
+6. **Full Stack**: Next.js Pages App
+
+**Recommended**: Start with the Scaffolding Sample App to understand patterns, then explore specialized examples for your framework.
 
 ---
 

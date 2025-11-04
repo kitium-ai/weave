@@ -306,7 +306,32 @@ Weave comes with comprehensive examples for every framework:
 - **React Native** — Mobile chat application
 - **Flutter** — Cross-platform mobile app
 
-See [examples/README.md](./examples/README.md) for detailed setup and running instructions for each example.
+### Scaffolding Sample App
+
+For a **complete, production-ready example**, check out the **[Weave Sample App](./examples/scaffold-sample-app/)** — a full-featured content generation platform demonstrating:
+
+- ✨ **Multi-provider AI integration** (OpenAI, Anthropic, Google)
+- 🚀 **Real-time streaming responses** with progress tracking
+- 💰 **Cost tracking & budget management** across sessions
+- 📝 **Prompt versioning & A/B testing** framework
+- 🔄 **Smart caching strategies** for optimization
+- ⚠️ **Comprehensive error handling** with retry logic
+- 🧪 **Production-ready patterns** and best practices
+- 📚 **Complete documentation** with quick start guide
+
+**Get started in 5 minutes:**
+
+```bash
+cd examples/scaffold-sample-app
+npm install
+cp .env.example .env.local
+# Add your API key to .env.local
+npm run dev
+```
+
+See [examples/scaffold-sample-app/README.md](./examples/scaffold-sample-app/README.md) for complete details, and [QUICK_REFERENCE.md](./examples/scaffold-sample-app/QUICK_REFERENCE.md) for common tasks.
+
+For more examples, see [examples/README.md](./examples/README.md).
 
 ## Environment Setup
 

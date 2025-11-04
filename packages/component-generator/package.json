@@ -1,9 +1,9 @@
 {
   "name": "@weaveai/component-generator",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "AI-assisted UI component generator powered by Weave",
   "license": "Apache-2.0",
-  "author": "KitiumAI",
+  "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "exports": {
@@ -26,8 +26,8 @@
     "clean": "rm -rf dist coverage .turbo"
   },
   "dependencies": {
-    "@weaveai/core": "1.1.0",
-    "@weaveai/shared": "1.1.0"
+    "@weaveai/core": "1.2.1",
+    "@weaveai/shared": "1.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -41,6 +41,7 @@
     "weaveai",
     "component",
     "generator",
+    "ai",
     "ui",
     "react",
     "vue",

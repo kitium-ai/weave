@@ -1,9 +1,9 @@
 {
   "name": "@weaveai/core",
-  "version": "1.1.0",
-  "description": "Weave core framework - framework-agnostic AI operations",
+  "version": "1.2.1",
+  "description": "Weaveai core framework - framework-agnostic AI operations",
   "license": "Apache-2.0",
-  "author": "KitiumAI",
+  "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "exports": {
@@ -46,7 +46,7 @@
     "clean": "rm -rf dist coverage .turbo"
   },
   "dependencies": {
-    "@weaveai/shared": "1.1.0",
+    "@weaveai/shared": "1.2.0",
     "zod": "^3.22.0"
   },
   "devDependencies": {
