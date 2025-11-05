@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/nestjs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "NestJS integration for Weave AI framework",
   "type": "module",
   "exports": {
@@ -30,7 +30,7 @@
     "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
-    "@weaveai/core": "1.2.1"
+    "@weaveai/core": "1.2.2"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "React bindings for Weave framework - hooks and components for AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",
@@ -45,7 +45,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@weaveai/core": "1.2.1",
+    "@weaveai/core": "1.2.2",
     "@weaveai/shared": "1.2.0"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Weaveai core framework - framework-agnostic AI operations",
   "license": "Apache-2.0",
   "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",

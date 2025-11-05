@@ -1,6 +1,6 @@
 {
   "name": "@weaveai/vue",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Vue 3 composables and components for Weave AI framework",
   "type": "module",
   "exports": {
@@ -30,7 +30,7 @@
     "type-check": "tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
-    "@weaveai/core": "1.2.1",
+    "@weaveai/core": "1.2.2",
     "@weaveai/shared": "1.2.0"
   },
   "peerDependencies": {
