@@ -6,28 +6,30 @@
   "author": "KitiumAI LLP <support@kitiumai.com> (https://kitiumai.com)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "types": "./dist/core/src/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/core/src/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
     "./operations": {
-      "types": "./dist/types/operations/index.d.ts",
+      "types": "./dist/core/src/operations/index.d.ts",
       "import": "./dist/esm/operations/index.js",
       "require": "./dist/cjs/operations/index.js"
     },
     "./providers": {
-      "types": "./dist/types/providers/index.d.ts",
+      "types": "./dist/core/src/providers/index.d.ts",
       "import": "./dist/esm/providers/index.js",
       "require": "./dist/cjs/providers/index.js"
     },
     "./tools": {
-      "types": "./dist/types/tools/index.d.ts",
+      "types": "./dist/core/src/tools/index.d.ts",
       "import": "./dist/esm/tools/index.js",
       "require": "./dist/cjs/tools/index.js"
     },
     "./types": {
-      "types": "./dist/types/types/index.d.ts",
+      "types": "./dist/core/src/types/index.d.ts",
       "import": "./dist/esm/types/index.js",
       "require": "./dist/cjs/types/index.js"
     }

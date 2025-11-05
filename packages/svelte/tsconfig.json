@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "moduleResolution": "node",
     "paths": {
-      "@weaveai/core": ["../../packages/core/dist/index.d.ts"]
+      "@weaveai/core": ["../../packages/core/dist/core/src/index.d.ts"]
     }
   },
   "include": ["src"],
