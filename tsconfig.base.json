@@ -26,8 +26,7 @@
       "@weaveai/react-native": ["packages/react-native/src"],
       "@weaveai/flutter": ["packages/flutter/src"],
       "@weaveai/swift": ["packages/swift/src"],
-      "@weaveai/web": ["packages/web/src"],
-      "@weaveai/*": ["packages/integrations/*/src"]
+      "@weaveai/web": ["packages/web/src"]
     },
     "typeRoots": ["./node_modules/@types", "./types"],
     "skipLibCheck": true,

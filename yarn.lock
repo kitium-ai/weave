@@ -2475,16 +2475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 24.10.0
-  resolution: "@types/node@npm:24.10.0"
-  dependencies:
-    undici-types: "npm:~7.16.0"
-  checksum: 10/bc3abd9adc61423b1a72324208f3fcfe4f957b9fc8b9e81bf3fed584deb0b40f0e2af63cd0e2afa8f408d06f14bdba899ac638ac619f646badf8e72de246c052
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.0.0":
+"@types/node@npm:*, @types/node@npm:^20.0.0":
   version: 20.19.24
   resolution: "@types/node@npm:20.19.24"
   dependencies:
@@ -2952,16 +2943,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@weaveai/core@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@weaveai/core@npm:1.1.0"
-  dependencies:
-    "@weaveai/shared": "npm:1.1.0"
-    zod: "npm:^3.22.0"
-  checksum: 10/f69d60d3c654d3b39975e2da327f42f6b2f059e18a9f7a23874e174211439cf8794850cc879c06bc51485119d2ae38492f3d6cde5c5ae282c56c0944a9e380a5
-  languageName: node
-  linkType: hard
-
 "@weaveai/core@npm:1.2.1, @weaveai/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@weaveai/core@workspace:packages/core"
@@ -2985,7 +2966,7 @@ __metadata:
     "@nestjs/testing": "npm:^10.0.0"
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.1.0"
+    "@weaveai/core": "npm:1.2.1"
     reflect-metadata: "npm:^0.1.13"
     rxjs: "npm:^7.8.0"
     tsup: "npm:^8.0.0"
@@ -3003,8 +2984,8 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.1.0"
-    "@weaveai/react": "npm:1.1.0"
+    "@weaveai/core": "npm:1.2.1"
+    "@weaveai/react": "npm:1.2.0"
     next: "npm:^14.0.0"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.0.0"
@@ -3024,7 +3005,7 @@ __metadata:
     "@types/express": "npm:^4.17.0"
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.1.0"
+    "@weaveai/core": "npm:1.2.1"
     express: "npm:^4.18.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
@@ -3038,8 +3019,8 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.1.0"
-    "@weaveai/shared": "npm:1.1.0"
+    "@weaveai/core": "npm:1.2.1"
+    "@weaveai/shared": "npm:1.2.0"
     react: "npm:^18.0.0"
     react-native: "npm:^0.71.0"
     tsup: "npm:^8.0.0"
@@ -3051,19 +3032,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@weaveai/react@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@weaveai/react@npm:1.1.0"
-  dependencies:
-    "@weaveai/core": "npm:1.1.0"
-  peerDependencies:
-    react: ">=18.0.0"
-    react-dom: ">=18.0.0"
-  checksum: 10/cd8cb0eb75231fed8ec51a44bdf60bd926f5c683c3feab5caf8e758f3c32ecdfd0c21ad012b54816c2d8e3f25a066e9607b4bc904d26d840b6ee31418006fbb0
-  languageName: node
-  linkType: hard
-
-"@weaveai/react@workspace:packages/react":
+"@weaveai/react@npm:1.2.0, @weaveai/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@weaveai/react@workspace:packages/react"
   dependencies:
@@ -3085,13 +3054,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@weaveai/shared@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@weaveai/shared@npm:1.1.0"
-  checksum: 10/ab33b8fbe0122e21d7d6a8982f3fd8aa670133a558305e8abfd92c910436540ed2ebbd59968b619ae2de51758ecbc4aad19da80c49e5ba8b43c527d678ff674f
-  languageName: node
-  linkType: hard
-
 "@weaveai/shared@npm:1.2.0, @weaveai/shared@npm:^1.2.0, @weaveai/shared@workspace:packages/shared":
   version: 0.0.0-use.local
   resolution: "@weaveai/shared@workspace:packages/shared"
@@ -3110,8 +3072,8 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.1.0"
-    "@weaveai/shared": "npm:1.1.0"
+    "@weaveai/core": "npm:1.2.1"
+    "@weaveai/shared": "npm:1.2.0"
     svelte: "npm:^4.2.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
@@ -3127,8 +3089,8 @@ __metadata:
   dependencies:
     "@types/node": "npm:^20.0.0"
     "@vitest/coverage-v8": "npm:^1.0.0"
-    "@weaveai/core": "npm:1.1.0"
-    "@weaveai/shared": "npm:1.1.0"
+    "@weaveai/core": "npm:1.2.1"
+    "@weaveai/shared": "npm:1.2.0"
     tsup: "npm:^8.0.0"
     typescript: "npm:^5.3.0"
     vitest: "npm:^1.0.0"
@@ -3407,20 +3369,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-function@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "async-function@npm:1.0.0"
-  checksum: 10/1a09379937d846f0ce7614e75071c12826945d4e417db634156bf0e4673c495989302f52186dfa9767a1d9181794554717badd193ca2bbab046ef1da741d8efd
-  languageName: node
-  linkType: hard
-
-"async-generator-function@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "async-generator-function@npm:1.0.0"
-  checksum: 10/3d49e7acbeee9e84537f4cb0e0f91893df8eba976759875ae8ee9e3d3c82f6ecdebdb347c2fad9926b92596d93cdfc78ecc988bcdf407e40433e8e8e6fe5d78e
-  languageName: node
-  linkType: hard
-
 "async-limiter@npm:~1.0.0":
   version: 1.0.1
   resolution: "async-limiter@npm:1.0.1"
@@ -3555,11 +3503,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.8.19":
-  version: 2.8.23
-  resolution: "baseline-browser-mapping@npm:2.8.23"
+  version: 2.8.24
+  resolution: "baseline-browser-mapping@npm:2.8.24"
   bin:
     baseline-browser-mapping: dist/cli.js
-  checksum: 10/f074d76f4b9157ac976c8e0083c20c9b808ac4de33cf8e245ced6e5eade6b43d05a6f12eb07924d8b846c86ac14f49626864b35a80bace6c8bc5ba0f947cc270
+  checksum: 10/ea99b958242de7d9c714cc7139b67697f9b0731b292d3153578c988d98e919816cd515537db2fc56ea0918117d1524ac2c6baf860fb9a8bc7aa2adeed95582f7
   languageName: node
   linkType: hard
 
@@ -4506,9 +4454,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.238":
-  version: 1.5.244
-  resolution: "electron-to-chromium@npm:1.5.244"
-  checksum: 10/5a29ee295259c9161b62fe4d221cffa988e69a53021a19e460778cccc529716d4f0c9f5f42f1436260913b1dcd2e923cec3f8d6ae15a9af07ccde7df9ebb93b9
+  version: 1.5.245
+  resolution: "electron-to-chromium@npm:1.5.245"
+  checksum: 10/c51d901380d244355a3e939510d0516ef102f9f05bc2d4f0e8983a7e797ae79a720a7933217dd10921bac5cbe627085dd333c915a7647288853202ec411d4907
   languageName: node
   linkType: hard
 
@@ -5363,14 +5311,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flow-parser@npm:0.*":
-  version: 0.289.0
-  resolution: "flow-parser@npm:0.289.0"
-  checksum: 10/7c93340f5121f691f4a7343108353482898f947d1edd5a4a10dc1d32ec17d8dfc7784ed77a85c133336927ffd36133dca353fa99fdc3f95d09b1faa4832a4454
-  languageName: node
-  linkType: hard
-
-"flow-parser@npm:^0.185.0":
+"flow-parser@npm:0.*, flow-parser@npm:^0.185.0":
   version: 0.185.2
   resolution: "flow-parser@npm:0.185.2"
   checksum: 10/ede6111779d85728d01f4af2e39c9bbac444855b3287e2daf4d4dadad1d8d821eb7fb02d4220b2b27bd091ecc8f6418b9688886514e7a41c501c222c6ff1a83e
@@ -5481,13 +5422,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"generator-function@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "generator-function@npm:2.0.1"
-  checksum: 10/eb7e7eb896c5433f3d40982b2ccacdb3dd990dd3499f14040e002b5d54572476513be8a2e6f9609f6e41ab29f2c4469307611ddbfc37ff4e46b765c326663805
-  languageName: node
-  linkType: hard
-
 "gensync@npm:^1.0.0-beta.2":
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
@@ -5517,23 +5451,20 @@ __metadata:
   linkType: hard
 
 "get-intrinsic@npm:^1.1.3, get-intrinsic@npm:^1.2.2, get-intrinsic@npm:^1.2.4, get-intrinsic@npm:^1.2.5, get-intrinsic@npm:^1.2.6, get-intrinsic@npm:^1.3.0":
-  version: 1.3.1
-  resolution: "get-intrinsic@npm:1.3.1"
+  version: 1.3.0
+  resolution: "get-intrinsic@npm:1.3.0"
   dependencies:
-    async-function: "npm:^1.0.0"
-    async-generator-function: "npm:^1.0.0"
     call-bind-apply-helpers: "npm:^1.0.2"
     es-define-property: "npm:^1.0.1"
     es-errors: "npm:^1.3.0"
     es-object-atoms: "npm:^1.1.1"
     function-bind: "npm:^1.1.2"
-    generator-function: "npm:^2.0.0"
     get-proto: "npm:^1.0.1"
     gopd: "npm:^1.2.0"
     has-symbols: "npm:^1.1.0"
     hasown: "npm:^2.0.2"
     math-intrinsics: "npm:^1.1.0"
-  checksum: 10/bb579dda84caa4a3a41611bdd483dade7f00f246f2a7992eb143c5861155290df3fdb48a8406efa3dfb0b434e2c8fafa4eebd469e409d0439247f85fc3fa2cc1
+  checksum: 10/6e9dd920ff054147b6f44cb98104330e87caafae051b6d37b13384a45ba15e71af33c3baeac7cb630a0aaa23142718dcf25b45cfdd86c184c5dcb4e56d953a10
   languageName: node
   linkType: hard
 
@@ -7376,17 +7307,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-db@npm:1.52.0":
+"mime-db@npm:1.52.0, mime-db@npm:>= 1.43.0 < 2":
   version: 1.52.0
   resolution: "mime-db@npm:1.52.0"
   checksum: 10/54bb60bf39e6f8689f6622784e668a3d7f8bed6b0d886f5c3c446cb3284be28b30bf707ed05d0fe44a036f8469976b2629bbea182684977b084de9da274694d7
-  languageName: node
-  linkType: hard
-
-"mime-db@npm:>= 1.43.0 < 2":
-  version: 1.54.0
-  resolution: "mime-db@npm:1.54.0"
-  checksum: 10/9e7834be3d66ae7f10eaa69215732c6d389692b194f876198dca79b2b90cbf96688d9d5d05ef7987b20f749b769b11c01766564264ea5f919c88b32a29011311
   languageName: node
   linkType: hard
 
@@ -9018,7 +8942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:5.2.1, safe-buffer@npm:~5.2.0":
+"safe-buffer@npm:5.2.1":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: 10/32872cd0ff68a3ddade7a7617b8f4c2ae8764d8b7d884c651b74457967a9e0e886267d3ecc781220629c44a865167b61c375d2da6c720c840ecd73f45d5d9451
@@ -9545,16 +9469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string_decoder@npm:^1.1.1":
-  version: 1.3.0
-  resolution: "string_decoder@npm:1.3.0"
-  dependencies:
-    safe-buffer: "npm:~5.2.0"
-  checksum: 10/54d23f4a6acae0e93f999a585e673be9e561b65cd4cca37714af1e893ab8cd8dfa52a9e4f58f48f87b4a44918d3a9254326cb80ed194bf2e4c226e2b21767e56
-  languageName: node
-  linkType: hard
-
-"string_decoder@npm:~1.1.1":
+"string_decoder@npm:^1.1.1, string_decoder@npm:~1.1.1":
   version: 1.1.1
   resolution: "string_decoder@npm:1.1.1"
   dependencies:
@@ -10143,13 +10058,6 @@ __metadata:
   version: 6.21.0
   resolution: "undici-types@npm:6.21.0"
   checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
-  languageName: node
-  linkType: hard
-
-"undici-types@npm:~7.16.0":
-  version: 7.16.0
-  resolution: "undici-types@npm:7.16.0"
-  checksum: 10/db43439f69c2d94cc29f75cbfe9de86df87061d6b0c577ebe9bb3255f49b22c50162a7d7eb413b0458b6510b8ca299ac7cff38c3a29fbd31af9f504bcf7fbc0d
   languageName: node
   linkType: hard
 
